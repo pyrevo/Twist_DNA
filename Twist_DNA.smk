@@ -39,7 +39,7 @@ def get_input():
     '''QC'''
     #input_list.append(["Results/DNA/" + s + "/QC/Low_coverage_positions.txt" for s in config["DNA_Samples"]])
     #input_list.append(["Results/DNA/" + s + "/QC/All_coverage_positions.txt" for s in config["DNA_Samples"]])
-    input_list.append(["qc/" + s + "/" + s + "_Stat_table.csv" for s in config["DNA_Samples"]])
+    #input_list.append(["qc/" + s + "/" + s + "_Stat_table.csv" for s in config["DNA_Samples"]])
     input_list.append(["qc/" + s + "/" + s + "_R1_fastqc.html" for s in config["DNA_Samples"]])
     input_list.append(["qc/" + s + "/" + s + "_R1_fastqc.zip" for s in config["DNA_Samples"]])
     input_list.append(["qc/" + s + "/" + s + "_R2_fastqc.html" for s in config["DNA_Samples"]])
