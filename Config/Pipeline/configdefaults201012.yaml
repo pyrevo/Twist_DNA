@@ -38,6 +38,7 @@ singularity:
     varscan: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/varscan_2.4.3-0.simg"
     msisensor2: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/msisensor2_large.simg" #https://hub.docker.com/r/hsun9/msisensor2
     cutadapt: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/cutadaptv2.5-0.simg"
+    GPU: "/opt/parabricks/parabricks-release-v3.2.0.sif"
 
 
 cartool:
