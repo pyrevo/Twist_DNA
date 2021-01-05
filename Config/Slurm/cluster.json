@@ -1,0 +1,24 @@
+{
+    "__default__": {
+        "queue": "core",
+        "time": "2:00:00",
+        "partition": "core",
+        "name": "JOBNAME.{rule}.{wildcards}",
+        "output": "logs/cluster/{rule}.{wildcards}.out",
+        "error": "logs/cluster/{rule}.{wildcards}.err",
+        "n": 1
+    },
+    "demultiplex": {"n" : 20, "time" : "4:00:00"},
+    "cutadapt": {"n": 10, "time": "4:00:00"},
+    "fix_fastq_run_DNA_R1": {"time" : "3:00:00"},
+    "fix_fastq_run_DNA_R2": {"time" : "3:00:00"},
+    "MarkDuplicates" : {"n" : 2, "time" : "10:00:00"},
+    "bwa_mem" : {"n" : 10, "time" : "6:00:00"},
+    "bwa_mem_fgbio1" : {"n" : 10, "time" : "6:00:00"},
+    "bwa_mem_fgbio2" : {"n" : 10, "time" : "6:00:00"},
+    "fastqc_bam" : {"n" : 10, "time" : "4:00:00"},
+    "vardict" : {"n" : 5, "time" : "2:00:00"},
+    "fgbio" : {"n" : 2, "time" : "6:00:00"},
+    "Call_cnv": {"n": 10},
+    "GPU_align" : {"partition" : "GPU", "time" : "6:00:00", "n": 10},
+}
