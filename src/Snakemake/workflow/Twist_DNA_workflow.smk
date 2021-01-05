@@ -25,11 +25,15 @@ include: "../rules/SNV/freebayes.smk"
 include: "../rules/SNV/mutect2.smk"
 include: "../rules/SNV/vardict_T.smk"
 include: "../rules/SNV/varscan.smk"
+
 include: "../rules/VCF_fix/fix_AF_all_callers.smk"
 include: "../rules/VCF_fix/normalize.smk"
 include: "../rules/VCF_fix/recall.smk"
+include: "../rules/VCF_fix/VEP.smk"
+
+include: "../rules/MSI/msisensor2.smk"
+
 include: "../rules/QC/samtools-picard-stats.smk"
 include: "../rules/QC/multiqc.smk"
 #include: "../rules/QC/cartool.smk"
 include: "../rules/QC/fastqc.smk"
-include: "../rules/MSI/msisensor2.smk"

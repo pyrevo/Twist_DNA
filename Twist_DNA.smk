@@ -20,6 +20,8 @@ def get_input():
     #input_list.append(["DNA_bam/mutect2_bam/" + s + "-ready.indel.bam.bai" for s in config["DNA_Samples"]])
     input_list.append(["recall/" + s + ".ensemble.vcf.gz" for s in config["DNA_Samples"]])
     input_list.append(["recall/" + s + ".ensemble.vcf.gz.tbi" for s in config["DNA_Samples"]])
+    input_list.append(["recall/" + s + ".ensemble.vep.vcf.gz" for s in config["DNA_Samples"]])
+    input_list.append(["recall/" + s + ".ensemble.vep.vcf.gz.tbi" for s in config["DNA_Samples"]])
 
     '''Variant filtering'''
     #input_list.append(["Results/DNA/" + s + "/vcf/" + s + "-ensemble.final.no.introns.vcf.gz" for s in config["DNA_Samples"]])
