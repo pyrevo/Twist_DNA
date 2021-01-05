@@ -1,13 +1,14 @@
 
 rule multiqcBatch:
     input:
-        qc1 = expand("qc/{sample}/{sample}Aligned.sortedByCoord.out_fastqc.zip", sample=config["RNA_Samples"]),
-        qc2 = expand("qc/{sample}/{sample}.samtools-stats.txt", sample=config["RNA_Samples"]),
-        qc3 = expand("qc/{sample}/{sample}.HsMetrics.txt", sample=config["RNA_Samples"]),
-        qc4 = expand("qc/{sample}/{sample}_batchStats.done", sample=config["RNA_Samples"]), #Wait until all in table
-        qc5 = "qc/batchQC_stats_mqc.json",
-        qc6 = expand("qc/{sample}/{sample}_avg_CV_genes_over_500X.txt", sample=config["RNA_Samples"]),
-        qc7 = expand("qc/{sample}/{sample}.gc_bias.summary_metrics.txt", sample=config["RNA_Samples"])
+        qc1 = expand("qc/{sample}/{sample}_R1_fastqc.zip", sample=config["DNA_Samples"]),
+        qc2 = expand("qc/{sample}/{sample}_R2_fastqc.zip", sample=config["DNA_Samples"]),
+        qc3 = expand("qc/{sample}/{sample}.samtools-stats.txt", sample=config["DNA_Samples"]),
+        qc4 = expand("qc/{sample}/{sample}.HsMetrics.txt", sample=config["DNA_Samples"]),
+        qc5 = expand("qc/{sample}/{sample}_batchStats.done", sample=config["DNA_Samples"]), #Wait until all in table
+        qc6 = "qc/batchQC_stats_mqc.json",
+        #qc6 = expand("qc/{sample}/{sample}_avg_CV_genes_over_500X.txt", sample=config["DNA_Samples"]),
+        qc7 = expand("qc/{sample}/{sample}.gc_bias.summary_metrics.txt", sample=config["DNA_Samples"])
     output:
         "Results/RNA/MultiQC.html"
     params:
