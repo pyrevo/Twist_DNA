@@ -11,7 +11,7 @@ rule GPU_align:
         known_indels = "/data/ref_genomes/hg19/variation/Mills_and_1000G_gold_standard.indels.vcf.gz",
         out_recal = "bam/{sample}.recal_gpu.txt"
     log:
-        "logs/GPU_align/{sample}-ready.log"
+        "logs/GPU_align/{sample}.log"
     threads:
         2
     singularity:

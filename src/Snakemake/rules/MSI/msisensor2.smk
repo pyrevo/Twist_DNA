@@ -1,7 +1,8 @@
 
 rule msisensor2:
     input:
-        bam = "DNA_bam/{sample}-ready.bam"
+        bam = "DNA_bam/{sample}-ready.bam",
+        bai = "DNA_bam/{sample}-ready.bam.bai"
     output:
         msi_score = "MSI/{sample}.msi"
     params:
