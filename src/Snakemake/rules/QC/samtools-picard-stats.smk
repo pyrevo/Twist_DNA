@@ -94,7 +94,7 @@ rule getStatsforMqc:
         samtools = "qc/{sample}/{sample}.samtools-stats.txt",
         #multiQCheader = config["programdir"]["dir"]+"src/qc/multiqc-header.txt",
         multiQCheader = "DATA/multiqc-header.txt",
-        cartool = "qc/{sample}/{sample}_Log.csv",
+        #cartool = "qc/{sample}/{sample}_Log.csv",
         batch =  "qc/batchQC_stats_unsorted.csv"
     output:
         batchTmp = temp("qc/{sample}/{sample}_batchStats.done"),
@@ -108,8 +108,8 @@ rule getStatsforMqc:
     singularity:
         config["singularity"]["python"]
     shell:
-        #"(python3.6 get_stats.py {input.picardDup} {input.picardMet} {input.samtools} {input.multiQCheader} {input.cartool} {wildcards.sample} {output.sample} {input.batch} && touch {output.batchTmp}) &> {log}"
-        "(python3.6 src/scripts/get_stats.py {input.picardMet1} {input.picardMet2} {input.picardMet3} {input.picardMet4} {input.samtools} {input.multiQCheader} {input.cartool} {wildcards.sample} {output.sample} {input.batch} && touch {output.batchTmp}) &> {log}"
+        #"(python3.6 src/scripts/get_stats.py {input.picardMet1} {input.picardMet2} {input.picardMet3} {input.picardMet4} {input.samtools} {input.multiQCheader} {input.cartool} {wildcards.sample} {output.sample} {input.batch} && touch {output.batchTmp}) &> {log}"
+        "(python3.6 src/scripts/get_stats.py {input.picardMet1} {input.picardMet2} {input.picardMet3} {input.picardMet4} {input.samtools} {input.multiQCheader} {wildcards.sample} {output.sample} {input.batch} && touch {output.batchTmp}) &> {log}"
 
 rule sortBatchStats:
     input:

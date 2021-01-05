@@ -10,10 +10,10 @@ picardMet3 = sys.argv[3]
 picardMet4 = sys.argv[4]
 samtools = sys.argv[5]
 multiQCheader = sys.argv[6]
-cartoolLog = sys.argv[7]
-sample = sys.argv[8]
-outFile = sys.argv[9]
-batchFile = sys.argv[10]
+#cartoolLog = sys.argv[7]
+sample = sys.argv[7]
+outFile = sys.argv[8]
+batchFile = sys.argv[9]
 
 #Picard
 metCmd='grep -A1 BAIT_SET '+picardMet1
@@ -48,11 +48,11 @@ listOfList = [i.split('\t') for i in sam[1:]]
 samDict = {item[0].strip(':'): item[1] for item in listOfList}
 
 #Cartool
-avgCovCmd = 'grep "Mean Coverage Depth:" '+cartoolLog + ' |cut -f2 -d"," | cut -f1 -d" " '
-avgCov = subprocess.run(avgCovCmd, stdout=subprocess.PIPE,shell = 'TRUE').stdout.decode('utf-8')
+#avgCovCmd = 'grep "Mean Coverage Depth:" '+cartoolLog + ' |cut -f2 -d"," | cut -f1 -d" " '
+#avgCov = subprocess.run(avgCovCmd, stdout=subprocess.PIPE,shell = 'TRUE').stdout.decode('utf-8')
 
-breadth500Cmd = 'grep "Mean Coverage Breadth:" '+cartoolLog + ' | cut -f3 -d"," '
-breadth500 = subprocess.run(breadth500Cmd, stdout=subprocess.PIPE,shell = 'TRUE').stdout.decode('utf-8')
+#breadth500Cmd = 'grep "Mean Coverage Breadth:" '+cartoolLog + ' | cut -f3 -d"," '
+#breadth500 = subprocess.run(breadth500Cmd, stdout=subprocess.PIPE,shell = 'TRUE').stdout.decode('utf-8')
 
 #header = ['Sample','Total reads','Reads aligned [%]','HQ aligned reads','Mean Coverage','Chimeric reads [%]','Adapter [%]','Median insert size','Insert size s.d.','Average Quality','Fraction bases on target', 'Average CV']
 #line = [sample, metricsDict3['TOTAL_READS'], metricsDict3['PCT_PF_READS_ALIGNED'], metricsDict3['PF_HQ_ALIGNED_READS'], metricsDict1['MEAN_TARGET_COVERAGE'], metricsDict3['PCT_CHIMERAS'], metricsDict3['PCT_ADAPTER'], metricsDict2['MEDIAN_INSERT_SIZE'], metricsDict2['STANDARD_DEVIATION'], samDict['average quality'], metricsDict1['PCT_SELECTED_BASES'], str(Avg_500X_coverage)]
