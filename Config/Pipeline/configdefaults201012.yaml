@@ -13,7 +13,7 @@ configfiles:
 
 bed:
     bedfile: "DATA/TST500C_manifest.bed" #Change to twist DNA with HG38 coordiantes
-    #intervals: "DATA/Twist_RNA_pool1_2.interval_list"
+    intervals: "DATA/TST500C_manifest.interval_list"
     #exonbed: "DATA/Twist_RNA_pool1_2_annotated.bed"
 
 singularity:
@@ -37,6 +37,7 @@ singularity:
     vardict: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/vardict_java_1.5.1.simg"
     varscan: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/varscan_2.4.3-0.simg"
     msisensor2: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/msisensor2_large.simg" #https://hub.docker.com/r/hsun9/msisensor2
+    cutadapt: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/cutadaptv2.5-0.simg"
 
 
 cartool:

@@ -16,6 +16,6 @@ rule cutadapt:
         others = "--minimum-length 2 -q 20"
     threads: 10
     singularity:
-        config["singularitys"]["cutadapt"]
-     shell:
+        config["singularity"]["cutadapt"]
+    shell:
         "(cutadapt {params.adapters_r1} {params.adapters_r2} {params.others} -o {output.fastq1} -p {output.fastq2} -j {threads} {input.fastq1} {input.fastq2} > {output.qc} ) &> {log}"
