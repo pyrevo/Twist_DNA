@@ -12,7 +12,7 @@ configfiles:
     multiqc: "Config/Pipeline/multiqc_config.yaml"
 
 bed:
-    bedfile: "DATA/TST500C_manifest.bed"
+    bedfile: "DATA/TST500C_manifest.bed" #Change to twist DNA with HG38 coordiantes
     #intervals: "DATA/Twist_RNA_pool1_2.interval_list"
     #exonbed: "DATA/Twist_RNA_pool1_2_annotated.bed"
 

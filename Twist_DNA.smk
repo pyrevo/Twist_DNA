@@ -51,6 +51,7 @@ def get_input():
     input_list.append("qc/batchQC_stats_unsorted.csv")
     input_list.append("Results/DNA/MultiQC.html")
 
+    return input_list
 
 rule all:
     input:
