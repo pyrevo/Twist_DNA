@@ -14,6 +14,8 @@ rule cutadapt:
         adapters_r2 = "-A AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT", #"-A AGAGCACACGTCTGAACTCCAGTCAC -G AGATCGGAAGAGCACACGT",
         # https://cutadapt.readthedocs.io/en/stable/guide.html#
         others = "--minimum-length 2 -q 20"
+    log:
+        "logs/trimming/cutadapt/{sample}.log"
     threads: 10
     singularity:
         config["singularity"]["cutadapt"]
