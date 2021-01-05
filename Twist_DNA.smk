@@ -11,8 +11,6 @@ def get_input():
 
     '''Alignment'''
     input_list.append(["DNA_bam/" + s + "-ready.bam.bai" for s in config["DNA_Samples"]])
-    if config["programs"]["fgbio"] == False and config["programs"]["GPU"] == False :
-        input_list.append(["qc/" + s + "/" + s + "_DuplicationMetrics.txt" for s in config["DNA_Samples"]])
 
     '''Callers'''
     input_list.append(["mutect2/" + s + ".mutect2.normalized.vcf.gz.tbi" for s in config["DNA_Samples"]])

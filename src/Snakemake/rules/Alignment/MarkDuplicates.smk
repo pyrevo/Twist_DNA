@@ -20,7 +20,8 @@ rule MarkDuplicates:
         bam = "bam/Markdup_temp/{sample}-sort.{chr}.bam",
         bai =  "bam/Markdup_temp/{sample}-sort.{chr}.bam.bai"
     output:
-        bam = temp("DNA_bam/Markdup_temp/{sample}-ready.{chr}.bam"),
+        bam = temp("DNA_bam/Markdup_temp/{sample}-ready.{chr}.bam")
+    params:
         metric = "qc/{sample}_DuplicationMetrics.{chr}.txt"
     log:
         "logs/map/MarkDup/{sample}-ready.{chr}.log"
@@ -29,7 +30,7 @@ rule MarkDuplicates:
     singularity:
         config["singularitys"]["picard"]
     shell:
-        "(java -Xmx4g -jar /opt/conda/share/picard-2.20.1-0/picard.jar MarkDuplicates INPUT={input.bam} OUTPUT={output.bam} METRICS_FILE={output.metric}) &> {log}"
+        "(java -Xmx4g -jar /opt/conda/share/picard-2.20.1-0/picard.jar MarkDuplicates INPUT={input.bam} OUTPUT={output.bam} METRICS_FILE={params.metric}) &> {log}"
 
 rule Merge_bam_Markdup:
     input:
