@@ -10,6 +10,7 @@
     },
     "demultiplex": {"n" : 20, "time" : "4:00:00"},
     "cutadapt": {"n": 10, "time": "4:00:00"},
+    "vep": {"n": 10, "time": "4:00:00"},
     "fix_fastq_run_DNA_R1": {"time" : "3:00:00"},
     "fix_fastq_run_DNA_R2": {"time" : "3:00:00"},
     "MarkDuplicates" : {"n" : 2, "time" : "10:00:00"},

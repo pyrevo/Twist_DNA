@@ -10,6 +10,7 @@ reference: #change to hg38
 
 configfiles:
     multiqc: "Config/Pipeline/multiqc_config.yaml"
+    vep: "/data/ref_genomes/VEP/"
 
 bed:
     bedfile: "DATA/TST500C_manifest.bed" #Change to twist DNA with HG38 coordiantes
@@ -39,6 +40,8 @@ singularity:
     msisensor2: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/msisensor2_large.simg" #https://hub.docker.com/r/hsun9/msisensor2
     cutadapt: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/cutadaptv2.5-0.simg"
     GPU: "/opt/parabricks/parabricks-release-v3.2.0.sif"
+    vep: "/projects/wp2/nobackup/Twist_Myeloid/Containers/ensembl-vep-99.0.simg"
+
 
 
 cartool:

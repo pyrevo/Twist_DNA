@@ -50,7 +50,7 @@ rule filter_recall:
     singularity:
         config["singularity"]["python"]
     shell:
-        "(python3 src/source/filter_recall.py {input} {output} {params}) &> {log}"
+        "(python3 src/Snakemake/scripts/filter_recall.py {input} {output} {params}) &> {log}"
 
 rule index_filterRecall:
     input:

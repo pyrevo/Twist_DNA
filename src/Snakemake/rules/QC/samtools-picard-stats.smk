@@ -108,8 +108,8 @@ rule getStatsforMqc:
     singularity:
         config["singularity"]["python"]
     shell:
-        #"(python3.6 src/scripts/get_stats.py {input.picardMet1} {input.picardMet2} {input.picardMet3} {input.picardMet4} {input.samtools} {input.multiQCheader} {input.cartool} {wildcards.sample} {output.sample} {input.batch} && touch {output.batchTmp}) &> {log}"
-        "(python3.6 src/scripts/get_stats.py {input.picardMet1} {input.picardMet2} {input.picardMet3} {input.picardMet4} {input.samtools} {input.multiQCheader} {wildcards.sample} {output.sample} {input.batch} && touch {output.batchTmp}) &> {log}"
+        #"(python3.6 src/Snakemake/scripts/get_stats.py {input.picardMet1} {input.picardMet2} {input.picardMet3} {input.picardMet4} {input.samtools} {input.multiQCheader} {input.cartool} {wildcards.sample} {output.sample} {input.batch} && touch {output.batchTmp}) &> {log}"
+        "(python3.6 src/Snakemake/scripts/get_stats.py {input.picardMet1} {input.picardMet2} {input.picardMet3} {input.picardMet4} {input.samtools} {input.multiQCheader} {wildcards.sample} {output.sample} {input.batch} && touch {output.batchTmp}) &> {log}"
 
 rule sortBatchStats:
     input:
@@ -125,4 +125,4 @@ rule sortBatchStats:
     singularity:
         config["singularity"]["python"]
     shell:
-        "(python3.6 src/scripts/sortBatchStats.py {input.batchUnsorted} {input.SampleSheetUsed} {output.batch}) &> {log}"
+        "(python3.6 src/Snakemake/scripts/sortBatchStats.py {input.batchUnsorted} {input.SampleSheetUsed} {output.batch}) &> {log}"

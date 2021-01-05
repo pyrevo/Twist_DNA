@@ -123,7 +123,7 @@ rule mutect2HardFilter:
     singularity:
         config["singularity"]["python"]
     shell:
-        "(python3.6 src/scripts/hardFilter_PASS_mutect2.py {input.vcf} {output}) &> {log}"
+        "(python3.6 src/Snakemake/scripts/hardFilter_PASS_mutect2.py {input.vcf} {output}) &> {log}"
 
 rule Merge_bam:
     input:
