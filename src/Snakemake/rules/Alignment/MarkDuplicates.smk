@@ -3,7 +3,8 @@ chrom_list = ['chr1','chr2','chr3','chr4','chr5','chr6','chr7','chr8','chr9','ch
 
 rule Split_bam_Markdup:
     input:
-        bam = "bam/{sample}-sort.bam"
+        bam = "bam/{sample}-sort.bam",
+        bai = "bam/{sample}-sort.bam.bai"
     output:
         bam = temp("bam/Markdup_temp/{sample}-sort.{chr}.bam"),
         bai = temp("bam/Markdup_temp/{sample}-sort.{chr}.bam.bai")
