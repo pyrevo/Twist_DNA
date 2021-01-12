@@ -12,7 +12,7 @@ rule multiqcBatch:
     output:
         "Results/DNA/MultiQC.html"
     params:
-        extra = "-c src/Snakemake/rules/QC/multiqc_config.yaml --ignore *_stats_mqc.csv", # --ignore *HsMetrics.txt --ignore *samtools-stats.txt",
+        extra = "-c " + config["configfiles"]["multiqc"] + " --ignore *_stats_mqc.csv", # --ignore *HsMetrics.txt --ignore *samtools-stats.txt",
         input_dir = "qc",
         output_dir = "qc",
         output_name = "MultiQC.html"
