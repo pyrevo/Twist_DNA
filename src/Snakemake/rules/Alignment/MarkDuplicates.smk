@@ -28,7 +28,7 @@ rule MarkDuplicates:
     threads:
         2
     singularity:
-        config["singularitys"]["picard"]
+        config["singularity"]["picard"]
     shell:
         "(java -Xmx4g -jar /opt/conda/share/picard-2.20.1-0/picard.jar MarkDuplicates INPUT={input.bam} OUTPUT={output.bam} METRICS_FILE={params.metric}) &> {log}"
 
