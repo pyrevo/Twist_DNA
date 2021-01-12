@@ -11,7 +11,7 @@ rule bwa_mem:
         extra = r"-R '@RG\tID:{sample}\tSM:{sample}\tPL:illumina\tPU:{sample}' -v 1"
     threads: 10
     singularity:
-        config["singularitys"]["bwa"]
+        config["singularity"]["bwa"]
     shell:
         "(bwa mem -t {threads} {params.extra} {params.index} {input.reads} | samtools sort -o {output.bam} - ) &> {log}"
 
