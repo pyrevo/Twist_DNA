@@ -15,7 +15,7 @@ else :
 if config["programs"]["fgbio"] == True :
     include: "../rules/Alignment/fgbio.smk"
 else :
-    if config["programs"]["GPU"] == True :
+    if config["GPU"]["markduplicate"] == True :
         include: "../rules/Alignment/GPU_alignment.smk"
     else :
         include: "../rules/Alignment/bwa-mem.smk"
