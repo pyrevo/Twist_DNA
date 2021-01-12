@@ -20,7 +20,7 @@ rule MarkDuplicates:
         bam = "bam/Markdup_temp/{sample}-sort.{chr}.bam",
         bai =  "bam/Markdup_temp/{sample}-sort.{chr}.bam.bai"
     output:
-        bam = temp("DNA_bam/Markdup_temp/{sample}-ready.{chr}.bam")
+        bam = temp("DNA_bam/Markdup_temp/{sample}-dup.{chr}.bam")
     params:
         metric = "qc/{sample}_DuplicationMetrics.{chr}.txt"
     log:
@@ -34,7 +34,7 @@ rule MarkDuplicates:
 
 rule Merge_bam_Markdup:
     input:
-        bams = expand("bam/MarkDup_temp/{{sample}}-sort.{chr}.bam", chr=chrom_list)
+        bams = expand("bam/MarkDup_temp/{{sample}}-dup.{chr}.bam", chr=chrom_list)
     output:
         bam = "DNA_bam/{sample}-ready.bam",
         bai = "DNA_bam/{sample}-ready.bam.bai"
