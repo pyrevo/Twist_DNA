@@ -20,7 +20,7 @@ rule MarkDuplicates:
         bam = "bam/Markdup_temp/{sample}-sort.{chr}.bam",
         bai =  "bam/Markdup_temp/{sample}-sort.{chr}.bam.bai"
     output:
-        bam = temp("DNA_bam/Markdup_temp/{sample}-dup.{chr}.bam")
+        bam = temp("bam/Markdup_temp/{sample}-dup.{chr}.bam")
     params:
         metric = "qc/{sample}_DuplicationMetrics.{chr}.txt"
     log:
