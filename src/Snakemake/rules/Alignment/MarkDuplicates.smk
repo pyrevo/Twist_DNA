@@ -34,7 +34,7 @@ rule MarkDuplicates:
 
 rule Merge_bam_Markdup:
     input:
-        bams = expand("bam/MarkDup_temp/{{sample}}-dup.{chr}.bam", chr=chrom_list)
+        bams = expand("bam/Markdup_temp/{{sample}}-dup.{chr}.bam", chr=chrom_list)
     output:
         bam = "DNA_bam/{sample}-ready.bam",
         bai = "DNA_bam/{sample}-ready.bam.bai"
