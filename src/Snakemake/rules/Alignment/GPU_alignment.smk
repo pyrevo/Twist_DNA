@@ -7,7 +7,7 @@ rule GPU_align:
     output:
         bam = "DNA_bam/{sample}-ready.bam"
     params:
-        config["reference"]["ref"]
+        ref = config["reference"]["ref"]
     log:
         "logs/GPU_align/{sample}.log"
     threads:
