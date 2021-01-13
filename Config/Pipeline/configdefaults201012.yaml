@@ -1,8 +1,8 @@
 GPU:
-    markduplicate: False
+    markduplicate: True
 
 programs:
-    fgbio: True
+    fgbio: False
     cutadapt: True
 
 reference: #change to hg38
