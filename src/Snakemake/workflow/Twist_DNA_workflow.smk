@@ -14,7 +14,7 @@ else :
 #include: "../rules/VCF_fix/Collect_results_DNA.smk" #Change folder!
 #include: "../rules/Mutect2/Mutect2.smk"
 
-if config["programs"]["duplicates"] == "fgbio" :
+if config["programs"]["Duplicates"] == "fgbio" :
     include: "../rules/Alignment/fgbio.smk"
 else :
     if config["programs"]["markduplicate"] == "GPU" :
