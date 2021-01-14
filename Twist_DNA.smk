@@ -6,8 +6,6 @@ def get_input():
     '''Demultiplexning'''
     input_list.append(["fastq/DNA/" + s + "_R1.fastq.gz" for s in config["DNA_Samples"]])
     input_list.append(["fastq/DNA/" + s + "_R2.fastq.gz" for s in config["DNA_Samples"]])
-    if config["programs"]["cutadapt"] == True :
-        input_list.append(["fastq/DNA/" + s + ".qc.txt" for s in config["DNA_Samples"]])
 
     '''Alignment'''
     input_list.append(["DNA_bam/" + s + "-ready.bam.bai" for s in config["DNA_Samples"]])

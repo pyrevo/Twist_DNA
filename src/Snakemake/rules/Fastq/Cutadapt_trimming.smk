@@ -6,18 +6,18 @@ rule cutadapt:
         fastq2 = "fastq_temp/DNA/{sample}_R2.fastq.gz"
     output:
         fastq1 = "fastq/DNA/{sample}_R1.fastq.gz",
-        fastq2 = "fastq/DNA/{sample}_R2.fastq.gz",
-        qc = "fastq/DNA/{sample}.qc.txt"
+        fastq2 = "fastq/DNA/{sample}_R2.fastq.gz"
     params:
          # https://cutadapt.readthedocs.io/en/stable/guide.html#adapter-types
         adapters_r1 = "-a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA",  #"-a AGAGCACACGTCTGAACTCCAGTCAC -g AGATCGGAAGAGCACACGT",
         adapters_r2 = "-A AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT", #"-A AGAGCACACGTCTGAACTCCAGTCAC -G AGATCGGAAGAGCACACGT",
         # https://cutadapt.readthedocs.io/en/stable/guide.html#
-        others = "--minimum-length 2 -q 20"
+        others = "--minimum-length 2 -q 20",
+        qc = "fastq/DNA/{sample}.qc.txt"
     log:
         "logs/trimming/cutadapt/{sample}.log"
     threads: 10
     singularity:
         config["singularity"]["cutadapt"]
     shell:
-        "(cutadapt {params.adapters_r1} {params.adapters_r2} {params.others} -o {output.fastq1} -p {output.fastq2} -j {threads} {input.fastq1} {input.fastq2} > {output.qc} ) &> {log}"
+        "(cutadapt {params.adapters_r1} {params.adapters_r2} {params.others} -o {output.fastq1} -p {output.fastq2} -j {threads} {input.fastq1} {input.fastq2} > {params.qc} ) &> {log}"

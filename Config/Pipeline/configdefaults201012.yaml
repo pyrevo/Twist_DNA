@@ -3,7 +3,7 @@ GPU:
 
 programs:
     fgbio: False
-    cutadapt: True
+    Trimming: "Fastp" #Cutadapt / Fastp / None
 
 reference: #change to hg38
     ref: "/data/ref_genomes/hg19/bwa/BWA_0.7.10_refseq/hg19.with.mt.fasta"
@@ -39,6 +39,7 @@ singularity:
     varscan: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/varscan_2.4.3-0.simg"
     msisensor2: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/msisensor2_large.simg" #https://hub.docker.com/r/hsun9/msisensor2
     cutadapt: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/cutadaptv2.5-0.simg"
+    fastp: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/fastp.simg"
     GPU: "/opt/parabricks/parabricks-release-v3.2.0.sif"
     vep: "/projects/wp2/nobackup/Twist_Myeloid/Containers/ensembl-vep-99.0.simg"
 

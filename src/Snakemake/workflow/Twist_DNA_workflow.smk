@@ -2,8 +2,10 @@
 include: "../rules/Fastq/demultiplex.smk"
 include: "../rules/Fastq/fix_fastq_DNA.smk"
 
-if config["programs"]["cutadapt"] == True :
-    include: "../rules/Fastq/Adapter_trimming.smk"
+if config["programs"]["Trimming"] == "Cutadapt" :
+    include: "../rules/Fastq/Cutadapt_trimming.smk"
+elif config["programs"]["Trimming"] == "Fastp" :
+    include: "../rules/Fastq/Fastp_trimming.smk"
 else :
     include: "../rules/Fastq/move_fastq.smk"
 #include: "../rules/CNV/ONCOCNV.smk"
