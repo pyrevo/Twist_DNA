@@ -53,3 +53,4 @@ singularity:
     fastp: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/fastp.simg"
     GPU: "/opt/parabricks/parabricks-release-v3.2.0.sif"
     vep: "/projects/wp2/nobackup/Twist_Myeloid/Containers/ensembl-vep-99.0.simg"
+    gridss: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/gridss_2.10.2.simg"
