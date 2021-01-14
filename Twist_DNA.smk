@@ -34,7 +34,10 @@ def get_input():
     #input_list.append(["Results/DNA/" + s + "/CNV/" + s + "-ready.png" for s in config["DNA_Samples"]])
 
     '''MSI'''
-    input_list.append(["MSI/" + sample_id + ".msi" for sample_id in config["DNA_Samples"]])
+    input_list.append(["MSI/" + s + ".msi" for s in config["DNA_Samples"]])
+
+    '''Fusion/SV'''
+    input_list.append(["gridss/" + s + ".vcf.gz" for s in config["DNA_Samples"]])
 
     '''QC'''
     #input_list.append(["Results/DNA/" + s + "/QC/Low_coverage_positions.txt" for s in config["DNA_Samples"]])

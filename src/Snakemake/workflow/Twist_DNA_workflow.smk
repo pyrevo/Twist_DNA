@@ -35,6 +35,8 @@ include: "../rules/VCF_fix/VEP.smk"
 
 include: "../rules/MSI/msisensor2.smk"
 
+include: "../rules/DNA_fusion/gridss.smk"
+
 include: "../rules/QC/samtools-picard-stats.smk"
 include: "../rules/QC/multiqc.smk"
 #include: "../rules/QC/cartool.smk"
