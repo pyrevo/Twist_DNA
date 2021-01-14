@@ -24,8 +24,9 @@ Runfolder: runfolder/
 Sample_sheet: samplesheet.csv
 
 programs:
-    fgbio: False
+    Duplicates: "fgbio" #fgbio / markduplicates
     Trimming: "Fastp" #Cutadapt / Fastp / None
+    markduplicate: "CPU" #GPU / CPU
 
 singularity:
     execute: "singularity exec -B /data -B /projects -B /scratch "
