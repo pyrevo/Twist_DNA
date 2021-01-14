@@ -4,7 +4,7 @@ rule gridss:
         bam = "DNA_bam/{sample}-ready.bam",
         bai = "DNA_bam/{sample}-ready.bam.bai"
     output:
-        vcf = "gridss/{sample}.vcf.gz,
+        vcf = "gridss/{sample}.vcf.gz",
         bam = "gridss/{sample}.bam"
     params:
         ref = config["reference"]["ref"],
