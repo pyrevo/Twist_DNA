@@ -14,10 +14,10 @@ else :
 #include: "../rules/VCF_fix/Collect_results_DNA.smk" #Change folder!
 #include: "../rules/Mutect2/Mutect2.smk"
 
-if config["programs"]["fgbio"] == True :
+if config["programs"]["duplicates"] == "fgbio" :
     include: "../rules/Alignment/fgbio.smk"
 else :
-    if config["GPU"]["markduplicate"] == True :
+    if config["programs"]["markduplicate"] == "GPU" :
         include: "../rules/Alignment/GPU_alignment.smk"
     else :
         include: "../rules/Alignment/bwa-mem.smk"

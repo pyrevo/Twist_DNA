@@ -12,9 +12,9 @@ rule fastp:
         html = "fastq/DNA/{sample}.html",
         json = "fastq/DNA/{sample}.json"
     log:
-        "logs/trimming/cutadapt/{sample}.log"
+        "logs/trimming/fastp/{sample}.log"
     threads: 5
     singularity:
         config["singularity"]["fastp"]
     shell:
-        "(-i {input.fastq1} -I {input.fastq2} -o {output.fastq1} -O {output.fastq2} -w {threads} -h {params.html} -j {params.json}) &> {log}"
+        "(fastp -i {input.fastq1} -I {input.fastq2} -o {output.fastq1} -O {output.fastq2} -w {threads} -h {params.html} -j {params.json}) &> {log}"
