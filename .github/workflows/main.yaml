@@ -42,4 +42,4 @@ jobs:
       - name: Install requirements # install application requirements
         run: pip install -r requirements.txt
       - name: Dry run Twist workflow
-        run: nakemake -n -s Twist_DNA.smk --directory tests/workflow_dry_run/twist_dna/
+        run: snakemake -n -s Twist_DNA.smk --directory tests/workflow_dry_run/twist_dna/
