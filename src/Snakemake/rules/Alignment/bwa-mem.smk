@@ -64,8 +64,10 @@ rule bwa_mem:
         extra=r"-R '@RG\tID:{sample}\tSM:{sample}\tPL:illumina\tPU:{sample}' -v 1",
         sort="samtools",
         sort_order="coordinate",
-        sort_extra="-@ 4"
+        sort_extra="-@ 10"
     threads: 10
+    benchmark:
+        "benchmarks/bwa/mem/{sample}.tsv"
     singularity:
         config["singularity"]["bwa"]
     wrapper:
@@ -79,6 +81,8 @@ rule samtools_index:
         "bam/{sample}-sort.bam.bai",
     log:
         "logs/map/samtools_index/{sample}.log",
+    benchmark:
+        repeat("benchmarks/bwa/mem/{sample}.tsv", config.get("benchmark",{}).get("repeats",3))
     singularity:
         config["singularity"]["samtools"]
     shell:
