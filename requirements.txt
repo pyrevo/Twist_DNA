@@ -1,1 +1,2 @@
 snakemake==5.31.1
+snakefmt==0.2.5
