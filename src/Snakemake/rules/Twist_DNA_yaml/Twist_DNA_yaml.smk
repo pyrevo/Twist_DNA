@@ -1,7 +1,8 @@
 
+
 localrules:
     all,
-    Create_TSO500_yaml,
+    Create_Twist_DNA_yaml
 
 
 rule all:
