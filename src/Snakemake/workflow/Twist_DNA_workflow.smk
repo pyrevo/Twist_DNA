@@ -17,12 +17,11 @@ else:
 
     include: "../rules/Fastq/move_fastq.smk"
 
-
-# include: "../rules/CNV/ONCOCNV.smk"
-# include: "../rules/CNV/cnvkit.smk"
-# include: "../rules/QC/check_coverage.smk"
-# include: "../rules/VCF_fix/Collect_results_DNA.smk" #Change folder!
-# include: "../rules/Mutect2/Mutect2.smk"
+include: "../rules/CNV/ONCOCNV.smk"
+include: "../rules/CNV/cnvkit.smk"
+#include: "../rules/QC/check_coverage.smk"
+#include: "../rules/VCF_fix/Collect_results_DNA.smk" #Change folder!
+#include: "../rules/Mutect2/Mutect2.smk"
 
 
 if config["programs"]["Duplicates"] == "fgbio":

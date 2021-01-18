@@ -48,7 +48,7 @@ singularity:
     GPU: "/opt/parabricks/parabricks-release-v3.2.0.sif"
     vep: "/projects/wp2/nobackup/Twist_Myeloid/Containers/ensembl-vep-99.0.simg"
     gridss: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/gridss_2.10.2.simg"
-    cnvkit: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/cnvkit.simg"
+    cnvkit: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/cnvkit_0.9.7--py_1.sif"
     ONCOCNV: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/ONCOCNV.simg"
 
 

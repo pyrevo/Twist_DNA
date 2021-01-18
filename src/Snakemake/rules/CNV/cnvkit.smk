@@ -47,13 +47,12 @@ rule Filter_cnv:
         vcf_files=["Results/DNA/" + sample_id + "/vcf/" + sample_id + "-ensemble.final.vcf.gz" for sample_id in config["DNA_Samples"]],
     output:
         relevant_cnvs="CNV/CNV_calls/relevant_cnv.txt",
-        cnv_done="CNV/CNV_calls/cnv_done.txt",
+        #cnv_done="CNV/CNV_calls/cnv_done.txt",
     log:
         "logs/CNV_cnvkit/{sample}.Filter_cnv.log"
     singularity: config["singularity"]["python"]
     shell:
         "(python3.6 src/Snakemake/scripts/report_amplified_cnv.py "
-        "TSO500 "
         "{input.purity} "
         "{input.relevant_genes} "
         "{input.segments} "
