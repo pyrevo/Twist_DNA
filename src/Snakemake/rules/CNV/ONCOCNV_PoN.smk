@@ -12,7 +12,7 @@ rule fix_bed_file :
     output:
         bed="CNV/bed/ONCOCNV.bed",
     log:
-        "logs/CNV_ONCOCNV/{sample}.fix_bed_file.log"
+        "logs/CNV_ONCOCNV/fix_bed_file.log"
     shell:
         "awk 'BEGIN{{ OFS=\"\t\"}}{{ print $1, $2, $3, NR, \"0\", $4 }}' {input.bed} > {output.bed}"
 
