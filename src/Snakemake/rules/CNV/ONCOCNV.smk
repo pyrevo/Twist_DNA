@@ -5,7 +5,7 @@ rule fix_bed_file :
     output:
         bed="CNV/bed/ONCOCNV.bed",
     log:
-        "logs/CNV_ONCOCNV/{sample}.fix_bed_file.log"
+        "logs/CNV_ONCOCNV/fix_bed_file.log"
     shell:
         "awk 'BEGIN{{ OFS=\"\t\"}}{{ print $1, $2, $3, NR, \"0\", $4 }}' {input.bed} > {output.bed}"
 
@@ -32,7 +32,7 @@ rule Target_bed:
     output:
         bed="CNV/bed/ONCOCNV_target.bed",
     log:
-        "logs/CNV_ONCOCNV/{sample}.Target_bed.log"
+        "logs/CNV_ONCOCNV/Target_bed.log"
     shell:
         "cat {input.stats} | grep -v start | awk '{{print $1,$2,$3}}' "
         "| sed \"s/ /\t/g\" > {output.bed}"
@@ -44,7 +44,7 @@ rule Target_GC:
     output:
         GC="CNV/ONCOCNV_target.GC.txt",
     log:
-        "logs/CNV_ONCOCNV/{sample}.Target_GC.log"
+        "logs/CNV_ONCOCNV/Target_GC.log"
     singularity: config["singularity"]["ONCOCNV"]
     shell:
         "perl ONCOCNV/createTargetGC.pl "
@@ -73,7 +73,7 @@ rule CNV_event:
     output:
         cnv_event="CNV/ONCOCNV_calls/cnv_event.txt",
     log:
-        "logs/CNV_ONCOCNV/{sample}.CNV_event.log"
+        "logs/CNV_ONCOCNV/CNV_event.log"
     singularity: config["singularity"]["python"]
     shell:
         "python src/Snakemake/scripts/get_cnv_ONCOCNV.py "
