@@ -52,7 +52,7 @@ rule Filter_cnv:
         "logs/CNV_cnvkit/{sample}.Filter_cnv.log"
     singularity: config["singularity"]["python"]
     shell:
-        "(python3.6 src/Snakemake/scripts/report_cnv.py "
+        "(python3.6 src/Snakemake/scripts/report_amplified_cnv.py "
         "TSO500 "
         "{input.purity} "
         "{input.relevant_genes} "

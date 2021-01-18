@@ -33,8 +33,8 @@ for cnv_file_name in cnv_files :
         cn = float(lline[4].split("=")[1])
         if cn >= 2.5 :
             cnv_event.write(cnv_file_name + "\t" + line)
-        if cn <= 1.5 :
-            cnv_event.write(cnv_file_name + "\t" + line)
+        # if cn <= 1.5 :
+        #     cnv_event.write(cnv_file_name + "\t" + line)
     cnv_file.close()
 
 cnv_event.close()
