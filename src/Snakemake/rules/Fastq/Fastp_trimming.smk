@@ -45,7 +45,7 @@ __license__ = "MIT"
    fastp_trimming_output="alignment/{sample}.cutadapt.bam"
 """
 
-_fastp_trimming_input = ["fastq_temp/{sample}_R1.fastq.gz", "fastq_temp/{sample}_R2.fastq.gz"]
+_fastp_trimming_input = ["fastq_temp/DNA/{sample}_R1.fastq.gz", "fastq_temp/DNA/{sample}_R2.fastq.gz"]
 try:
     _fastp_trimming_input = fastp_trimming_input
 except:
