@@ -64,7 +64,7 @@ rule Calls:
     singularity: config["singularity"]["ONCOCNV"]
     shell:
         "cat ONCOCNV/processSamples.R | R --slave "
-        "--args {input.tumor_stats} {input.control_stats} {output.call} "
+        "--args {input.tumor_stats} {input.PoN_stats} {output.call} "
         " cghseg"
 
 rule CNV_event:
