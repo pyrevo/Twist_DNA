@@ -45,8 +45,5 @@ jobs:
       - name: Install requirements # install application requirements
         run: pip install -r requirements.txt
 
-      - name: Check python syntax
-        run: pycodestyle --max-line-length=130 --statistics src/Snakemake/scripts
-
       - name: snakefmt
         run: snakefmt --check src/
