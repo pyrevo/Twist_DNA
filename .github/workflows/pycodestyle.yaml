@@ -19,7 +19,7 @@ on:
 
 jobs:
   build:
-    name: Lint Code Base
+    name: pycodestyle
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
