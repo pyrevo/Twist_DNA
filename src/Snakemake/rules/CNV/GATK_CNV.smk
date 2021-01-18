@@ -3,13 +3,13 @@
 
 rule collectReadCounts:
     input:
-        bam = "DNA_bam/{sample}-ready.bam",
-        bai = "DNA_bam/{sample}-ready.bam.bai",
-        interval = config["CNV"]["interval"]
+        bam="DNA_bam/{sample}-ready.bam",
+        bai"DNA_bam/{sample}-ready.bam.bai",
+        interval=config["CNV"]["interval"],
     output:
-        "CNV_GATK/{sample}.counts.hdf5"
+        "CNV_GATK/{sample}.counts.hdf5",
     params:
-        mergingRule = "OVERLAPPING_ONLY"
+        mergingRule="OVERLAPPING_ONLY",
     log:
         "logs/CNV_GATK/{sample}.collectReadCounts.log"
     singularity:
@@ -20,12 +20,12 @@ rule collectReadCounts:
 
 rule denoiseReadCounts:
     input:
-        hdf5PoN = config["CNV"]["PoN"],
-        hdf5Tumor = "CNV_GATK/{sample}.counts.hdf5"
+        hdf5PoN=config["CNV"]["PoN"],
+        hdf5Tumor="CNV_GATK/{sample}.counts.hdf5",
     output:
-        denoisedCopyRatio = "CNV_GATK/{sample}_clean.denoisedCR.tsv"
+        denoisedCopyRatio="CNV_GATK/{sample}_clean.denoisedCR.tsv",
     params:
-        stdCopyRatio = "CNV_GATK/{sample}_clean.standardizedCR.tsv"
+        stdCopyRatio="CNV_GATK/{sample}_clean.standardizedCR.tsv",
     log:
         "logs/CNV_GATK/{sample}-denoise.log"
     singularity:
@@ -38,12 +38,12 @@ rule denoiseReadCounts:
 
 rule collectAllelicCounts:
     input:
-        intervalList = config["CNV"]["interval"],
-        bam = "DNA_bam/{sample}-ready.bam",
-        bai = "DNA_bam/{sample}-ready.bam.bai",
-        ref = config["reference"]["ref"]
+        intervalList=config["CNV"]["interval"],
+        bam="DNA_bam/{sample}-ready.bam",
+        bai="DNA_bam/{sample}-ready.bam.bai",
+        ref=config["reference"]["ref"],
     output:
-        "CNV_GATK/{sample}_clean.allelicCounts.tsv"
+        "CNV_GATK/{sample}_clean.allelicCounts.tsv",
     log:
         "logs/CNV_GATK/{sample}_allelicCounts.log"
     singularity:
@@ -56,8 +56,8 @@ rule collectAllelicCounts:
 
 rule modelSegments:
     input:
-        denoisedCopyRatio = "CNV_GATK/{sample}_clean.denoisedCR.tsv",
-        allelicCounts = "CNV_GATK/{sample}_clean.allelicCounts.tsv"
+        denoisedCopyRatio="CNV_GATK/{sample}_clean.denoisedCR.tsv",
+        allelicCounts="CNV_GATK/{sample}_clean.allelicCounts.tsv"
     output:
         #"CNV_GATK/{sample}_clean.modelBegin.seg",
         "CNV_GATK/{sample}_clean.modelFinal.seg",
@@ -66,10 +66,10 @@ rule modelSegments:
         #"CNV_GATK/{sample}_clean.modelBegin.cr.param",
         #"CNV_GATK/{sample}_clean.modelFinal.af.param",
         #"CNV_GATK/{sample}_clean.modelFinal.cr.param",
-        "CNV_GATK/{sample}_clean.hets.tsv"
+        "CNV_GATK/{sample}_clean.hets.tsv",
     params:
-        outDir = "CNV_GATK/",
-        outPrefix = "{sample}_clean"
+        outDir="CNV_GATK/",
+        outPrefix="{sample}_clean",
     log:
         "logs/CNV_GATK/{sample}_modelSegments.log"
     singularity:
@@ -82,9 +82,9 @@ rule modelSegments:
 
 rule callCopyRatioSegments:
     input:
-        "CNV_GATK/{sample}_clean.cr.seg"
+        "CNV_GATK/{sample}_clean.cr.seg",
     output:
-        "CNV_GATK/{sample}_clean.calledCNVs.seg"
+        "CNV_GATK/{sample}_clean.calledCNVs.seg",
     log:
         "logs/CNV_GATK/{sample}_calledCRSegments.log"
     singularity:
@@ -95,16 +95,16 @@ rule callCopyRatioSegments:
 
 rule plotModeledSegments:
     input:
-        denoisedCopyRatio = "CNV_GATK/{sample}_clean.denoisedCR.tsv",
-        allelicCounts = "CNV_GATK/{sample}_clean.hets.tsv",
-        segments = "CNV_GATK/{sample}_clean.modelFinal.seg",
-        refDict = config["reference"]["ref"][:-5]+"dict"
+        denoisedCopyRatio="CNV_GATK/{sample}_clean.denoisedCR.tsv",
+        allelicCounts="CNV_GATK/{sample}_clean.hets.tsv",
+        segments="CNV_GATK/{sample}_clean.modelFinal.seg",
+        refDict=config["reference"]["ref"][:-5]+"dict",
     output:
-        "CNV_GATK/{sample}_clean.calledCNVs.modeled.png"
+        "CNV_GATK/{sample}_clean.calledCNVs.modeled.png",
     params:
-        outDir = "CNV_GATK/",
-        outPrefix = "{sample}_clean.calledCNVs",
-        pointSize = 2.0
+        outDir="CNV_GATK/",
+        outPrefix="{sample}_clean.calledCNVs",
+        pointSize=2.0,
     log:
         "logs/CNV_GATK/{sample}_plotSegments.log"
     singularity:
