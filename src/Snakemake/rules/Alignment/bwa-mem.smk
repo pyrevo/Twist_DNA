@@ -14,11 +14,17 @@ __license__ = "MIT"
      Default:
         "fastq/{sample}.fq1.fastq.gz",
         "fastq/{sample}.fq2.fastq.gz"
- Output variable:  bwa_mem_output: optional
-     Default:
-         "alignment/{sample}.bam"
+ Output variable:  
+    bwa_mem_output: optional
+        Default:
+            "alignment/{sample}.bam"
+    bwa_mem_output_bai:
+        Default:
+            "alignment/{sample}.bai"
  Config dict keys: values
-    config["reference"]["ref"]': "path/to/reference_genome": required
+    config["reference"]["ref"]': required
+    config["singularity"]["bwa"]': required
+    config["singularity"]["samtools"]: required
  Overriding input and output
  ------------------------------------------------------------------------------
  Required wildcards:
@@ -53,9 +59,14 @@ try:
 except:
     pass
 
+_bwa_mem_output_bai = "alignment/{sample}.bai"
+try:
+    _bwa_mem_output_bai = bwa_mem_output_bai
+except:
+    pass
+
 
 rule bwa_mem:
-
     input:
         reads=_bwa_mem_input,
     output:
@@ -70,7 +81,7 @@ rule bwa_mem:
         sort_extra="-@ 10",
     threads: 10
     benchmark:
-        "benchmarks/bwa/mem/{sample}.tsv"
+        repeat("benchmarks/bwa/mem/{sample}.tsv", config.get("benchmark", {}).get("repeats", 3))
     singularity:
         config["singularity"]["bwa"]
     wrapper:
@@ -79,16 +90,13 @@ rule bwa_mem:
 
 rule samtools_index:
     input:
-        "bam/{sample}-sort.bam",
+        _bwa_mem_output,
     output:
-        "bam/{sample}-sort.bam.bai",
+        _bwa_mem_output_bai,
     log:
         "logs/map/samtools_index/{sample}.log",
     benchmark:
-        repeat(
-            "benchmarks/bwa/mem/{sample}.tsv",
-            config.get("benchmark", {}).get("repeats", 3),
-        )
+        repeat("benchmarks/bwa/mem/{sample}.tsv", config.get("benchmark", {}).get("repeats", 3))
     singularity:
         config["singularity"]["samtools"]
     shell:

@@ -1,3 +1,4 @@
 snakemake==5.31.1
 snakefmt==0.2.5
 pycodestyle==2.6.0
+pandas==1.2.0
