@@ -1,5 +1,5 @@
 
-localrules: all, Create_TSO500_yaml
+localrules: all, Create_Twist_DNA_yaml
 
 rule all:
     input:
