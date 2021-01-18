@@ -10,7 +10,7 @@ reference: #change to hg38
 PoN:
     cnvkit: "DATA/cnvkit_PoN.cnn"
     ONCOCNV: "DATA/ONCOCNV_PoN.txt"
-    ONCOCNV2: "DATA/ONCOCNV_PoN_processed.txt"
+    ONCOCNV2: "DATA/ONCOCNV_PoN_Processed.txt"
     GATK: "DATA/GATK_PoN.hdf5"
 
 configfiles:
