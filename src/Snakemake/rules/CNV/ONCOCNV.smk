@@ -7,7 +7,7 @@ rule fix_bed_file :
     log:
         "logs/CNV_ONCOCNV/fix_bed_file.log"
     shell:
-        "awk 'BEGIN{{ OFS=\"\t\"}}{{ print $1, $2, $3, NR, \"0\", $4 }}' {input.bed} > {output.bed}"
+        "(awk 'BEGIN{{ OFS=\"\t\"}}{{ print $1, $2, $3, NR, \"0\", $4 }}' {input.bed} > {output.bed}) &> {log}"
 
 
 rule Tumor_levels:
@@ -34,8 +34,8 @@ rule Target_bed:
     log:
         "logs/CNV_ONCOCNV/Target_bed.log"
     shell:
-        "cat {input.stats} | grep -v start | awk '{{print $1,$2,$3}}' "
-        "| sed \"s/ /\t/g\" > {output.bed}"
+        "(cat {input.stats} | grep -v start | awk '{{print $1,$2,$3}}' "
+        "| sed \"s/ /\t/g\" > {output.bed}) &> {log}"
 
 rule Target_GC:
     input:
@@ -47,11 +47,11 @@ rule Target_GC:
         "logs/CNV_ONCOCNV/Target_GC.log"
     singularity: config["singularity"]["ONCOCNV"]
     shell:
-        "perl ONCOCNV/createTargetGC.pl "
+        "(perl ONCOCNV/createTargetGC.pl "
         "-bed {input.bed} "
         "-fi {input.reference} "
         "-od stats/ "
-        "-of {output.GC}"
+        "-of {output.GC}) &> {log}"
 
 rule Calls:
     input:
@@ -63,9 +63,7 @@ rule Calls:
         "logs/CNV_ONCOCNV/{sample}.Calls.log"
     singularity: config["singularity"]["ONCOCNV"]
     shell:
-        "cat ONCOCNV/processSamples.R | R --slave "
-        "--args {input.tumor_stats} {input.PoN_stats} {output.call} "
-        " cghseg"
+        "(cat ONCOCNV/processSamples.R | R --slave --args {input.tumor_stats} {input.PoN_stats} {output.call} cghseg) &> {log}"
 
 rule CNV_event:
     input:
@@ -76,6 +74,4 @@ rule CNV_event:
         "logs/CNV_ONCOCNV/CNV_event.log"
     singularity: config["singularity"]["python"]
     shell:
-        "python src/Snakemake/scripts/get_cnv_ONCOCNV.py "
-        "{input.calls} "
-        "{output.cnv_event}"
+        "(python src/Snakemake/scripts/get_cnv_ONCOCNV.py {input.calls} {output.cnv_event}) &> {log}"
