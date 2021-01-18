@@ -7,6 +7,12 @@ programs:
 reference: #change to hg38
     ref: "/data/ref_genomes/hg19/bwa/BWA_0.7.10_refseq/hg19.with.mt.fasta"
 
+PoN:
+    cnvkit: "DATA/cnvkit_PoN.cnn"
+    ONCOCNV: "DATA/ONCOCNV_PoN.txt"
+    ONCOCNV2: "DATA/ONCOCNV_PoN_processed.txt"
+    GATK: "DATA/GATK_PoN.hdf5"
+
 configfiles:
     multiqc: "Config/Pipeline/multiqc_config.yaml"
     vep: "/data/ref_genomes/VEP/"
@@ -42,6 +48,8 @@ singularity:
     GPU: "/opt/parabricks/parabricks-release-v3.2.0.sif"
     vep: "/projects/wp2/nobackup/Twist_Myeloid/Containers/ensembl-vep-99.0.simg"
     gridss: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/gridss_2.10.2.simg"
+    cnvkit: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/cnvkit.simg"
+    ONCOCNV: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/ONCOCNV.simg"
 
 
 
