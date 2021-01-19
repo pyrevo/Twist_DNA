@@ -47,14 +47,17 @@ rule Filter_cnv:
     output:
         relevant_cnvs="CNV/CNV_calls/relevant_cnv.txt",
         #cnv_done="CNV/CNV_calls/cnv_done.txt",
+    params:
+        raw_cnv="CNV/CNV_calls/cnv_raw_event.txt",
     log:
         "logs/CNV_cnvkit/Filter_cnv.log"
     singularity: config["singularity"]["python"]
     shell:
-        "(python3.6 src/Snakemake/scripts/report_amplified_cnv.py "
+        "(python3.6 src/Snakemake/scripts/Filter_cnv.py "
         "{input.purity} "
         "{input.relevant_genes} "
         "{input.segments} "
         "{input.ONCOCNV_events} "
         "{input.bed_file} "
+        "{params.raw_cnv} "
         "{output.relevant_cnvs}) &> {log}"
