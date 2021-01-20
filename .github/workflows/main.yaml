@@ -9,45 +9,42 @@ on:
     branches:
      - master
      - develop
-    paths:
-      - 'dockerfiles/**/VERSION'
-  release:
-    types:
-      - created
-    paths:
-      - 'dockerfiles/**/VERSION'
+  pull_request:
+    branches:
+      - master
+      - develop
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  push:
-    runs-on: ubuntu-latest
-
+  dry_run: # health check job for testing and code formatting check
+    name: snakemake dry run
+    runs-on: ubuntu-latest # os for running the job
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ 3.8 ]
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code # checking our the code at current commit that triggers the workflow
+        uses: actions/checkout@v2
+      - name: Cache dependency # caching dependency will make our build faster.
+        uses: actions/cache@v2 # for more info checkout pip section documentation at https://github.com/actions/cache
         with:
-          fetch-depth: 0
-
-      - name: Log into registry
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login ${{ secrets.DOCKER_REGISTRY_URL }} -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-
-      - name: Build and push the images
-        run: |
-          for versionFilePath in $(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} ${{ github.event.before }} | grep "VERSION");
-          do
-            folder=${versionFilePath%"/VERSION"}
-            IMAGE_NAME=${folder##*/}
-
-            tmpName="image-$RANDOM"
-            docker build $folder --file $folder/Dockerfile --tag $tmpName
-            IMAGE_ID=${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.REPOSITORY }}/$IMAGE_NAME
-            VERSION=$(cat $versionFilePath)
-
-            echo IMAGE_ID=$IMAGE_ID
-            echo VERSION=$VERSION
-
-            docker tag $tmpName $IMAGE_ID:$VERSION
-            docker push $IMAGE_ID:$VERSION
-          done;
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+            python-version: ${{ matrix.python-version }}
+      - name: Check Python version # checking the python version to see if 3.x is installed.
+        run: python --version
+      - name: Install requirements # install application requirements
+        run: pip install -r requirements.txt
+      - name: Dry run Twist workflow
+        run: snakemake -n -s Twist_DNA.smk --directory tests/workflow_dry_run/twist_dna/
+      - name: Dry run gms somatic workflow
+        run: snakemake -n -s gms_somatic.smk --directory tests/workflow_dry_run/gms_somatic/
