@@ -1,0 +1,7 @@
+name: gms_somatic
+channels:
+  - bioconda
+dependencies:
+  - fastp=0.20.1
+  - bwa=0.7.17
+  - samtools=1.9
