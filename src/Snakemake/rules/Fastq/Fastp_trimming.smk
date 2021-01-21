@@ -42,7 +42,10 @@ __license__ = "MIT"
                        ]
  Override output format
  Ex
-   fastp_trimming_output="alignment/{sample}.cutadapt.bam"
+   fastp_trimming_output=[
+                       "fastq/trimmed/{sample}.R1.fastq.gz",
+                       "fastq/trimmed/{sample}.R2.fastq.gz"
+                       ]
 """
 
 _fastp_trimming_input = ["fastq_temp/DNA/{sample}_R1.fastq.gz", "fastq_temp/DNA/{sample}_R2.fastq.gz"]
@@ -84,8 +87,8 @@ rule fastp:
         "logs/trimming/fastp/{sample}.log",
     threads: 5
     benchmark:
-        repeat("benchmarks/trimming/fastp/{sample}.tsv",config.get("benchmark",{}).get("repeats",1))
+        repeat("benchmarks/trimming/fastp/{sample}.tsv", config.get("benchmark", {}).get("repeats", 1))
     singularity:
-        config["singularity"].get("fastp", config["singularity"]["default"])
+        config["singularity"].get("fastp", config["singularity"].get("default", ""))
     wrapper:
         "v0.69.0/bio/fastp"

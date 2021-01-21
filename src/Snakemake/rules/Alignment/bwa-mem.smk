@@ -10,10 +10,11 @@ __license__ = "MIT"
  Rule that performs alignment of reads using bwa mem.
  Input, output and config
  ------------------------------------------------------------------------------
- Input variable: _bwa_alignment_input: optional
-     Default:
-        "fastq/{sample}.fq1.fastq.gz",
-        "fastq/{sample}.fq2.fastq.gz"
+ Input variable: 
+    bwa_alignment_input: optional
+        Default:
+            "fastq/{sample}.fq1.fastq.gz",
+            "fastq/{sample}.fq2.fastq.gz"
  Output variable:  
     bwa_mem_output: optional
         Default:
@@ -23,8 +24,8 @@ __license__ = "MIT"
             "alignment/{sample}.bai"
  Config dict keys: values
     config["reference"]["ref"]': required
-    config["singularity"]["bwa"]': required
-    config["singularity"]["samtools"]: required
+    config["singularity"]["bwa"]' or config["singularity"]["default"]'  : required 
+    config["singularity"]["samtools"] or config["singularity"]["default"]': required
  Overriding input and output
  ------------------------------------------------------------------------------
  Required wildcards:
@@ -83,7 +84,7 @@ rule bwa_mem:
     benchmark:
         repeat("benchmarks/bwa/mem/{sample}.tsv", config.get("benchmark", {}).get("repeats", 1))
     singularity:
-        config["singularity"].get("bwa", config["singularity"]["default"])
+        config["singularity"].get("bwa", config["singularity"].get("default", ""))
     wrapper:
         "v0.69.0/bio/bwa/mem"
 
@@ -98,6 +99,6 @@ rule samtools_index:
     benchmark:
         repeat("benchmarks/bwa/mem/{sample}.tsv", config.get("benchmark", {}).get("repeats", 1))
     singularity:
-        config["singularity"].get("samtools", config["singularity"]["default"])
+        config["singularity"].get("samtools", config["singularity"].get("default", ""))
     wrapper:
-        "v0.69.0/bio/samtools/index
+        "v0.69.0/bio/samtools/index"
