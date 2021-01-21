@@ -84,8 +84,8 @@ rule fastp:
         "logs/trimming/fastp/{sample}.log",
     threads: 5
     benchmark:
-        repeat("benchmarks/trimming/fastp/{sample}.tsv",config.get("benchmark",{}).get("repeats",1))
+        repeat("benchmarks/trimming/fastp/{sample}.tsv", config.get("benchmark", {}).get("repeats", 1))
     singularity:
-        config["singularity"].get("fastp", config["singularity"]["default"])
+        config["singularity"].get("fastp", config["singularity"].get("default", ""))
     wrapper:
         "v0.69.0/bio/fastp"

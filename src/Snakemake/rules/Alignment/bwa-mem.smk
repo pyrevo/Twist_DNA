@@ -83,7 +83,7 @@ rule bwa_mem:
     benchmark:
         repeat("benchmarks/bwa/mem/{sample}.tsv", config.get("benchmark", {}).get("repeats", 1))
     singularity:
-        config["singularity"].get("bwa", config["singularity"]["default"])
+        config["singularity"].get("bwa", config["singularity"].get("default", ""))
     wrapper:
         "v0.69.0/bio/bwa/mem"
 
@@ -98,6 +98,6 @@ rule samtools_index:
     benchmark:
         repeat("benchmarks/bwa/mem/{sample}.tsv", config.get("benchmark", {}).get("repeats", 1))
     singularity:
-        config["singularity"].get("samtools", config["singularity"]["default"])
+        config["singularity"].get("samtools", config["singularity"].get("default", ""))
     wrapper:
-        "v0.69.0/bio/samtools/index
+        "v0.69.0/bio/samtools/index"
