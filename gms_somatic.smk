@@ -9,7 +9,7 @@ samples = pd.read_table(config["samples"], index_col="sample")
 
 rule all:
     input:
-        ["alignment/" + sample.Index + "." + type for sample in samples.itertuples() for type in ["bam",]]
+        ["alignment/" + sample.Index + "." + type for sample in samples.itertuples() for type in ["bam","bai"]]
 
 
 include: "src/Snakemake/workflow/gms_somatic_workflow.smk"

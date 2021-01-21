@@ -72,9 +72,9 @@ except:
 
 rule fastp:
     input:
-        _fastp_trimming_input,
+        sample=_fastp_trimming_input,
     output:
-        trimming=_fastp_trimming_output,
+        trimmed=_fastp_trimming_output,
         html=_fastp_trimming_output_html,
         json=_fastp_trimming_output_json,
     params:
@@ -83,7 +83,9 @@ rule fastp:
     log:
         "logs/trimming/fastp/{sample}.log",
     threads: 5
+    benchmark:
+        repeat("benchmarks/trimming/fastp/{sample}.tsv", config.get("benchmark", {}).get("repeats", 1))
     singularity:
-        config["singularity"]["fastp"]
+        config["singularity"].get("fastp", config["singularity"].get("default", ""))
     wrapper:
         "v0.69.0/bio/fastp"
