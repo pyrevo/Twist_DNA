@@ -9,7 +9,9 @@ notification_mail: "test@mail.se"
 reference: #change to hg38
     ref: "../../data/ref_genomes/ref.fasta"
 
+
 singularity:
-    bwa: "bwa0.7.17-samtools-1.9.simg"
-    fastp: "fastq.simg"
-    samtools: "bwa0.7.17-samtools-1.9.simg"
+    default: "docker://gmsuppsala/somatic:develop"
+    #bwa: "bwa0.7.17-samtools-1.9.simg"
+    #fastp: "fastq.simg"
+    #samtools: "bwa0.7.17-samtools-1.9.simg"
