@@ -2,8 +2,8 @@
 FROM continuumio/miniconda3 AS build
 
 # Install the package as normal:
-COPY environment.yml .
-RUN conda env create -f environment.yml
+COPY environment.yml /
+RUN conda env create -f /environment.yml
 
 # Install conda-pack:
 RUN conda install -c conda-forge conda-pack
@@ -25,16 +25,15 @@ RUN /venv/bin/conda-unpack
 FROM debian:buster AS runtime
 
 ################## METADATA ######################
-LABEL bwa="0.7.17" samtools="1.9"
+LABEL bwa="0.7.17" samtools="1.9" python="3.8"
 ################## MAINTAINER ######################
 MAINTAINER Patrik Smeds <patrik.smeds@scilifelab.uu.se>
 
 
 # Copy /venv from the previous stage:
-COPY --from=build /venv /venv
+# to /usr/local to make it possible
+# running the softwares without activating
+# any conda env
+COPY --from=build /venv /usr/local
 
-# When image is run, run the code with the environment
-# activated:
 SHELL ["/bin/bash", "-c"]
-COPY entrypoint.sh .
-ENTRYPOINT ["./entrypoint.sh"]
