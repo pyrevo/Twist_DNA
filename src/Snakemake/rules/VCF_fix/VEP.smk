@@ -1,16 +1,16 @@
 
 rule vep:
     input:
-        vcf = "recall/{sample}.ensemble.vcf.gz",
-        cache = config["configfiles"]["vep"],
-        fasta = config["reference"]["ref"]
+        vcf="recall/{sample}.ensemble.vcf.gz",
+        cache=config["configfiles"]["vep"],
+        fasta=config["reference"]["ref"],
     output:
-        vcf = temp("recall/{sample}.ensemble.vep.vcf")
+        vcf=temp("recall/{sample}.ensemble.vep.vcf"),
     params:
-        "--check_existing --pick --sift b --polyphen b --ccds --uniprot --hgvs --symbol --numbers --domains --regulatory --canonical --protein --biotype --uniprot --tsl --appris --gene_phenotype --af --af_1kg --af_gnomad --max_af --pubmed --variant_class "
         # "--everything --check_existing --pick"  #--exclude_null_alleles
+        "--check_existing --pick --sift b --polyphen b --ccds --uniprot --hgvs --symbol --numbers --domains --regulatory --canonical --protein --biotype --uniprot --tsl --appris --gene_phenotype --af --af_1kg --af_gnomad --max_af --pubmed --variant_class ",
     log:
-        "logs/variantCalling/vep/{sample}.log"
+        "logs/variantCalling/vep/{sample}.log",
     singularity:
         config["singularity"]["vep"]
     threads: 10
@@ -20,12 +20,12 @@ rule vep:
 
 rule bgzipVep:
     input:
-        "recall/{sample}.ensemble.vep.vcf"
+        "recall/{sample}.ensemble.vep.vcf",
     output:
         "recall/{sample}.ensemble.vep.vcf.gz",
-        "recall/{sample}.ensemble.vep.vcf.gz.tbi"
+        "recall/{sample}.ensemble.vep.vcf.gz.tbi",
     log:
-        "logs/recall/vep/{sample}.bgzip.log"
+        "logs/recall/vep/{sample}.bgzip.log",
     singularity:
         config["singularity"]["bcftools"]
     shell:
