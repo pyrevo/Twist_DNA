@@ -158,7 +158,7 @@ for line in cnv_event :
                 ONCOCNV_CN_100 = relevant_genes[gene][sample2][1]
             else :
                 ONCOCNV_CN_100 = relevant_genes[gene][sample2][0]
-        ONCOCNV_corrected_cn = round(2 + (ONCOCNV_CN - 2) * (1/purity),1)
+        ONCOCNV_corrected_cn = round(2 + (ONCOCNV_CN_100 - 2) * (1/purity),1)
         if cnvkit_corrected_cn > 6.0 and ONCOCNV_corrected_cn > 6.0 :
             cnv_relevant.write(long_sample + "\t" + sample2 + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" + str(end_pos) + "\t" + str(round(Copy_ratio,2)) + "\t" + str(cnvkit_cn_100) + "\t" + str(ONCOCNV_CN_100) + "\t" + str(purity) + "\t" + str(cnvkit_corrected_cn) + "\t" + str(ONCOCNV_corrected_cn) + "\n")
 cnv_relevant.close()
