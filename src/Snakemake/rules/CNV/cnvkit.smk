@@ -45,8 +45,8 @@ rule Filter_cnv:
         ONCOCNV_events="CNV/ONCOCNV_calls/cnv_event.txt",
         bed_file="CNV/bed/cnvkit_manifest.target.bed",
     output:
-        relevant_cnvs="CNV/CNV_calls/relevant_cnv.txt",
         #cnv_done="CNV/CNV_calls/cnv_done.txt",
+        relevant_cnvs="CNV/CNV_calls/relevant_cnv.txt",
     params:
         raw_cnv="CNV/CNV_calls/cnv_raw_event.txt",
     log:

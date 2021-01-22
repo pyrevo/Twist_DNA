@@ -4,7 +4,7 @@
 rule collectReadCounts:
     input:
         bam="DNA_bam/{sample}-ready.bam",
-        bai"DNA_bam/{sample}-ready.bam.bai",
+        bai="DNA_bam/{sample}-ready.bam.bai",
         interval=config["CNV"]["interval"],
     output:
         "CNV_GATK/{sample}.counts.hdf5",
