@@ -1,4 +1,3 @@
-
 # rule fastqc_bam:
 #     input:
 #         #"fastq/{sample}_R1-fastq.gz" ##one for each R1 and one for R2 should be from a samples.yaml file
@@ -23,29 +22,30 @@
 
 rule fastqcR1:
     input:
-        "fastq/DNA/{sample}_R1.fastq.gz" ##one for each R1 and one for R2 should be from a samples.yaml file
+        "fastq/DNA/{sample}_R1.fastq.gz",  ##one for each R1 and one for R2 should be from a samples.yaml file
     output:
         html="qc/{sample}/{sample}_R1_fastqc.html",
-        zip="qc/{sample}/{sample}_R1_fastqc.zip" # the suffix _fastqc.zip is necessary for multiqc to find the file. If not using multiqc, you are free to choose an arbitrary filename
+        zip="qc/{sample}/{sample}_R1_fastqc.zip",  # the suffix _fastqc.zip is necessary for multiqc to find the file. If not using multiqc, you are free to choose an arbitrary filename
     params:
-        outdir = "qc/{sample}/"
+        outdir="qc/{sample}/",
     log:
-        "logs/qc/fastqc/{sample}_R1.log"
+        "logs/qc/fastqc/{sample}_R1.log",
     singularity:
         config["singularity"]["fastqc"]
     shell:
         "(fastqc --quiet --outdir {params.outdir} {input}) &> {log}"
 
+
 rule fastqcR2:
     input:
-        "fastq/DNA/{sample}_R2.fastq.gz" ##one for each R1 and one for R2 should be from a samples.yaml file
+        "fastq/DNA/{sample}_R2.fastq.gz",  ##one for each R1 and one for R2 should be from a samples.yaml file
     output:
         html="qc/{sample}/{sample}_R2_fastqc.html",
-        zip="qc/{sample}/{sample}_R2_fastqc.zip" # the suffix _fastqc.zip is necessary for multiqc to find the file. If not using multiqc, you are free to choose an arbitrary filename
+        zip="qc/{sample}/{sample}_R2_fastqc.zip",  # the suffix _fastqc.zip is necessary for multiqc to find the file. If not using multiqc, you are free to choose an arbitrary filename
     params:
-        outdir = "qc/{sample}/"
+        outdir="qc/{sample}/",
     log:
-        "logs/qc/fastqc/{sample}_R2.log"
+        "logs/qc/fastqc/{sample}_R2.log",
     singularity:
         config["singularity"]["fastqc"]
     shell:

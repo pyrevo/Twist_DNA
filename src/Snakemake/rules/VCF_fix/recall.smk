@@ -1,68 +1,76 @@
 
 
-localrules: fixContig, sort_recall,createMultiVcf
+localrules:
+    fixContig,
+    sort_recall,
+    createMultiVcf,
 
-methods = ["mutect2","vardict","varscan","freebayes"]
+
+methods = ["mutect2", "vardict", "varscan", "freebayes"]
+
 
 rule recall:
     input:
-        vcfs = expand("{method}/{{sample}}.{method}.normalized.vcf.gz",  method=methods) ,  # same order as methods in config!! make sure that is correct
-        tabix = expand("{method}/{{sample}}.{method}.normalized.vcf.gz.tbi",  method=methods),
-        ref = config["reference"]["ref"]
+        vcfs=expand("{method}/{{sample}}.{method}.normalized.vcf.gz", method=methods),  # same order as methods in config!! make sure that is correct
+        tabix=expand("{method}/{{sample}}.{method}.normalized.vcf.gz.tbi", method=methods),
+        ref=config["reference"]["ref"],
     output:
-        vcf = temp("recall/{sample}.unsorted.vcf.gz")
+        vcf=temp("recall/{sample}.unsorted.vcf.gz"),
     params:
-        support =  "1", #"{support}" ,
-        order = "mutect2,vardict,varscan,freebayes" #,Manta" #Make sure that the order is correct! Order of methods in configfile
+        support="1",  #"{support}" ,
+        order="mutect2,vardict,varscan,freebayes",  #,Manta" #Make sure that the order is correct! Order of methods in configfile
     log:
-        "logs/variantCalling/recall/{sample}.log"
+        "logs/variantCalling/recall/{sample}.log",
     singularity:
         config["singularity"]["ensemble"]
-    shell: ##Remove filtered?? if so --nofiltered
+    shell:  ##Remove filtered?? if so --nofiltered
         "(bcbio-variation-recall ensemble -n {params.support} --names {params.order} {output.vcf} {input.ref} {input.vcfs}) &> {log}"
 
 
 rule sort_recall:
     input:
-        "recall/{sample}.unsorted.vcf.gz" #multiAllelic.vcf"
+        "recall/{sample}.unsorted.vcf.gz",  #multiAllelic.vcf"
     output:
-        vcf = "recall/{sample}.all.vcf.gz",
-        tbi = "recall/{sample}.all.vcf.gz.tbi"
+        vcf="recall/{sample}.all.vcf.gz",
+        tbi="recall/{sample}.all.vcf.gz.tbi",
     log:
-        "logs/variantCalling/recall/{sample}.sort.log"
-    #params:
-        #vcf = "recall/{sample}.unsorted.vcf"
+        "logs/variantCalling/recall/{sample}.sort.log",
+    # params:
+    # vcf = "recall/{sample}.unsorted.vcf"
     singularity:
         config["singularity"]["bcftools"]
     shell:
         #"(gunzip {input} && bgzip {params.vcf} &&
         "(tabix {input} && bcftools sort -o {output.vcf} -O z {input} && tabix {output.vcf} ) &> {log}"
 
+
 rule filter_recall:
     input:
-        "recall/{sample}.all.vcf.gz"
+        "recall/{sample}.all.vcf.gz",
     output:
-        "recall/{sample}.ensemble.vcf.gz"
+        "recall/{sample}.ensemble.vcf.gz",
     params:
-        "DATA/indel_artifacts.bed"
+        "DATA/indel_artifacts.bed",
     log:
-        "logs/variantCalling/recall/{sample}.filter_recall.log"
+        "logs/variantCalling/recall/{sample}.filter_recall.log",
     singularity:
         config["singularity"]["python"]
     shell:
         "(python3 src/Snakemake/scripts/filter_recall.py {input} {output} {params}) &> {log}"
 
+
 rule index_filterRecall:
     input:
-        "recall/{sample}.ensemble.vcf.gz"
+        "recall/{sample}.ensemble.vcf.gz",
     output:
-        tbi = "recall/{sample}.ensemble.vcf.gz.tbi"
+        tbi="recall/{sample}.ensemble.vcf.gz.tbi",
     log:
-        "logs/variantCalling/recall/{sample}.index_recallFilter.log"
+        "logs/variantCalling/recall/{sample}.index_recallFilter.log",
     singularity:
         config["singularity"]["bcftools"]
     shell:
         "( tabix {input} ) &> {log}"
+
 
 # # ##Add in multiallelic Variants
 # rule createMultiVcf: #Behovs denna?? Eller ar den onodig nu?
@@ -89,7 +97,6 @@ rule index_filterRecall:
 #         config["singularitys"]["bcftools"]
 #     shell:
 #         "(bcftools sort -o {output.vcf} -O z {input} && tabix {output.vcf}) &> {log}"
-
 # rule concatMulti:
 #     input:
 #         vcf = "variantCalls/recall/{sample}_{seqID}.notMulti.vcf.gz",
