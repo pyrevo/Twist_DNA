@@ -136,7 +136,7 @@ for line in cnv_event :
     if not relevant_gene :
         continue
     long_sample = lline[0]
-    sample = lline[0].split("/")[1].split(".")[0]
+    sample = lline[0].split("/")[-1].split(".")[0]
     if sample not in sample_purity_dict :
         print("Error: sample %s not in tumor purity file" % sample)
         cnv_relevant.close()
