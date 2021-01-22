@@ -5,10 +5,12 @@ rule Create_targets:
     output:
         bed="CNV/bed/cnvkit_manifest.target.bed",
     log:
-        "logs/CNV_cnvkit/Create_targets.log"
-    singularity: config["singularity"]["cnvkit"]
+        "logs/CNV_cnvkit/Create_targets.log",
+    singularity:
+        config["singularity"]["cnvkit"]
     shell:
         "(cnvkit.py target --split {input.bed} -o {output.bed}) &> {log}"
+
 
 rule Create_anti_targets:
     input:
@@ -16,10 +18,12 @@ rule Create_anti_targets:
     output:
         bed="CNV/bed/cnvkit_manifest.antitarget.bed",
     log:
-        "logs/CNV_cnvkit/Create_anti_targets.log"
-    singularity: config["singularity"]["cnvkit"]
+        "logs/CNV_cnvkit/Create_anti_targets.log",
+    singularity:
+        config["singularity"]["cnvkit"]
     shell:
         "(cnvkit.py antitarget {input.bed} -o {output.bed}) &> {log}"
+
 
 rule Call_cnv:
     input:
@@ -31,11 +35,13 @@ rule Call_cnv:
     params:
         outdir="CNV/cnvkit_calls/",
     log:
-        "logs/CNV_cnvkit/Call_cnv.log"
+        "logs/CNV_cnvkit/Call_cnv.log",
     threads: 8
-    singularity: config["singularity"]["cnvkit"]
+    singularity:
+        config["singularity"]["cnvkit"]
     shell:
         "(cnvkit.py batch {input.bams} -r {input.PoN} -p {threads} -d {params.outdir}) &> {log}"
+
 
 rule Filter_cnv:
     input:
@@ -50,8 +56,9 @@ rule Filter_cnv:
     params:
         raw_cnv="CNV/CNV_calls/cnv_raw_event.txt",
     log:
-        "logs/CNV_cnvkit/Filter_cnv.log"
-    singularity: config["singularity"]["python"]
+        "logs/CNV_cnvkit/Filter_cnv.log",
+    singularity:
+        config["singularity"]["python"]
     shell:
         "(python3.6 src/Snakemake/scripts/Filter_cnv.py "
         "{input.purity} "
