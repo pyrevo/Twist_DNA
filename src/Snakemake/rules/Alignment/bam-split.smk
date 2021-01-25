@@ -41,6 +41,7 @@ def extract_chr(file):
     print(str(chr))
     return chr
 
+
 _bam_split_input = "alignment/{sample}.bam"
 try:
     _bam_split_input = bam_split_input
@@ -58,7 +59,7 @@ rule bam_split:
     input:
         _bam_split_input,
     output:
-        [_bam_split_output.replace("REF_", "REF_" + chr )  for chr in extract_chr(config['reference']['ref'] + ".fai")]
+        [_bam_split_output.replace("REF_", "REF_" + chr) for chr in extract_chr(config['reference']['ref'] + ".fai")],
     singularity:
         config["singularity"].get("bamtools", config["singularity"].get("default", ""))
     wrapper:
