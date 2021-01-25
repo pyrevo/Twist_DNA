@@ -7,9 +7,13 @@ configfile: "config.yaml"
 
 samples = pd.read_table(config["samples"], index_col="sample")
 
+wildcard_constraints:
+    unit="[A-Za-z0-9]+",
+    sample="[^.]+",
+
 rule all:
     input:
-        ["alignment/" + sample.Index + "." + type for sample in samples.itertuples() for type in ["bam","bai"]]
+        ["alignment/" + sample.Index + ".REF_chr1." + type for sample in samples.itertuples() for type in ["bam",]]
 
 
 include: "src/Snakemake/workflow/gms_somatic_workflow.smk"
