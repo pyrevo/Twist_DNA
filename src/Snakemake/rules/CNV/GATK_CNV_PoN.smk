@@ -1,5 +1,5 @@
-localrules:
-    createReadCountPanelOfNormals,
+
+configfile: "Twist_DNA_PoN.yaml"
 
 
 rule all:
@@ -26,9 +26,9 @@ rule bedToIntervalList:
 rule preprocessIntervals:
     input:
         ref=config["reference"]["ref"],
-        intervalList="bedFiles/TM_TE-annotated_closest-noduplicates.interval_list",  #targets_C.interval_list interval list picard style
+        intervalList=config["bed"]["intervals"],  #targets_C.interval_list interval list picard style
     output:
-        "bedFiles/TM_TE-annotated_closest-noduplicates.preprocessed.interval_list",
+        "bedFiles/TST500C_manifest.preprocessed.interval_list",
     params:
         binLength=0,  #WGS 1000
         mergingRule="OVERLAPPING_ONLY",
@@ -46,7 +46,7 @@ rule preprocessIntervals:
 rule collectReadCounts:
     input:
         bam=lambda wildcards: config["normal"][wildcards.normal],
-        interval="bedFiles/TM_TE-annotated_closest-noduplicates.preprocessed.interval_list",
+        interval="bedFiles/TST500C_manifest.preprocessed.interval_list",
     output:
         "Normals/GATK4/{normal}.counts.hdf5",  #Should have date in it?
     params:
