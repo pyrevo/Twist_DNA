@@ -1,12 +1,14 @@
 
+
 localrules:
     all,
-    Create_TSO500_yaml,
+    Create_Twist_DNA_yaml,
 
 
 rule all:
     input:
         Twist_DNA_yaml="Twist_DNA.yaml",
+        TC="DATA/Pathological_purity_BMS_validation.txt",
 
 
 rule Create_Twist_DNA_yaml:
@@ -15,6 +17,7 @@ rule Create_Twist_DNA_yaml:
         config="Config/Pipeline/configdefaults201012.yaml",
     output:
         Twist_DNA_yaml="Twist_DNA.yaml",
+        TC="DATA/Pathological_purity_BMS_validation.txt",
     run:
         import glob
         import os
@@ -48,12 +51,16 @@ rule Create_Twist_DNA_yaml:
                 if sample.find(" ") != -1:
                     print("incorrect sample name: " + sample)
                     quit()
-                DNA_sample_list.append([sample, i])
+                TC = lline[11]
+                DNA_sample_list.append([sample, i, TC])
                 i += 1
         outfile = open(output.Twist_DNA_yaml, "a")
+        outfile2 = open(output.TC, "w")
         outfile.write("Runfolder: /projects/wp1/nobackup/ngs/klinik/INBOX/" + run_folder_name + "/\n\n")
         outfile.write("Sample_sheet: " + sample_sheet_name + "\n\n")
         outfile.write("DNA_Samples:\n")
         for sample in DNA_sample_list:
             outfile.write("  " + sample[0] + ": \"S" + str(sample[1]) + "\"\n")
+            outfile2.write(sample[0] + "-ready\t" + sample[2] + "\n")
         outfile.close()
+        outfile2.close()

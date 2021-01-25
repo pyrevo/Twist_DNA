@@ -1,10 +1,18 @@
 ---
 
-GPU:
-    markduplicate: True
+programs:
+    Duplicates: "fgbio" #fgbio / markduplicates
+    Trimming: "Fastp" #Cutadapt / Fastp / None
+    markduplicate: "CPU" #GPU / CPU
 
 reference: #change to hg38
     ref: "../../data/ref_genomes/ref.fasta"
+
+PoN:
+    cnvkit: "DATA/cnvkit_PoN.cnn"
+    ONCOCNV: "DATA/ONCOCNV_PoN.txt"
+    ONCOCNV2: "DATA/ONCOCNV_PoN.Processed.txt"
+    GATK: "DATA/GATK_PoN.hdf5"
 
 bed:
     bedfile: "files/manifest.bed" #Change to twist DNA with HG38 coordiantes
@@ -54,3 +62,5 @@ singularity:
     GPU: "/opt/parabricks/parabricks-release-v3.2.0.sif"
     vep: "/projects/wp2/nobackup/Twist_Myeloid/Containers/ensembl-vep-99.0.simg"
     gridss: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/gridss_2.10.2.simg"
+    cnvkit: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/cnvkit_0.9.7--py_1.sif"
+    ONCOCNV: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/ONCOCNV.simg"
