@@ -16,6 +16,8 @@ elif config["programs"]["Trimming"] == "Fastp":
 else:
 
     include: "../rules/Fastq/move_fastq.smk"
+
+
 include: "../rules/CNV/ONCOCNV.smk"
 include: "../rules/CNV/cnvkit.smk"
 
@@ -39,8 +41,8 @@ else:
     else:
 
         include: "../rules/Alignment/bwa-mem.smk"
-
         include: "../rules/Alignment/MarkDuplicates.smk"
+        
 include: "../rules/SNV/freebayes.smk"
 include: "../rules/SNV/mutect2.smk"
 include: "../rules/SNV/vardict_T.smk"
