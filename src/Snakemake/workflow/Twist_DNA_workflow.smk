@@ -42,7 +42,8 @@ else:
 
         include: "../rules/Alignment/bwa-mem.smk"
         include: "../rules/Alignment/MarkDuplicates.smk"
-        
+
+
 include: "../rules/SNV/freebayes.smk"
 include: "../rules/SNV/mutect2.smk"
 include: "../rules/SNV/vardict_T.smk"
