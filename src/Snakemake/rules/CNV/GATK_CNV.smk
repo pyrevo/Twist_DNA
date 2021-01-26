@@ -5,7 +5,7 @@ rule collectReadCounts:
     input:
         bam="DNA_bam/{sample}-ready.bam",
         bai="DNA_bam/{sample}-ready.bam.bai",
-        interval=config["CNV"]["interval"],
+        interval=config["bed"]["intervals"],
     output:
         "CNV/CNV_GATK/{sample}.counts.hdf5",
     params:
@@ -40,7 +40,7 @@ rule denoiseReadCounts:
 
 rule collectAllelicCounts:
     input:
-        intervalList=config["CNV"]["interval"],
+        intervalList=config["bed"]["intervals"],
         bam="DNA_bam/{sample}-ready.bam",
         bai="DNA_bam/{sample}-ready.bam.bai",
         ref=config["reference"]["ref"],
