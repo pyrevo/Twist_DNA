@@ -1,5 +1,4 @@
 snakemake==5.31.1
 pandas==1.2.0
-#snakefmt==0.2.5
-git+git://github.com/snakemake/snakefmt.git@master#egg=snakefmt
+snakefmt==0.2.6
 pycodestyle==2.6.0
