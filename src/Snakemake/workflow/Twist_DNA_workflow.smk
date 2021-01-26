@@ -20,6 +20,7 @@ else:
 
 include: "../rules/CNV/ONCOCNV.smk"
 include: "../rules/CNV/cnvkit.smk"
+include: "../rules/CNV/GATK_CNV.smk"
 
 
 # include: "../rules/QC/check_coverage.smk"
