@@ -32,6 +32,7 @@ def get_input():
     input_list.append("CNV/CNV_calls/relevant_cnv.txt")
     #input_list.append("CNV_calls/cnv_event.txt")
     #input_list.append(["Results/DNA/" + s + "/CNV/" + s + "-ready.png" for s in config["DNA_Samples"]])
+    input_list.append(["CNV/CNV_GATK/" + s + "_clean.calledCNVs.modeled.png" for s in config["DNA_Samples"]])
 
     '''MSI'''
     input_list.append(["MSI/" + s + ".msi" for s in config["DNA_Samples"]])

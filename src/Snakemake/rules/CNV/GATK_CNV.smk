@@ -1,13 +1,13 @@
-# Todo: PoN, workflow, Twist_DNA.smk, Put approatite files into results, Filtering (only large CNV:s)?
+# Todo: PoN for Twist, Put approatite files into results, Filtering (only large CNV:s)?
 
 
 rule collectReadCounts:
     input:
         bam="DNA_bam/{sample}-ready.bam",
         bai="DNA_bam/{sample}-ready.bam.bai",
-        interval=config["CNV"]["interval"],
+        interval=config["bed"]["GATK_CNV"],
     output:
-        "CNV_GATK/{sample}.counts.hdf5",
+        "CNV/CNV_GATK/{sample}.counts.hdf5",
     params:
         mergingRule="OVERLAPPING_ONLY",
     log:
@@ -21,12 +21,12 @@ rule collectReadCounts:
 
 rule denoiseReadCounts:
     input:
-        hdf5PoN=config["CNV"]["PoN"],
-        hdf5Tumor="CNV_GATK/{sample}.counts.hdf5",
+        hdf5PoN=config["PoN"]["GATK"],
+        hdf5Tumor="CNV/CNV_GATK/{sample}.counts.hdf5",
     output:
-        denoisedCopyRatio="CNV_GATK/{sample}_clean.denoisedCR.tsv",
+        denoisedCopyRatio="CNV/CNV_GATK/{sample}_clean.denoisedCR.tsv",
     params:
-        stdCopyRatio="CNV_GATK/{sample}_clean.standardizedCR.tsv",
+        stdCopyRatio="CNV/CNV_GATK/{sample}_clean.standardizedCR.tsv",
     log:
         "logs/CNV_GATK/{sample}-denoise.log",
     singularity:
@@ -40,12 +40,12 @@ rule denoiseReadCounts:
 
 rule collectAllelicCounts:
     input:
-        intervalList=config["CNV"]["interval"],
+        intervalList=config["bed"]["GATK_CNV"],
         bam="DNA_bam/{sample}-ready.bam",
         bai="DNA_bam/{sample}-ready.bam.bai",
         ref=config["reference"]["ref"],
     output:
-        "CNV_GATK/{sample}_clean.allelicCounts.tsv",
+        "CNV/CNV_GATK/{sample}_clean.allelicCounts.tsv",
     log:
         "logs/CNV_GATK/{sample}_allelicCounts.log",
     singularity:
@@ -58,19 +58,19 @@ rule collectAllelicCounts:
 
 rule modelSegments:
     input:
-        denoisedCopyRatio="CNV_GATK/{sample}_clean.denoisedCR.tsv",
-        allelicCounts="CNV_GATK/{sample}_clean.allelicCounts.tsv",
+        denoisedCopyRatio="CNV/CNV_GATK/{sample}_clean.denoisedCR.tsv",
+        allelicCounts="CNV/CNV_GATK/{sample}_clean.allelicCounts.tsv",
     output:
-        #"CNV_GATK/{sample}_clean.modelBegin.seg",
-        "CNV_GATK/{sample}_clean.modelFinal.seg",
-        "CNV_GATK/{sample}_clean.cr.seg",
-        #"CNV_GATK/{sample}_clean.modelBegin.af.param",
-        #"CNV_GATK/{sample}_clean.modelBegin.cr.param",
-        #"CNV_GATK/{sample}_clean.modelFinal.af.param",
-        #"CNV_GATK/{sample}_clean.modelFinal.cr.param",
-        "CNV_GATK/{sample}_clean.hets.tsv",
+        #"CNV/CNV_GATK/{sample}_clean.modelBegin.seg",
+        #"CNV/CNV_GATK/{sample}_clean.modelBegin.af.param",
+        #"CNV/CNV_GATK/{sample}_clean.modelBegin.cr.param",
+        #"CNV/CNV_GATK/{sample}_clean.modelFinal.af.param",
+        #"CNV/CNV_GATK/{sample}_clean.modelFinal.cr.param",
+        "CNV/CNV_GATK/{sample}_clean.modelFinal.seg",
+        "CNV/CNV_GATK/{sample}_clean.cr.seg",
+        "CNV/CNV_GATK/{sample}_clean.hets.tsv",
     params:
-        outDir="CNV_GATK/",
+        outDir="CNV/CNV_GATK/",
         outPrefix="{sample}_clean",
     log:
         "logs/CNV_GATK/{sample}_modelSegments.log",
@@ -85,9 +85,9 @@ rule modelSegments:
 
 rule callCopyRatioSegments:
     input:
-        "CNV_GATK/{sample}_clean.cr.seg",
+        "CNV/CNV_GATK/{sample}_clean.cr.seg",
     output:
-        "CNV_GATK/{sample}_clean.calledCNVs.seg",
+        "CNV/CNV_GATK/{sample}_clean.calledCNVs.seg",
     log:
         "logs/CNV_GATK/{sample}_calledCRSegments.log",
     singularity:
@@ -98,14 +98,14 @@ rule callCopyRatioSegments:
 
 rule plotModeledSegments:
     input:
-        denoisedCopyRatio="CNV_GATK/{sample}_clean.denoisedCR.tsv",
-        allelicCounts="CNV_GATK/{sample}_clean.hets.tsv",
-        segments="CNV_GATK/{sample}_clean.modelFinal.seg",
+        denoisedCopyRatio="CNV/CNV_GATK/{sample}_clean.denoisedCR.tsv",
+        allelicCounts="CNV/CNV_GATK/{sample}_clean.hets.tsv",
+        segments="CNV/CNV_GATK/{sample}_clean.modelFinal.seg",
         refDict=config["reference"]["ref"][:-5] + "dict",
     output:
-        "CNV_GATK/{sample}_clean.calledCNVs.modeled.png",
+        "CNV/CNV_GATK/{sample}_clean.calledCNVs.modeled.png",
     params:
-        outDir="CNV_GATK/",
+        outDir="CNV/CNV_GATK/",
         outPrefix="{sample}_clean.calledCNVs",
         pointSize=2.0,
     log:
