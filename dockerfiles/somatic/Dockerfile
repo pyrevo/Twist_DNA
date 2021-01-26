@@ -22,10 +22,10 @@ RUN /venv/bin/conda-unpack
 # The runtime-stage image; we can use Debian as the
 # base image since the Conda env also includes Python
 # for us.
-FROM debian:buster AS runtime
+FROM debian:buster-slim AS runtime
 
 ################## METADATA ######################
-LABEL bwa="0.7.17" samtools="1.9" python="3.8"
+LABEL bwa="0.7.17" samtools="1.9"
 ################## MAINTAINER ######################
 MAINTAINER Patrik Smeds <patrik.smeds@scilifelab.uu.se>
 
