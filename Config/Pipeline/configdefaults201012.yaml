@@ -20,6 +20,7 @@ configfiles:
 bed:
     bedfile: "DATA/TST500C_manifest.bed" #Change to twist DNA with HG38 coordiantes
     intervals: "DATA/TST500C_manifest.interval_list"
+    GATK_CNV: "DATA/TST500C_manifest.preprocessed.interval_list"
     #exonbed: "DATA/Twist_RNA_pool1_2_annotated.bed"
 
 singularity:
