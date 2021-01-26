@@ -4,7 +4,7 @@
 __author__ = "Jonas Almlöf, Patrik Smeds"
 __copyright__ = "Copyright 2021, Patrik Smeds, Jonas Almlöf"
 __email__ = "jonas.almlöf@scilifelab.uu.se, patrik.smeds@scilifelab.uu.se"
-__license__ = "MIT"
+__license__ = "GPL3"
 
 """
  Trims pe reads using fastq.
