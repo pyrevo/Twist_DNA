@@ -1,4 +1,4 @@
-# Todo: PoN, workflow, Twist_DNA.smk, Put approatite files into results, Filtering (only large CNV:s)?
+# Todo: PoN for Twist, Put approatite files into results, Filtering (only large CNV:s)?
 
 
 rule collectReadCounts:
@@ -21,7 +21,7 @@ rule collectReadCounts:
 
 rule denoiseReadCounts:
     input:
-        hdf5PoN=config["CNV"]["PoN"],
+        hdf5PoN=config["PoN"]["GATK"],
         hdf5Tumor="CNV/CNV_GATK/{sample}.counts.hdf5",
     output:
         denoisedCopyRatio="CNV/CNV_GATK/{sample}_clean.denoisedCR.tsv",
