@@ -10,10 +10,11 @@ __license__ = "GPL3"
  Rule that performs alignment of reads using bwa mem.
  Input, output and config
  ------------------------------------------------------------------------------
- Input variable: _bwa_alignment_input: optional
-     Default:
-        "fastq/{sample}.fq1.fastq.gz",
-        "fastq/{sample}.fq2.fastq.gz"
+ Input variable: 
+    bwa_alignment_input: optional
+        Default:
+            "fastq/{sample}.fq1.fastq.gz",
+            "fastq/{sample}.fq2.fastq.gz"
  Output variable:  
     bwa_mem_output: optional
         Default:
@@ -23,8 +24,8 @@ __license__ = "GPL3"
             "alignment/{sample}.bai"
  Config dict keys: values
     config["reference"]["ref"]': required
-    config["singularity"]["bwa"]': required
-    config["singularity"]["samtools"]: required
+    config["singularity"]["bwa"]' or config["singularity"]["default"]'  : required 
+    config["singularity"]["samtools"] or config["singularity"]["default"]': required
  Overriding input and output
  ------------------------------------------------------------------------------
  Required wildcards:

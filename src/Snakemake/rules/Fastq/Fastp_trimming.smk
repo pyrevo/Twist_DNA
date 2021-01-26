@@ -42,7 +42,10 @@ __license__ = "GPL3"
                        ]
  Override output format
  Ex
-   fastp_trimming_output="alignment/{sample}.cutadapt.bam"
+   fastp_trimming_output=[
+                       "fastq/trimmed/{sample}.R1.fastq.gz",
+                       "fastq/trimmed/{sample}.R2.fastq.gz"
+                       ]
 """
 
 _fastp_trimming_input = ["fastq_temp/DNA/{sample}_R1.fastq.gz", "fastq_temp/DNA/{sample}_R2.fastq.gz"]
