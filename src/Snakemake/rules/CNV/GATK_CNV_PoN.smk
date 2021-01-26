@@ -1,4 +1,5 @@
 
+#snakemake -p -j 64 --drmaa "-A wp1 -p core -n {cluster.n} -t {cluster.time}"  -s ./src/Snakemake/rules/CNV/GATK_CNV_PoN.smk --use-singularity --singularity-args "--bind /data --bind /projects --bind /scratch " --cluster-config Config/Slurm/cluster.json
 configfile: "Twist_DNA_PoN.yaml"
 
 
