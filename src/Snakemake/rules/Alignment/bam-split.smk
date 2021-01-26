@@ -16,8 +16,8 @@ __license__ = "MIT"
             "alignment/{sample}.bam"
  Output variable:   
     bwa_split_output: optional
-        Default: where REF_ will be converted to REF_chr1, ... REF_chrX if chromosome 1 is named chr1 in the fai file
-            ["alignment/{sample}.REF_.bam", ... , "alignment/{sample}.REF_.bam"]    
+        Default: where CHR_REFERENCE will be converted to chr1, ... chrX if chromosome 1 is named chr1 in the fai file
+            ["alignment/{sample}.chr1.bam", ... , "alignment/{sample}.chrXX.bam"]    
  Config dict keys: values
     config["reference"]["ref"]': required for default output, used to locate fai-file
     config["singularity"]["bamtools"]' or config["singularity"]["default"]'  : required 
@@ -48,7 +48,7 @@ try:
 except:
     pass
 
-_bam_split_output = "alignment/{sample}.REF_.bam"
+_bam_split_output = "alignment/{sample}.CHR_REFERENCE.bam"
 try:
     _bam_split_output = bam_split_output
 except:
@@ -59,8 +59,10 @@ rule bam_split:
     input:
         _bam_split_input,
     output:
-        [_bam_split_output.replace("REF_", "REF_" + chr) for chr in extract_chr(config['reference']['ref'] + ".fai")],
+        [_bam_split_output.replace("CHR_REFERENCE", chr) for chr in extract_chr(config['reference']['ref'] + ".fai")],
+    params:
+        extra="-reference -refPrefix ''"
     singularity:
         config["singularity"].get("bamtools", config["singularity"].get("default", ""))
     wrapper:
-        "file:///projects/wp4/nobackup/workspace/snakemake-wrappers/bio/bamtools/split"
+        "file:///projects/wp4/nobackup/workspace/snakemake-wrappers-fork/bio/bamtools/split"
