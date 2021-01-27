@@ -19,9 +19,6 @@ __license__ = "GPL3"
     bwa_mem_output: optional
         Default:
             "alignment/{sample}.bam"
-    bwa_mem_output_bai:
-        Default:
-            "alignment/{sample}.bai"
  Config dict keys: values
     config["reference"]["ref"]': required
     config["singularity"]["bwa"]' or config["singularity"]["default"]'  : required 
@@ -60,12 +57,6 @@ try:
 except:
     pass
 
-_bwa_mem_output_bai = "alignment/{sample}.bai"
-try:
-    _bwa_mem_output_bai = bwa_mem_output_bai
-except:
-    pass
-
 
 rule bwa_mem:
     input:
@@ -93,7 +84,7 @@ rule samtools_index:
     input:
         _bwa_mem_output,
     output:
-        _bwa_mem_output_bai,
+        _bwa_mem_output + ".bai",
     log:
         "logs/map/samtools_index/{sample}.log",
     benchmark:

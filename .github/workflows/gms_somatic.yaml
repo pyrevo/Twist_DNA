@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: snakemake dry run
+name: GMS Somatic
 
 # Controls when the action will run.
 on:
@@ -20,7 +20,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   dry_run: # health check job for testing and code formatting check
-    name: snakemake dry run
+    name: snakemake dry run gms somatic
     runs-on: ubuntu-latest # os for running the job
     strategy:
       fail-fast: false
@@ -44,7 +44,3 @@ jobs:
         run: python --version
       - name: Install requirements # install application requirements
         run: pip install -r requirements.txt
-      - name: Dry run Twist workflow
-        run: snakemake -n -s Twist_DNA.smk --directory tests/workflow_dry_run/twist_dna/
-      - name: Dry run gms somatic workflow
-        run: snakemake -n -s gms_somatic.smk --directory tests/workflow_dry_run/gms_somatic/

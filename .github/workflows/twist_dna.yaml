@@ -1,0 +1,66 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Twist dna
+
+# Controls when the action will run.
+on:
+  # Triggers the workflow on push or pull request events but only for the dev branch
+  push:
+    branches:
+     - master
+     - develop
+  pull_request:
+    branches:
+      - master
+      - develop
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  dry_run: # health check job for testing and code formatting check
+    name: snakemake dry run
+    runs-on: ubuntu-latest # os for running the job
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ 3.8 ]
+    steps:
+      - name: Checkout code # checking our the code at current commit that triggers the workflow
+        uses: actions/checkout@v2
+      - name: Cache dependency # caching dependency will make our build faster.
+        uses: actions/cache@v2 # for more info checkout pip section documentation at https://github.com/actions/cache
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+            python-version: ${{ matrix.python-version }}
+      - name: Check Python version # checking the python version to see if 3.x is installed.
+        run: python --version
+      - name: Install requirements # install application requirements
+        run: pip install -r requirements.txt
+      # Test fgbio option
+      - run: cp tests/workflow_dry_run/twist_dna/configs/Twist_DNA_dup_fgbio.yaml tests/workflow_dry_run/twist_dna/Twist_DNA.yaml
+      - name: Dry run Twist workflow fgbio 
+        run: snakemake -n -s Twist_DNA.smk --directory tests/workflow_dry_run/twist_dna/
+      # Test mark duplicates option
+      - run: cp tests/workflow_dry_run/twist_dna/configs/Twist_DNA_dup_markduplicates.yaml tests/workflow_dry_run/twist_dna/Twist_DNA.yaml
+      - name: Dry run Twist workflow markduplicates
+        run: snakemake -n -s Twist_DNA.smk --directory tests/workflow_dry_run/twist_dna/
+      # Test GPU option
+      - run: cp tests/workflow_dry_run/twist_dna/configs/Twist_DNA_gpu.yaml tests/workflow_dry_run/twist_dna/Twist_DNA.yaml
+      - name: Dry run Twist workflow gpu
+        run: snakemake -n -s Twist_DNA.smk --directory tests/workflow_dry_run/twist_dna/
+      # Test cutadapt option
+      - run: cp tests/workflow_dry_run/twist_dna/configs/Twist_DNA_cutadapt.yaml tests/workflow_dry_run/twist_dna/Twist_DNA.yaml
+      - name: Dry run Twist workflow cutadapt
+        run: snakemake -n -s Twist_DNA.smk --directory tests/workflow_dry_run/twist_dna/
+      # Test fastp option
+      - run: cp tests/workflow_dry_run/twist_dna/configs/Twist_DNA_fastp.yaml tests/workflow_dry_run/twist_dna/Twist_DNA.yaml
+      - name: Dry run Twist workflow fastp
+        run: snakemake -n -s Twist_DNA.smk --directory tests/workflow_dry_run/twist_dna/
