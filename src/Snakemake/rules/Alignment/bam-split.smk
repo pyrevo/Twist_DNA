@@ -61,7 +61,7 @@ rule bam_split:
     output:
         [_bam_split_output.replace("CHR_REFERENCE", chr) for chr in extract_chr(config['reference']['ref'] + ".fai")],
     params:
-        extra="-reference -refPrefix ''"
+        extra="-reference -refPrefix ''",
     singularity:
         config["singularity"].get("bamtools", config["singularity"].get("default", ""))
     wrapper:
