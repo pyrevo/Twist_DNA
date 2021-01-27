@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: snakemake dry run gms somatic
+name: GMS Somatic
 
 # Controls when the action will run.
 on:
