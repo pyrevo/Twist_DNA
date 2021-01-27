@@ -44,7 +44,23 @@ jobs:
         run: python --version
       - name: Install requirements # install application requirements
         run: pip install -r requirements.txt
-      - name: Dry run Twist workflow
+      # Test fgbio option
+      - run: cp tests/workflow_dry_run/twist_dna/Twist_DNA_dup_fgbio.yaml tests/workflow_dry_run/twist_dna/Twist_DNA.yaml
+      - name: Dry run Twist workflow fgbio 
         run: snakemake -n -s Twist_DNA.smk --directory tests/workflow_dry_run/twist_dna/
-      - name: Dry run gms somatic workflow
-        run: snakemake -n -s gms_somatic.smk --directory tests/workflow_dry_run/gms_somatic/
+      # Test mark duplicates option
+      - run: cp tests/workflow_dry_run/twist_dna/Twist_DNA_dup_markduplicates.yaml tests/workflow_dry_run/twist_dna/Twist_DNA.yaml
+      - name: Dry run Twist workflow markduplicates
+        run: snakemake -n -s Twist_DNA.smk --directory tests/workflow_dry_run/twist_dna/
+      # Test GPU option
+      - run: cp tests/workflow_dry_run/twist_dna/Twist_DNA_gpu.yaml tests/workflow_dry_run/twist_dna/Twist_DNA.yaml
+      - name: Dry run Twist workflow gpu
+        run: snakemake -n -s Twist_DNA.smk --directory tests/workflow_dry_run/twist_dna/
+      # Test cutadapt option
+      - run: cp tests/workflow_dry_run/twist_dna/Twist_DNA_cutadapt.yaml tests/workflow_dry_run/twist_dna/Twist_DNA.yaml
+      - name: Dry run Twist workflow cutadapt
+        run: snakemake -n -s Twist_DNA.smk --directory tests/workflow_dry_run/twist_dna/
+      # Test fastp option
+      - run: cp tests/workflow_dry_run/twist_dna/Twist_DNA_fastp.yaml tests/workflow_dry_run/twist_dna/Twist_DNA.yaml
+      - name: Dry run Twist workflow fastp
+        run: snakemake -n -s Twist_DNA.smk --directory tests/workflow_dry_run/twist_dna/
