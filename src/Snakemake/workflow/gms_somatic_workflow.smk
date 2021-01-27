@@ -11,3 +11,4 @@ fastp_trimming_input = lambda wildcards: fastq_files(wildcards)
 
 include: "../rules/Fastq/Fastp_trimming.smk"
 include: "../rules/Alignment/bwa-mem.smk"
+include: "../rules/Alignment/bam-split.smk"
