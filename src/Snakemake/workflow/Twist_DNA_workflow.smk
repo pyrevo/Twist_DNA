@@ -41,6 +41,7 @@ else:
 
     else:
 
+        bwa_mem_output="bam/{sample}-sort.bam"
         include: "../rules/Alignment/bwa-mem.smk"
         include: "../rules/Alignment/MarkDuplicates.smk"
 
