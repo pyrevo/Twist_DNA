@@ -52,7 +52,7 @@ rule Build_normal_reference:
         "-m hybrid "
         "--output-reference {output.PoN} "
         "-t {input.bed1} "
-        "-f {input.reference} "
+        "-f {input.ref} "
         "-a {input.bed2} "
         "-g {input.mappability} "
         "-p {threads}"
