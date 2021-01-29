@@ -81,5 +81,5 @@ rule CNV_event:
         "logs/CNV_ONCOCNV/CNV_event.log",
     singularity:
         config["singularity"]["python"]
-    shell:
-        "(python src/Snakemake/scripts/get_cnv_ONCOCNV.py {input.calls} {output.cnv_event}) &> {log}"
+    script:
+        "../../../scripts/python/get_cnv_ONCOCNV.py"
