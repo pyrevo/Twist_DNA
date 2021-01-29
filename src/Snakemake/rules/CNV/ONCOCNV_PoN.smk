@@ -4,8 +4,8 @@ configfile: "Twist_DNA.yaml"
 
 rule all:
     input:
-        PoN1="DATA/ONCOCNV_PoN.txt",
-        PoN2="DATA/ONCOCNV_PoN.Processed.txt",
+        PoN1="DATA/ONCOCNV_Twist_PoN.txt",
+        PoN2="DATA/ONCOCNV_Twist_PoN.Processed.txt",
 
 
 rule fix_bed_file:
@@ -41,7 +41,7 @@ rule Normal_levels:
         #bams=["DNA_bam/" + s + "-ready.bam" for s in config["DNA_Samples"]],
         bed="CNV/bed/ONCOCNV.bed",
     output:
-        stats="DATA/ONCOCNV_PoN.txt",
+        stats="DATA/ONCOCNV_Twist_PoN.txt",
     singularity:
         config["singularity"]["ONCOCNV"]
     shell:
@@ -61,10 +61,10 @@ rule Normal_levels:
 
 rule Controls_calls:
     input:
-        stats="DATA/ONCOCNV_PoN.txt",
+        stats="DATA/ONCOCNV_Twist_PoN.txt",
         GC="CNV/ONCOCNV_stats/target.GC.txt",
     output:
-        stats="DATA/CONCOCNV_PoN.Processed.txt",
+        stats="DATA/CONCOCNV_Twist_PoN.Processed.txt",
     shell:
         "cat ONCOCNV/processControl.R | R --slave "
         "--args {input.stats} {output.stats} {input.GC}"

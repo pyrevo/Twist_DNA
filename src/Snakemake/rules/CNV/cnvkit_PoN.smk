@@ -4,19 +4,19 @@ configfile: "Twist_DNA.yaml"
 
 rule all:
     input:
-        PoN="DATA/cnvkit_PoN.cnn",
+        PoN="DATA/cnvkit_Twist_PoN.cnn",
 
 
 rule Build_normal_reference:
     input:
-        bams=expand("{normal_sample}", normal_sample=config["Normal_samples"]),
+        bams=expand("{normal_sample}", normal_sample=config["DNA_Samples"]),
         #bams=["DNA_bam/" + s + "-ready.bam" for s in config["DNA_Samples"]],
         bed1="bed/manifest.target.bed",
         bed2="bed/manifest.antitarget.bed",
         ref=config["reference"]["ref"],
         mappability="DATA/access-5k-mappable.hg19.bed",
     output:
-        PoN="DATA/cnvkit_PoN.cnn",
+        PoN="DATA/cnvkit_Twist_PoN.cnn",
     threads: 4
     singularity:
         config["singularity"]["cnvkit"]

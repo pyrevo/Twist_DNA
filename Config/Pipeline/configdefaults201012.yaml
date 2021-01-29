@@ -18,8 +18,10 @@ configfiles:
     vep: "/data/ref_genomes/VEP/"
 
 bed:
-    bedfile: "DATA/TST500C_manifest.bed" #Change to twist DNA with HG38 coordiantes
-    intervals: "DATA/TST500C_manifest.interval_list"
+    #bedfile: "DATA/TST500C_manifest.bed" #Change to twist DNA with HG38 coordiantes
+    bedfile: "DATA/pool1_pool2_nochr_3c.annotated.bed" #Change to HG38 coordiantes
+    #intervals: "DATA/TST500C_manifest.interval_list"
+    intervals: "DATA/pool1_pool2_nochr_3c.annotated.interval_list"
     GATK_CNV: "DATA/TST500C_manifest.preprocessed.interval_list"
     #exonbed: "DATA/Twist_RNA_pool1_2_annotated.bed"
 

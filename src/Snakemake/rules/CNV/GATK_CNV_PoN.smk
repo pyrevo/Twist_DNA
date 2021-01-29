@@ -7,7 +7,7 @@ configfile: "Twist_DNA_PoN.yaml"
 rule all:
     input:
         "Normals/GATK4/readCountPoN.hdf5",
-        expand("Normals/GATK4/{normal}.counts.hdf5", normal=config["normal"]),
+        expand("Normals/GATK4/{normal}.counts.hdf5", normal=config["DNA_Samples"]),
 
 
 ## Create interval list and preprocess interval list, only needed when updating bedfile
