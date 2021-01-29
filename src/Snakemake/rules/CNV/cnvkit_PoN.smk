@@ -9,8 +9,8 @@ rule all:
 
 rule Build_normal_reference:
     input:
-        bams=expand("{normal_sample}", normal_sample=config["DNA_Samples"]),
-        #bams=["DNA_bam/" + s + "-ready.bam" for s in config["DNA_Samples"]],
+        #bams=expand("{normal_sample}", normal_sample=config["DNA_Samples"]),
+        bams=["DNA_bam/" + s + "-ready.bam" for s in config["DNA_Samples"]],
         bed1="bed/manifest.target.bed",
         bed2="bed/manifest.antitarget.bed",
         ref=config["reference"]["ref"],
