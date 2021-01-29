@@ -11,18 +11,18 @@ rule all:
 
 
 ## Create interval list and preprocess interval list, only needed when updating bedfile
-rule bedToIntervalList:
-    input:
-        bed=config["bed"]["bedfile"],  ## Annotated clostest bedfile? Really needed?
-        refDict=config["reference"]["ref"],  ##Have to be a .dict in same folder as .fasta
-    output:
-        "bedFiles/TM_TE-annotated_closest-noduplicates.interval_list",  #Should be based on bedfile...
-    log:
-        "logs/Normals/TM_TE-annotated_closest-noduplicates.log",
-    singularity:
-        config["singularity"]["gatk4"]
-    shell:
-        "(gatk BedToIntervalList  -I {input.bed} -O {output} -SD {input.refDict} ) &> {log} "
+# rule bedToIntervalList:
+#     input:
+#         bed=config["bed"]["bedfile"],  ## Annotated clostest bedfile? Really needed?
+#         refDict=config["reference"]["ref"],  ##Have to be a .dict in same folder as .fasta
+#     output:
+#         "bedFiles/TM_TE-annotated_closest-noduplicates.interval_list",  #Should be based on bedfile...
+#     log:
+#         "logs/Normals/TM_TE-annotated_closest-noduplicates.log",
+#     singularity:
+#         config["singularity"]["gatk4"]
+#     shell:
+#         "(gatk BedToIntervalList  -I {input.bed} -O {output} -SD {input.refDict} ) &> {log} "
 
 
 rule preprocessIntervals:
@@ -30,7 +30,7 @@ rule preprocessIntervals:
         ref=config["reference"]["ref"],
         intervalList=config["bed"]["intervals"],  #targets_C.interval_list interval list picard style
     output:
-        "bedFiles/TST500C_manifest.preprocessed.interval_list",
+        "bedFiles/pool1_pool2_nochr_3c.annotated.preprocessed.interval_list",
     params:
         binLength=0,  #WGS 1000
         mergingRule="OVERLAPPING_ONLY",
@@ -47,8 +47,9 @@ rule preprocessIntervals:
 # From here need to be redone when added new samples
 rule collectReadCounts:
     input:
-        bam=lambda wildcards: config["normal"][wildcards.normal],
-        interval="bedFiles/TST500C_manifest.preprocessed.interval_list",
+        #bam=lambda wildcards: config["normal"][wildcards.normal],
+        bams="DNA_bam/{normal}-ready.bam",
+        interval="bedFiles/pool1_pool2_nochr_3c.annotated.preprocessed.interval_list",
     output:
         "Normals/GATK4/{normal}.counts.hdf5",  #Should have date in it?
     params:
