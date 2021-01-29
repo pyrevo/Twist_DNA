@@ -37,8 +37,8 @@ rule Build_normal_reference:
     input:
         #bams=expand("{normal_sample}", normal_sample=config["DNA_Samples"]),
         bams=["DNA_bam/" + s + "-ready.bam" for s in config["DNA_Samples"]],
-        bed1="CNV/bed/manifest.target.bed",
-        bed2="CNV/bed/manifest.antitarget.bed",
+        bed1="CNV/bed/cnvkit_manifest.target.bed",
+        bed2="CNV/bed/cnvkit_manifest.antitarget.bed",
         ref=config["reference"]["ref"],
         mappability="DATA/access-5k-mappable.hg19.bed",
     output:
