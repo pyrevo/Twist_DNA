@@ -20,7 +20,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   dry_run: # health check job for testing and code formatting check
-    name: snakemake dry run
+    name: snakemake dry run twist dna
     runs-on: ubuntu-latest # os for running the job
     strategy:
       fail-fast: false
