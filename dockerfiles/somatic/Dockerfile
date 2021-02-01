@@ -28,7 +28,8 @@ FROM debian:buster-slim AS runtime
 
 ################## METADATA ######################
 
-LABEL bwa="0.7.17" samtools="1.9" python="3.8" bamtools="2.5.1" bcftools="1.11" gatk4="4.1.9.0"
+LABEL bwa="0.7.17" samtools="1.9" python="3.8" bamtools="2.5.1" bcftools="1.11"
+LABEL vardict="1.8.2" gatk4="4.1.9.0"
 LABEL snakemake-wrapper-utils="0.1.3" pysam="0.16.0" pandas="1.2.0"
 ################## MAINTAINER ######################
 MAINTAINER Patrik Smeds <patrik.smeds@scilifelab.uu.se>
