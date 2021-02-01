@@ -67,10 +67,8 @@ rule bam_split:
             for chr in utils.extract_chr(config['reference']['ref'] + ".fai")
         ],
     params:
-        extra=lambda wildcards: "-reference -refPrefix '' -stub " + utils.extract_stub(
-            _bam_split_output, _split_separator
-        ),
+        extra="-reference -refPrefix '' -stub " + utils.extract_stub(_bam_split_output, "." + _split_separator),
     singularity:
         config["singularity"].get("bamtools", config["singularity"].get("default", ""))
     wrapper:
-        "file:///projects/wp4/nobackup/workspace/snakemake-wrappers-fork/bio/bamtools/split"
+        "master/bio/bamtools/split"

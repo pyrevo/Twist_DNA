@@ -6,7 +6,7 @@ def extract_chr(file):
 
 
 def extract_stub(path, sep):
-    parts = path[0].split(sep)
-    if len(parts):
-        raise Exception("Unable to split path: " + path)
+    parts = path.split(sep)
+    if len(parts) <= 1:
+        raise Exception("Unable to split path: " + path + " using separator " + sep)
     return parts[0]

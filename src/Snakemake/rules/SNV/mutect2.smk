@@ -73,6 +73,7 @@ except:
     pass
 
 
+# TODO Maybe add sample name, to handle cases when multiple designs are run in the same analysis?
 rule split_bedfile:
     input:
         config["bed"]["bedfile"],
@@ -81,7 +82,7 @@ rule split_bedfile:
     log:
         "logs/variantCalling/split_bed.{chr}.log",
     shell:
-        "(grep -w {wildcards.chr} {input}  > {output}) &> {log}"
+        "awk '{{if(/^{wildcards.chr}\t/) print($0)}}' {input}  > {output} &> {log}"
 
 
 rule mutect2:
@@ -97,7 +98,7 @@ rule mutect2:
         vcf=temp("mutect2/temp/{sample}.{chr}.mutect2.unfilt.vcf.gz"),
         vcf_tbi=temp("mutect2/temp/{sample}.{chr}.mutect2.unfilt.vcf.gz.tbi"),
     params:
-        extra=lambda wildcards: "--bam-output mutect2/bam/" + wildcards.sample + "." + wildcards.chr + ".indel.bam",
+        extra="",
     threads: 1
     log:
         "logs/variantCalling/mutect2_{sample}.{chr}.log",
@@ -105,7 +106,7 @@ rule mutect2:
         config["singularity"].get("mutect2", config["singularity"].get("default", ""))
     wrapper:
         # "(gatk --java-options '-Xmx4g' Mutect2 -R {input.fasta} -I {input.bam} -L {input.bed} --bam-output {output.bam} -O {output.vcf}) &> {log}"
-        "0.70.0/bio/gatk/mutect"
+        "master/bio/gatk/mutect"
 
 
 rule filterMutect2:
