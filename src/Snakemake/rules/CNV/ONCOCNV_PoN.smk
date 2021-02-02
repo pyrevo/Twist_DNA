@@ -58,7 +58,7 @@ rule Normal_levels:
     output:
         stats="DATA/ONCOCNV_Twist_PoN.txt",
     params:
-        input_bams = input_string
+        input_bams=input_string,
     singularity:
         config["singularity"]["ONCOCNV"]
     shell:
