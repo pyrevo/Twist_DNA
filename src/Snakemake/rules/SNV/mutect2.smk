@@ -105,7 +105,6 @@ rule mutect2:
     singularity:
         config["singularity"].get("mutect2", config["singularity"].get("default", ""))
     wrapper:
-        # "(gatk --java-options '-Xmx4g' Mutect2 -R {input.fasta} -I {input.bam} -L {input.bed} --bam-output {output.bam} -O {output.vcf}) &> {log}"
         "master/bio/gatk/mutect"
 
 
