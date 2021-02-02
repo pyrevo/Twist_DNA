@@ -9,15 +9,15 @@ reference: #change to hg38
     ref: "../../data/ref_genomes/ref.fasta"
 
 PoN:
-    cnvkit: "DATA/cnvkit_PoN.cnn"
-    ONCOCNV: "DATA/ONCOCNV_PoN.txt"
-    ONCOCNV2: "DATA/ONCOCNV_PoN.Processed.txt"
-    GATK: "DATA/GATK_PoN.hdf5"
+    cnvkit: "DATA/cnvkit_Twist_PoN.cnn"
+    ONCOCNV: "DATA/ONCOCNV_Twist_PoN.txt"
+    ONCOCNV2: "DATA/ONCOCNV_Twist_PoN.Processed.txt"
+    GATK: "DATA/GATK_Twist_PoN.hdf5"
 
 bed:
     bedfile: "files/manifest.bed" #Change to twist DNA with HG38 coordiantes
     intervals: "files/manifest.interval_list"
-    GATK_CNV: "DATA/TST500C_manifest.preprocessed.interval_list"
+    GATK_CNV: "files/manifest.preprocessed.interval_list"
     #exonbed: "DATA/Twist_RNA_pool1_2_annotated.bed"
 
 configfiles:

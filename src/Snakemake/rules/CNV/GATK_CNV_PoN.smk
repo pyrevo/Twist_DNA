@@ -1,7 +1,7 @@
 # snakemake -p -j 64 --drmaa "-A wp1 -p core -n {cluster.n} -t {cluster.time}"  -s ./src/Snakemake/rules/CNV/GATK_CNV_PoN.smk --use-singularity --singularity-args "--bind /data --bind /projects --bind /scratch " --cluster-config Config/Slurm/cluster.json
 
 
-configfile: "Twist_DNA_PoN.yaml"
+configfile: "Twist_DNA.yaml"
 
 
 rule all:
@@ -48,7 +48,7 @@ rule preprocessIntervals:
 rule collectReadCounts:
     input:
         #bam=lambda wildcards: config["normal"][wildcards.normal],
-        bams="DNA_bam/{normal}-ready.bam",
+        bam="DNA_bam/{normal}-ready.bam",
         interval="bedFiles/pool1_pool2_nochr_3c.annotated.preprocessed.interval_list",
     output:
         "Normals/GATK4/{normal}.counts.hdf5",  #Should have date in it?
@@ -65,7 +65,7 @@ rule collectReadCounts:
 
 rule createReadCountPanelOfNormals:
     input:
-        expand("Normals/GATK4/{normal}.counts.hdf5", normal=config["normal"]),
+        expand("Normals/GATK4/{normal}.counts.hdf5", normal=config["DNA_Samples"]),
     output:
         "Normals/GATK4/readCountPoN.hdf5",
     params:

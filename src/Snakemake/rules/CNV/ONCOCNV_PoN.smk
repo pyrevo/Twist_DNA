@@ -24,7 +24,7 @@ rule fix_bed_file:
 
 rule Target_bed:
     input:
-        PoN=config["PoN"]["cnvkit"],
+        PoN="DATA/ONCOCNV_Twist_PoN.txt",
     output:
         bed="CNV/bed/ONCOCNV_target.bed",
     log:
@@ -82,6 +82,8 @@ rule Controls_calls:
         GC="CNV/ONCOCNV_stats/target.GC.txt",
     output:
         stats="DATA/ONCOCNV_Twist_PoN.Processed.txt",
+    singularity:
+        config["singularity"]["ONCOCNV"]
     shell:
         "cat ONCOCNV/processControl.R | R --slave "
         "--args {input.stats} {output.stats} {input.GC}"

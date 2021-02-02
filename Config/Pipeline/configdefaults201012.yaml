@@ -8,21 +8,19 @@ reference: #change to hg38
     ref: "/data/ref_genomes/hg19/bwa/BWA_0.7.10_refseq/hg19.with.mt.fasta"
 
 PoN:
-    cnvkit: "DATA/cnvkit_PoN.cnn"
-    ONCOCNV: "DATA/ONCOCNV_PoN.txt"
-    ONCOCNV2: "DATA/ONCOCNV_PoN.Processed.txt"
-    GATK: "DATA/GATK_PoN.hdf5"
+    cnvkit: "DATA/cnvkit_Twist_PoN.cnn"
+    ONCOCNV: "DATA/ONCOCNV_Twist_PoN.txt"
+    ONCOCNV2: "DATA/ONCOCNV_Twist_PoN.Processed.txt"
+    GATK: "DATA/GATK_Twist_PoN.hdf5"
 
 configfiles:
     multiqc: "Config/Pipeline/multiqc_config.yaml"
     vep: "/data/ref_genomes/VEP/"
 
 bed:
-    #bedfile: "DATA/TST500C_manifest.bed" #Change to twist DNA with HG38 coordiantes
     bedfile: "DATA/pool1_pool2_nochr_3c.annotated.bed" #Change to HG38 coordiantes
-    #intervals: "DATA/TST500C_manifest.interval_list"
     intervals: "DATA/pool1_pool2_nochr_3c.annotated.interval_list"
-    GATK_CNV: "DATA/TST500C_manifest.preprocessed.interval_list"
+    GATK_CNV: "DATA/pool1_pool2_nochr_3c.annotated.preprocessed.interval_list"
     #exonbed: "DATA/Twist_RNA_pool1_2_annotated.bed"
 
 singularity:

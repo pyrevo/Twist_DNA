@@ -30,7 +30,7 @@ rule Tumor_levels:
 
 rule Target_bed:
     input:
-        PoN=config["PoN"]["cnvkit"],
+        PoN=config["PoN"]["ONCOCNV"],
     output:
         bed="CNV/bed/ONCOCNV_target.bed",
     log:
