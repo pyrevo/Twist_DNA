@@ -59,7 +59,7 @@ rule freebayes:
         ref=config["reference"]["ref"],
         regions="mutect2/bedfile.{chr}.bed",
     output:
-        "freebayes/{sample}.{chr}.unsort.vcf",
+        temp("freebayes/temp/{sample}.{chr}.unsort.vcf"),
     log:
         "logs/variantCalling/freebayes/{sample}.{chr}.log",
     threads: 1
@@ -73,9 +73,9 @@ rule freebayes:
 
 rule filter_freebayes:
     input:
-        "freebayes/{sample}.{chr}.unsort.vcf",
+        "freebayes/temp/{sample}.{chr}.unsort.vcf",
     output:
-        temp("freebayes/{sample}.{chr}.unsort.filtered.vcf"),
+        temp("freebayes/temp/{sample}.{chr}.unsort.filtered.vcf"),
     params:
         filter="-i 'ALT=\"<*>\" || QUAL > 5'",
     log:
@@ -88,19 +88,19 @@ rule filter_freebayes:
 
 rule filter_iupac_codes:
     input:
-        "freebayes/{sample}.{chr}.unsort.filtered.vcf",
+        "freebayes/temp/{sample}.{chr}.unsort.filtered.vcf",
     output:
-        temp("freebayes/{sample}.{chr}.unsort.filtered.mod.vcf"),
+        temp("freebayes/temp/{sample}.{chr}.unsort.filtered.mod.vcf"),
     log:
         "logs/variantCalling/freebayes/{sample}.{chr}.iupac_replace.log",
     shell:
-        "awk -F$'\t' -v OFS='\t' '{{if ($0 !~ /^#/) gsub(/[KMRYSWBVHDXkmryswbvhdx]/, \"N\", $4) }} {{print}}' {input} > {output}) &> {log}"
+        "(cat  {input} | awk -F$'\t' -v OFS='\t' '{{if ($0 !~ /^#/) gsub(/[KMRYSWBVHDXkmryswbvhdx]/, \"N\", $4) }} {{print}}' > {output}) &> {log}"
 
 
 rule Merge_freebayes_vcf:
     input:
         calls=expand(
-            "freebayes/{{sample}}.{chr}.unsort.filtered.mod.vcf",
+            "freebayes/temp/{{sample}}.{chr}.unsort.filtered.mod.vcf",
             chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
         ),
     output:
