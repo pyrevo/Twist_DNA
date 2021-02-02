@@ -75,7 +75,7 @@ rule filter_freebayes:
     input:
         "freebayes/{sample}.{chr}.unsort.vcf",
     output:
-        pipe("freebayes/{sample}.{chr}.unsort.filtered.vcf"),
+        temp("freebayes/{sample}.{chr}.unsort.filtered.vcf"),
     params:
         filter="-i 'ALT=\"<*>\" || QUAL > 5'",
     log:
@@ -90,7 +90,7 @@ rule filter_iupac_codes:
     input:
         "freebayes/{sample}.{chr}.unsort.filtered.vcf",
     output:
-        pipe("freebayes/{sample}.{chr}.unsort.filtered.mod.vcf"),
+        temp("freebayes/{sample}.{chr}.unsort.filtered.mod.vcf"),
     log:
         "logs/variantCalling/freebayes/{sample}.{chr}.iupac_replace.log",
     shell:
@@ -104,7 +104,7 @@ rule Merge_freebayes_vcf:
             chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
         ),
     output:
-        pipe("freebayes/temp/{sample}.merged.SB.vcf"),
+        temp("freebayes/temp/{sample}.merged.SB.vcf"),
     log:
         "logs/variantCalling/mutect2/merge_vcf/{sample}.log",
     singularity:
