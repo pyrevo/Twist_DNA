@@ -2,7 +2,7 @@ name: gms_somatic
 channels:
   - bioconda
 dependencies:
-  - python=3.8
+  - python=3.7
   - fastp=0.20.1
   - bwa=0.7.17
   - samtools=1.9
