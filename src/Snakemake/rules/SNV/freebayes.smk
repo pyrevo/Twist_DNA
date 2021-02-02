@@ -62,7 +62,7 @@ rule freebayes:
         "freebayes/{sample}.{chr}.unsort.vcf",
     log:
         "logs/variantCalling/freebayes/{sample}.{chr}.log",
-    threads: 5
+    threads: 1
     params:
         extra=" --min-alternate-fraction 0.01 --allele-balance-priors-off --pooled-discrete --pooled-continuous --report-genotype-likelihood-max --genotype-qualities --strict-vcf --no-partial-observations ",
     singularity:
@@ -77,11 +77,11 @@ rule filter_freebayes:
     output:
         pipe("freebayes/{sample}.{chr}.unsort.filtered.vcf"),
     params:
-        filter = "-i 'ALT=\"<*>\" || QUAL > 5'"
+        filter="-i 'ALT=\"<*>\" || QUAL > 5'",
     log:
         "logs/variantCalling/freebayes/{sample}.{chr}.filter.log",
     singularity:
-        config["singularity"].get("bcftools",config["singularity"].get("default",""))
+        config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     wrapper:
         "file:///projects/wp4/nobackup/workspace/snakemake-wrappers-fork/bio/bcftools/filter"
 
@@ -100,7 +100,8 @@ rule filter_iupac_codes:
 rule Merge_freebayes_vcf:
     input:
         calls=expand(
-            "freebayes/{{sample}}.{chr}.unsort.filtered.mod.vcf", chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
+            "freebayes/{{sample}}.{chr}.unsort.filtered.mod.vcf",
+            chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
         ),
     output:
         pipe("freebayes/temp/{sample}.merged.SB.vcf"),
@@ -118,7 +119,7 @@ rule sortFreebayes:
     output:
         _freebayes_output,
     singularity:
-        config["singularity"].get("bcftools",config["singularity"].get("default",""))
+        config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     log:
         "logs/variantCalling/freebayes/{sample}.sort.log",
     shell:
