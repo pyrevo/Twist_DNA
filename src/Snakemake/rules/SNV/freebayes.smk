@@ -45,7 +45,7 @@ except:
     pass
 
 
-_freebayes_output = "freebayes/{sample}.freebayes.fixAF.vcf"
+_freebayes_output = temp("freebayes/{sample}.freebayes.fixAF.vcf")
 try:
     _freebayes_output = freebayes_output
 except:
