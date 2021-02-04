@@ -13,7 +13,7 @@ wildcard_constraints:
 
 rule all:
     input:
-        ["mutect2/" + sample.Index + "." + type for sample in samples.itertuples() for type in ["mutect2.okAF.vcf"]]
+        [caller + "/" + sample.Index + "." + caller + type for sample in samples.itertuples() for type in [".okAF.vcf"] for caller in ['mutect2', 'vardict']]
 
 
 include: "src/Snakemake/workflow/gms_somatic_workflow.smk"
