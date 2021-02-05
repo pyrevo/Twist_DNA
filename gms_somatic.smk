@@ -13,11 +13,7 @@ wildcard_constraints:
 
 rule all:
     input:
-<<<<<<< HEAD
         [caller + "/" + sample.Index + "." + caller + type for sample in samples.itertuples() for type in [".okAF.vcf"] for caller in ['mutect2', 'vardict', "freebayes"]]
-=======
-        [caller + "/" + sample.Index + "." + caller  + type for sample in samples.itertuples() for type in [".okAF.vcf.gz"] for caller in ["mutect2", "freebayes"]]
->>>>>>> 39766fb... Some final tweaks.
 
 
 include: "src/Snakemake/workflow/gms_somatic_workflow.smk"
