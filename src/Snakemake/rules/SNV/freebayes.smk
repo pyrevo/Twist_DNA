@@ -83,7 +83,7 @@ rule filter_freebayes:
     singularity:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     wrapper:
-        "file:///projects/wp4/nobackup/workspace/snakemake-wrappers-fork/bio/bcftools/filter"
+        "bcftools-filter/bio/bcftools/filter"
 
 
 rule filter_iupac_codes:

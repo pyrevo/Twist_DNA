@@ -1,6 +1,7 @@
 # The build-stage image:
 FROM continuumio/miniconda3 AS build
 
+RUN apt update && apt install procps -y
 # Install the package as normal:
 COPY environment.yml /
 RUN conda env create -f /environment.yml
@@ -14,12 +15,9 @@ RUN conda-pack -n gms_somatic -o /tmp/env.tar && \
   mkdir /venv && cd /venv && tar xf /tmp/env.tar && \
   rm /tmp/env.tar
 
-COPY requirements.txt /
-RUN pip install -r requirements.txt
 # We've put venv in same path it'll be in final image,
 # so now fix up paths:
 RUN /venv/bin/conda-unpack
-
 
 # The runtime-stage image; we can use Debian as the
 # base image since the Conda env also includes Python
@@ -39,9 +37,14 @@ MAINTAINER Patrik Smeds <patrik.smeds@scilifelab.uu.se>
 # to /usr/local to make it possible
 # running the softwares without activating
 # any conda env
+
+
 COPY --from=build /venv /usr/local
+COPY --from=build /bin/ps /bin
+COPY --from=build /lib/* /lib/
 RUN mkdir /venv
 RUN ln -s /usr/local/lib /venv/lib
 RUN ln -s /usr/local/bin /venv/bin
+
 
 SHELL ["/bin/bash", "-c"]
