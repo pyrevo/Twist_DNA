@@ -20,6 +20,7 @@
     "bwa_mem_fgbio2" : {"n" : 10, "time" : "6:00:00"},
     "fastqc_bam" : {"n" : 10, "time" : "4:00:00"},
     "vardict" : {"n" : 5, "time" : "2:00:00"},
+    "freebayes" : {"n" : 1, "time" : "2:00:00"},
     "fgbio" : {"n" : 2, "time" : "6:00:00"},
     "Call_cnv": {"n": 10},
     "gridss": {"n": 5, "time" : "6:00:00"},

@@ -7,7 +7,7 @@ vcf_out = VariantFile(snakemake.output[0], 'w', header=vcf_in.header)
 
 
 if len(snakemake.log) > 0:
-    logging.basicConfig(filename=snakemake.log[0], encoding='utf-8', level=logging.INFO)
+    logging.basicConfig(filename=snakemake.log[0], level=logging.INFO)
 
 
 counter_pass = 0
