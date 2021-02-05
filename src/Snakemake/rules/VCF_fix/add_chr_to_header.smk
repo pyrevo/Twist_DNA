@@ -1,3 +1,18 @@
+# vim: syntax=python tabstop=4 expandtab
+# coding: utf-8
+
+__author__ = "Patrik Smeds"
+__copyright__ = "Copyright 2021, Patrik Smeds"
+__email__ = "patrik.smeds@scilifelab.uu.se"
+__license__ = "GPL3"
+
+"""
+ 
+ Rule used to add a contigs to a vcf file. Uses fai file to create contig information.
+ 
+ """
+
+
 localrules:
     add_header_to_vcf,
 

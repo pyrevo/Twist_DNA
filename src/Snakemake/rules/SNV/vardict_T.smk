@@ -1,6 +1,58 @@
+# vim: syntax=python tabstop=4 expandtab
+# coding: utf-8
+
+__author__ = "Jonas Almlöf, Patrik Smeds"
+__copyright__ = "Copyright 2021, Patrik Smeds, Jonas Almlöf"
+__email__ = "jonas.almlöf@scilifelab.uu.se, patrik.smeds@scilifelab.uu.se"
+__license__ = "GPL3"
+
+"""
+ Collection of rules that calls variants using Vardict.
+ Input, output and config
+ ------------------------------------------------------------------------------
+ Input variable: 
+    _vardict_input: optional
+        Default:
+            "alignment/temp/{sample}.{chr}.bam",
+    _vardict_input_bed: optional
+        Default: 
+            "mutect2/bedfile.{chr}.bed"
+
+ Output variable:  
+    _vardict_output: optional
+        Default:
+            temp("vardict/{sample}.vardict.okAF.vcf")
+    
+ Config dict keys: values
+    config["reference"]["ref"]': required
+    config["singularity"]["vardict"] or config["singularity"]["default"]'  : required
+    config["singularity"]["bcftools"]' or config["singularity"]["default"]'  : required 
+ Overriding input and output
+ ------------------------------------------------------------------------------
+ Required wildcards:
+    sample
+    chr
+ Override input format
+ Ex
+  vardict_input="alignment/{sample}.{chr}.bam"
+  vardict_input_bed="bedfile/bedfile.{chr}.bed"
+                       
+ Override output format
+ Ex
+   vardict_output="vardict/{sample}.vardict.vcf"
+"""
+
+
 _vardict_input = "alignment/temp/{sample}.{chr}.bam"
 try:
     _vardict_input = vardict_input
+except:
+    pass
+
+
+_vardict_input_bed = "mutect2/bedfile.{chr}.bed"
+try:
+    _vardict_input_bed = vardict_input_bed
 except:
     pass
 
