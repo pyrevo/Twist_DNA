@@ -82,7 +82,7 @@ rule split_bedfile:
     log:
         "logs/variantCalling/split_bed.{chr}.log",
     shell:
-        "awk '{{if(/^{wildcards.chr}\t/) print($0)}}' {input}  > {output} &> {log}"
+        "(awk '{{if(/^{wildcards.chr}\t/) print($0)}}' {input}  > {output}) &> {log}"
 
 
 rule mutect2:

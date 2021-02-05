@@ -7,6 +7,7 @@ programs:
 
 reference: #change to hg38
     ref: "../../data/ref_genomes/ref.fasta"
+    assembly: "hgXX"
 
 PoN:
     cnvkit: "DATA/cnvkit_PoN.cnn"
