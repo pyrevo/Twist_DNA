@@ -1,4 +1,3 @@
-
 _vardict_input = "alignment/temp/{sample}.{chr}.bam"
 try:
     _vardict_input = vardict_input
@@ -26,9 +25,10 @@ rule vardict:
         af_th="0.01",
     threads: 5
     singularity:
-        config["singularity"].get("vardict",config["singularity"].get("default",""))
+        config["singularity"].get("vardict", config["singularity"].get("default", ""))
     wrapper:
         "vardict-wrapper/bio/vardict"
+
 
 rule filter_vardict:
     input:
@@ -75,7 +75,8 @@ rule remove_duplicates_vardict:
 rule merge_vcf_vardict:
     input:
         calls=expand(
-            "vardict/temp/{{sample}}.{chr}.unsort.filtered.mod_iupac.dup_removed.chrAdded.vcf", chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
+            "vardict/temp/{{sample}}.{chr}.unsort.filtered.mod_iupac.dup_removed.chrAdded.vcf",
+            chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
         ),
     output:
         temp("vardict/temp/{sample}.unsort.filtered.mod.vcf"),
@@ -85,6 +86,7 @@ rule merge_vcf_vardict:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     wrapper:
         "0.70.0/bio/bcftools/concat"
+
 
 rule sortVardict:
     input:
