@@ -28,7 +28,7 @@ rule add_header_to_vcf:
     singularity:
         config["singularity"].get("python", config["singularity"].get("default", ""))
     params:
-        type="CONTIG",
+        type="contig",
         entries=utils.create_chr_entries_for_vff_header(
             config['reference']['ref'] + ".fai", config['reference']['assembly']
         ),
