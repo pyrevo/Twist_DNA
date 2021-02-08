@@ -1,8 +1,8 @@
-def extract_chr(file):
+def extract_chr(file, filter_out=["chrM"]):
     chr = None
     with open(file) as lines:
         chr = [line.split("\t")[0] for line in lines]
-    return chr
+    return [c for c in chr if c not in filter_out]
 
 
 def create_chr_entries_for_vff_header(file_fai, assembly):
