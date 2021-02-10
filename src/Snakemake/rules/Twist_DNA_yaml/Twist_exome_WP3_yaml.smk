@@ -46,5 +46,5 @@ rule Create_Twist_DNA_yaml:
         outfile = open(output.Twist_exome_WP3_yaml, "a")
         outfile.write("DNA_Samples:\n")
         for sample in DNA_sample_list:
-            outfile.write("  " + sample[0] + ": \"S" + str(sample[1]) + "\"\n")
+            outfile.write("  \"" + sample[0] + "\": \"S" + str(sample[1]) + "\"\n")
         outfile.close()
