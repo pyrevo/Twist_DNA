@@ -10,17 +10,17 @@ __license__ = "GPL3"
  Rule that index bam files
  Input, output and config
  ------------------------------------------------------------------------------
- Input variable: 
+ Input variable:
     index_bam_input: optional
         Default:
             "{folder_path}/{bam_file}.bam",
 
- Output variable:  
+ Output variable:
     index_bam_output: optional
         Default:
             "{folder_path}/{bam_file}.bam.bai"
-    
- Config dict keys: values 
+
+ Config dict keys: values
     config["singularity"]["samtools"] or config["singularity"]["default"]': required
  Overriding input and output
  ------------------------------------------------------------------------------
@@ -28,13 +28,11 @@ __license__ = "GPL3"
     bam_file
  Override input format
  Ex
-  index_bam_input=[
-                       "fastq/{sample}.R1.cutadapt.fastq.gz",
-                       "fastq/{sample}.R2.cutadapt.fastq.gz"
-                       ]
+  index_bam_input="alignment/{sample}.cutadapt.bam"
+
  Override output format
  Ex
-   bwa_alignment_output="alignment/{sample}.cutadapt.bam"
+   index_bam_output="alignment/{sample}.cutadapt.bam.bai"
 """
 
 

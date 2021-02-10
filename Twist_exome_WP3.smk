@@ -13,6 +13,10 @@ def get_input():
     input_list.append(["fastq/" + s + "_R1.fastq.gz" for s in config["DNA_Samples"]])
     input_list.append(["fastq/" + s + "_R2.fastq.gz" for s in config["DNA_Samples"]])
 
+    '''Alignment'''
+    input_list.append(["alignment/" + s + ".bam" for s in config["DNA_Samples"]])
+    input_list.append(["alignment/" + s + ".bam.bai" for s in config["DNA_Samples"]])
+
     '''SNV / INDEL'''
     input_list.append(["haplotypecaller/" + s + ".haplotypecaller.fixAF.vcf.gz" for s in config["DNA_Samples"]])
 
