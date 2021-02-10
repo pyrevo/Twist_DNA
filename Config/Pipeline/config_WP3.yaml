@@ -11,8 +11,8 @@ configfiles:
     vep: "/data/ref_genomes/VEP/"
 
 bed:
-    bedfile: "DATA/pool1_pool2_nochr_3c.annotated.bed" #Change to HG38 coordiantes
-    intervals: "DATA/pool1_pool2_nochr_3c.annotated.interval_list"
+    bedfile: "/projects/wp3/Reference_files/Manifest/Clinical_research_exome/TWIST/Twist_Exome_Target_hg19_annotated.bed"
+    intervals: "/projects/wp3/Reference_files/Manifest/Clinical_research_exome/TWIST/Twist_Exome_Target_hg19_interval_list.bed"
 
 singularity:
     execute: "singularity exec -B /data -B /projects -B /scratch "
