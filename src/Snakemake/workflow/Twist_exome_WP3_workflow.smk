@@ -6,7 +6,7 @@ include: "../rules/Fastq/Merge_fastq_WP3.smk"
 #-M	Mark shorter split hits as secondary (for Picard compatibility).
 bwa_mem_input = ["fastq/{sample}_R1.fastq.gz", "fastq/{sample}_R2.fastq.gz"]
 bwa_params_extra = r"-R '@RG\tID:{sample}\tSM:{sample}\tPL:illumina\tPU:{sample}' -v 1 -c 250 -M "
-include: "../rules/Fastq/bwa-mem.smk"
+include: "../rules/Alignemnt/bwa-mem.smk"
 
 #Uses mosdepth
 #export MOSDEPTH_Q0=NO_COVERAGE && export MOSDEPTH_Q1=LOW_COVERAGE && export MOSDEPTH_Q2=CALLABLE && mosdepth -t 16 -F 1804 -Q 1 --no-per-base --by /beegfs-scratch/wp3/TE41_210122/bcbio/coverage/D20-07453/target-genome.bed --quantize 0:1:4: /beegfs-scratch/wp3/TE41_210122/bcbio/bcbiotx/tmphhl_0f2h/D20-07453-variant_regions /beegfs-scratch/wp3/TE41_210122/bcbio/align/D20-07453/D20-07453-sort.bam
@@ -22,7 +22,7 @@ include: "../rules/Fastq/bwa-mem.smk"
 #HTSJDK Version: 2.20.1
 #Picard Version: 2.20.5
 #Split run on chromosomes?
-include: "../rules/Fastq/Haplotypecaller.smk"
+include: "../rules/SNV/Haplotypecaller.smk"
 
 #Uses vcfanno
 #vcfanno -p 16 /beegfs-scratch/wp3/TE41_210122/bcbio/gatk-haplotype/dbsnp.conf /beegfs-scratch/wp3/TE41_210122/bcbio/gatk-haplotype/D20-07453.vcf.gz |  bgzip -c > /beegfs-scratch/wp3/TE41_210122/bcbio/bcbiotx/tmpi5mocnf_/D20-07453-annotated.vcf.gz
