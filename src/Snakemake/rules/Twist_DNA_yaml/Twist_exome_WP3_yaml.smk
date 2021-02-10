@@ -33,11 +33,11 @@ rule Create_Twist_DNA_yaml:
                 if line.find("Experiment Name") != -1:
                     state = 1
             elif state == 1:
-                if line.find("Lane,Sample_ID") != -1:
+                if line.find("Sample_ID,Sample_Name") != -1:
                     state = 2
             elif state == 2:
                 lline = line.strip().split(",")
-                sample = lline[1]
+                sample = lline[0]
                 if sample.find(" ") != -1:
                     print("incorrect sample name: " + sample)
                     quit()
