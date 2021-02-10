@@ -1,4 +1,5 @@
 
+#snakemake -p -j 1 --drmaa "-A wp1 -p core -n 1 -t 2:00:00 "  -s ./src/Snakemake/rules/TSO500_yaml/TSO500_yaml.smk
 
 localrules:
     all,
