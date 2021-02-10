@@ -9,8 +9,8 @@ L_numbers = ["1", "2", "3", "4"]
 
 rule merge_Fastq:
     input:
-        fastq1_files=["fastq_temp/{sample}_" + config["DNA_Samples"] + "_L00" + L + "_R1_001.fastq.gz" for L in L_numbers)],
-        fastq2_files=["fastq_temp/{sample}_" + config["DNA_Samples"] + "_L00" + L + "_R2_001.fastq.gz" for L in L_numbers)],
+        fastq1_files=["fastq_temp/{sample}_" + config["DNA_Samples"] + "_L00" + L + "_R1_001.fastq.gz" for L in L_numbers],
+        fastq2_files=["fastq_temp/{sample}_" + config["DNA_Samples"] + "_L00" + L + "_R2_001.fastq.gz" for L in L_numbers],
     output:
         fastq1="fastq/{sample}_R1.fastq.gz",
         fastq2="fastq/{sample}_R2.fastq.gz",
