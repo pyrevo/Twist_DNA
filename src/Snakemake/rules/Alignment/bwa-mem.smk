@@ -10,18 +10,22 @@ __license__ = "GPL3"
  Rule that performs alignment of reads using bwa mem.
  Input, output and config
  ------------------------------------------------------------------------------
- Input variable: 
+ Input variable:
     bwa_alignment_input: optional
         Default:
             "fastq/{sample}.fq1.fastq.gz",
             "fastq/{sample}.fq2.fastq.gz"
- Output variable:  
+ Output variable:
     bwa_mem_output: optional
         Default:
             "alignment/{sample}.bam"
+Extra params to bwa-mem:
+    bwa_params_extra: optional
+        Default:
+            r"-R '@RG\tID:{sample}\tSM:{sample}\tPL:illumina\tPU:{sample}' -v 1"
  Config dict keys: values
     config["reference"]["ref"]': required
-    config["singularity"]["bwa"]' or config["singularity"]["default"]'  : required 
+    config["singularity"]["bwa"]' or config["singularity"]["default"]'  : required
     config["singularity"]["samtools"] or config["singularity"]["default"]': required
  Overriding input and output
  ------------------------------------------------------------------------------
@@ -57,6 +61,12 @@ try:
 except:
     pass
 
+_bwa_params_extra = r"-R '@RG\tID:{sample}\tSM:{sample}\tPL:illumina\tPU:{sample}' -v 1"
+try:
+    _bwa_params_extra = bwa_params_extra
+except:
+    pass
+
 
 rule bwa_mem:
     input:
@@ -67,7 +77,7 @@ rule bwa_mem:
         "logs/map/bwa/{sample}.log",
     params:
         index=config["reference"]["ref"],
-        extra=r"-R '@RG\tID:{sample}\tSM:{sample}\tPL:illumina\tPU:{sample}' -v 1",
+        extra=_bwa_params_extra,
         sort="samtools",
         sort_order="coordinate",
         sort_extra="-@ 10",

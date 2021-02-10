@@ -19,14 +19,14 @@ singularity:
     multiqc: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/multiqc-1.9.simg"
     samtools: "/projects/wp2/nobackup/Twist_Myeloid/Containers/bwa0.7.17-samtools-1.9.simg"
     picard: "/projects/wp2/nobackup/Twist_Myeloid/Containers/bwa0.7.17-samtools-1.9.simg"
-    bwa: "/projects/wp2/nobackup/Twist_Myeloid/Containers/bwa0.7.17-samtools-1.9.simg"
+    bwa: "/projects/wp2/nobackup/Twist_Myeloid/Containers/bwa0.7.17-samtools-1.9.simg" #Check version
     cartool: "/projects/wp2/nobackup/Twist_Myeloid/Containers/CARTools-200206.simg"
     fastqc: "/projects/wp2/nobackup/Twist_Myeloid/Containers/fastqc0.11.8.simg"
     bamsormadup: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/biobambam2.0.50_bedtofastq.simg"
     bamtofastq: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/biobambam2.0.50_bedtofastq.simg"
     python: "/projects/wp2/nobackup/Twist_Myeloid/Containers/python3.6.0-pysam-xlsxwriter.simg"
     bcftools: "/projects/wp2/nobackup/Twist_Myeloid/Containers/bcftools-1.9--8.simg"
-    gatk4: "/projects/wp2/nobackup/Twist_Myeloid/Containers/gatk-4.1.7.0.broad.simg"
+    gatk4: "/projects/wp2/nobackup/Twist_Myeloid/Containers/gatk-4.1.7.0.broad.simg" #Check version
     vt: "/projects/wp2/nobackup/Twist_Myeloid/Containers/vt-0.57721-2.simg"
     ensemble: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/bcbio-variation-recall-0.2.6-0_bcftools-1.9.simg"
     vardict: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/vardict_java_1.5.1.simg"
