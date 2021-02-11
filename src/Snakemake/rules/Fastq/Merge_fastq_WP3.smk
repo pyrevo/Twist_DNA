@@ -4,12 +4,12 @@
 # fastq2_files = ["fastq_temp/" + s + "_" + i + "_L00" + L + "_R2_001.fastq.gz" for s, i, L in zip(config["DNA_Samples"], S_dna, L_numbers)]
 
 
-rule merge_Fastq:
+rule merge_Fastq_sh:
     output:
         fastq1=["fastq/" + s + "_R1.fastq.gz" for s in config["DNA_Samples"]],
         fastq2=["fastq/" + s + "_R2.fastq.gz" for s in config["DNA_Samples"]],
     log:
-        "logs/fastq/merge/{sample}.log",
+        "logs/fastq/merge/merge_Fastq_sh.log",
     params:
         DNA_samples=[s for s in config["DNA_Samples"]],
     run:
@@ -32,7 +32,7 @@ rule merge_Fastq:
             i += 1
 
 
-rule fix_fastq_run_DNA_R1:
+rule merge_Fastq_run_R1:
     input:
         bash_scripts_DNA_R1="fastq_temp/{sample}_R1.fix_fastq.sh",
     output:
@@ -41,7 +41,7 @@ rule fix_fastq_run_DNA_R1:
         "{input.bash_scripts_DNA_R1}"
 
 
-rule fix_fastq_run_DNA_R2:
+rule merge_Fastq_run_R1:
     input:
         bash_scripts_DNA_R2="fastq_temp/{sample}_R2.fix_fastq.sh",
     output:
