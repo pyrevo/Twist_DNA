@@ -15,7 +15,7 @@ include: "../rules/Alignment/index_bam.smk"
 #HTSJDK Version: 2.20.1
 #Picard Version: 2.20.5
 include: "../rules/SNV/Haplotypecaller.smk"
-include: "../rules/SNV/VEP_WP3.smk"
+include: "../rules/VCF_fix/VEP_WP3.smk"
 
 
 #Uses vcfanno / VEP med dbsnp
