@@ -14,8 +14,9 @@ include: "../rules/Alignment/index_bam.smk"
 #The Genome Analysis Toolkit (GATK) v4.1.3.0 / v4.1.7.0
 #HTSJDK Version: 2.20.1
 #Picard Version: 2.20.5
-include: "../rules/SNV/Haplotypecaller.smk"
+include: "../rules/SNV/Haplotypecaller_WP3.smk"
 include: "../rules/VCF_fix/VEP_WP3.smk"
+include: "../rules/VCF_fix/Filter_vcf_WP3.smk"
 
 
 #Uses vcfanno / VEP med dbsnp

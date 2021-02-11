@@ -1,9 +1,9 @@
 
 rule Filter_SNP_vcf:
     input:
-        vcf="haplotypecaller/{sample}.VEP.vcf.gz",
+        vcf="haplotypecaller/{sample}.vep.vcf.gz",
     output:
-        vcf="haplotypecaller/{sample}.VEP.filteredSNP.vcf.gz",
+        vcf="haplotypecaller/{sample}.vep.filteredSNP.vcf.gz",
     log:
         "logs/variantCalling/Filter1/{sample}.log",
     singularity:
@@ -20,9 +20,9 @@ rule Filter_SNP_vcf:
 
 rule Filter_INDEL_vcf:
     input:
-        vcf="haplotypecaller/{sample}.VEP.filteredSNP.vcf.gz",
+        vcf="haplotypecaller/{sample}.vep.filteredSNP.vcf.gz",
     output:
-        vcf="haplotypecaller/{sample}.VEP.filteredSNP.filteredINDEL.vcf.gz",
+        vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.vcf.gz",
     log:
         "logs/variantCalling/Filter1/{sample}.log",
     singularity:
