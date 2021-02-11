@@ -16,7 +16,7 @@ rule chrX_vcfstats:
         vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.filteredAF.Cartagenia.noHLA.chrX.vcf",
     output:
         vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.filteredAF.Cartagenia.noHLA.chrX.vcfstats.vcf",
-    #singularity:
-    #    config["singularity"].get("vcftools", config["singularity"].get("default", ""))
+    singularity:
+        config["singularity"].get("vcftools", config["singularity"].get("default", ""))
     shell:
         "/sw/tools/vcftools/0.1.14/bin/vcf-stats {input.vcf} > {output.vcf}"
