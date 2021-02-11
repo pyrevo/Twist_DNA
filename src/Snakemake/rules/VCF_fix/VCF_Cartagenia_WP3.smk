@@ -24,4 +24,4 @@ rule gzip_VCF_Cartagenia:
     output:
         vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.Cartagenia.vcf.gz",
     shell:
-        "gzip -c {input.vcf}"
+        "gzip {input.vcf}"
