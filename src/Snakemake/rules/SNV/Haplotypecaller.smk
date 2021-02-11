@@ -5,7 +5,7 @@ rule Haplotypecaller:
         bai="alignment/{sample}.bam.bai",
         bed=config["bed"]["bedfile"],
     output:
-        vcf="haplotypecaller/{sample}.haplotypecaller.vcf.gz",
+        vcf="haplotypecaller/{sample}.vcf.gz",
     params:
         reference=config["reference"]["ref"],
         bed=config["bed"]["bedfile"],
