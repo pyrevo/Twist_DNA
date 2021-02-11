@@ -17,7 +17,6 @@ include: "../rules/Alignment/index_bam.smk"
 include: "../rules/SNV/Haplotypecaller_WP3.smk"
 include: "../rules/VCF_fix/VEP_WP3.smk"
 include: "../rules/VCF_fix/Filter_vcf_WP3.smk"
-include: "../rules/VCF_fix/VCF_Cartagenia_WP3.smk"
 
 
 #Uses vcfanno / VEP med dbsnp

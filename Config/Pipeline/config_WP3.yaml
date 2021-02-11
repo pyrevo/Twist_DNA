@@ -13,6 +13,7 @@ configfiles:
 bed:
     bedfile: "/projects/wp3/Reference_files/Manifest/Clinical_research_exome/TWIST/Twist_Exome_Target_hg19_annotated.bed"
     intervals: "/projects/wp3/Reference_files/Manifest/Clinical_research_exome/TWIST/Twist_Exome_Target_hg19_interval_list.bed"
+    HLA: "/projects/wp3/Reference_files/Manifest/Clinical_research_exome/HLA_coding_exons.bed"
 
 singularity:
     execute: "singularity exec -B /data -B /projects -B /scratch "
@@ -36,6 +37,7 @@ singularity:
     GPU: "/opt/parabricks/parabricks-release-v3.2.0.sif"
     vep: "/projects/wp2/nobackup/Twist_Myeloid/Containers/ensembl-vep-99.0.simg"
     gridss: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/gridss_2.10.2.simg"
+    bedtools: "bedtools2.29.2_samtools1.9.0_fgbio1.3.0.simg"
 
 cartool:
     cov: "100 200 1000"
