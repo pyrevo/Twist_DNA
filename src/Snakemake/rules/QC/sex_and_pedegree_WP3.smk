@@ -19,4 +19,4 @@ rule chrX_vcfstats:
     singularity:
         config["singularity"].get("vcftools", config["singularity"].get("default", ""))
     shell:
-        "/sw/tools/vcftools/0.1.14/bin/vcf-stats {input.vcf} > {output.vcf}"
+        "vcf-stats {input.vcf} > {output.vcf}"
