@@ -6,8 +6,8 @@
 
 rule merge_Fastq:
     output:
-        fastq1="fastq/{sample}_R1.fastq.gz",
-        fastq2="fastq/{sample}_R2.fastq.gz",
+        fastq1=["fastq/" + s + "_R1.fastq.gz" for s in config["DNA_Samples"]],
+        fastq2=["fastq/" + s + "_R2.fastq.gz" for s in config["DNA_Samples"]],
     log:
         "logs/fastq/merge/{sample}.log",
     params:
@@ -21,14 +21,14 @@ rule merge_Fastq:
             bs = open("fastq_temp/" + sample + "_R1.fix_fastq.sh", "w")
             bs.write("zcat fastq_temp/" + sample + "_S*_L00*_R1.fastq.gz | pigz > " + output.fastq1 + "\n")
             bs.close()
-            subprocess.call("chmod 774 fastq_temp/DNA/" + sample + "_R1.fix_fastq.sh", shell=True)
+            subprocess.call("chmod 774 fastq_temp/" + sample + "_R1.fix_fastq.sh", shell=True)
             i += 1
         i = 0
         for sample in params.DNA_samples:
             bs = open("fastq_temp/" + sample + "_R2.fix_fastq.sh", "w")
             bs.write("zcat fastq_temp/" + sample + "_S*_L00*_R2.fastq.gz | pigz > " + output.fastq1 + "\n")
             bs.close()
-            subprocess.call("chmod 774 fastq_temp/DNA/" + sample + "_R2.fix_fastq.sh", shell=True)
+            subprocess.call("chmod 774 fastq_temp/" + sample + "_R2.fix_fastq.sh", shell=True)
             i += 1
 
 
