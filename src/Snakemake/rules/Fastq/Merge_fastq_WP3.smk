@@ -6,8 +6,8 @@
 
 rule merge_Fastq_sh:
     output:
-        fastq1=["fastq/" + s + "_R1.merge_fastq.sh" for s in config["DNA_Samples"]],
-        fastq2=["fastq/" + s + "_R2.merge_fastq.sh" for s in config["DNA_Samples"]],
+        fastq1=["fastq_temp/" + s + "_R1.merge_fastq.sh" for s in config["DNA_Samples"]],
+        fastq2=["fastq_temp/" + s + "_R2.merge_fastq.sh" for s in config["DNA_Samples"]],
     log:
         "logs/fastq/merge/merge_fastq_sh.log",
     params:
