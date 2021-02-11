@@ -6,4 +6,4 @@ rule VCF_Cartagenia:
         vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.Cartagenia.vcf.gz",
     run:
         import subprocess
-        subprocess.call("../../scripts/perl/Vcf_bcbio_to_Cartagenia.pl " + input.vcf + " " + output.vcf, shell=True)
+        subprocess.call("src/scripts/perl/Vcf_bcbio_to_Cartagenia.pl " + input.vcf + " " + output.vcf, shell=True)
