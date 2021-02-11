@@ -21,6 +21,8 @@ def get_input():
     input_list.append(["haplotypecaller/" + s + ".vcf.gz" for s in config["DNA_Samples"]])
     input_list.append(["haplotypecaller/" + s + ".vep.vcf.gz" for s in config["DNA_Samples"]])
     input_list.append(["haplotypecaller/" + s + ".vep.filteredSNP.filteredINDEL.vcf.gz" for s in config["DNA_Samples"]])
+    input_list.append(["haplotypecaller/" + s + ".vep.filteredSNP.filteredINDEL.Cartagenia.filteredAF.vcf.gz" for s in config["DNA_Samples"]])
+
 
     return input_list
 

@@ -5,7 +5,7 @@ rule Filter_SNP_vcf:
     output:
         vcf="haplotypecaller/{sample}.vep.filteredSNP.vcf.gz",
     log:
-        "logs/variantCalling/Filter1/{sample}.log",
+        "logs/variantCalling/FilterSNP/{sample}.log",
     singularity:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     shell:
@@ -24,7 +24,7 @@ rule Filter_INDEL_vcf:
     output:
         vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.vcf.gz",
     log:
-        "logs/variantCalling/Filter1/{sample}.log",
+        "logs/variantCalling/FilterINDEL/{sample}.log",
     singularity:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     shell:
@@ -35,3 +35,16 @@ rule Filter_INDEL_vcf:
         "-m '+' {input.vcf} "
         "| sed 's/\\\"//g' "
         "| bgzip -c > {output.vcf}"
+
+
+rule Filter_Cartagenia_vcf:
+    input:
+        vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.Cartagenia.vcf.gz",
+    output:
+        vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.Cartagenia.filteredAF.vcf.gz",
+    log:
+        "logs/variantCalling/FilterAF/{sample}.log",
+    singularity:
+        config["singularity"].get("bcftools", config["singularity"].get("default", ""))
+    shell:
+        "bcftools filter -e 'AF<0.25' {input.vcf} -o {output.vcf}
