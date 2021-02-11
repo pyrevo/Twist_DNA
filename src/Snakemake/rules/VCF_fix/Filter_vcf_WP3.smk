@@ -37,11 +37,11 @@ rule Filter_INDEL_vcf:
         "| bgzip -c > {output.vcf}"
 
 
-rule Filter_Cartagenia_vcf:
+rule FilterAF_vcf:
     input:
-        vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.Cartagenia.vcf.gz",
+        vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.vcf.gz",
     output:
-        vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.Cartagenia.filteredAF.vcf.gz",
+        vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.filteredAF.vcf.gz",
     log:
         "logs/variantCalling/FilterAF/{sample}.log",
     singularity:
