@@ -47,4 +47,4 @@ rule Filter_Cartagenia_vcf:
     singularity:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     shell:
-        "bcftools filter -e 'AF<0.25' {input.vcf} -o {output.vcf}
+        "bcftools filter -e 'AF<0.25' {input.vcf} -o {output.vcf}"
