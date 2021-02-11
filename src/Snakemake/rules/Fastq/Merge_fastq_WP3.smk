@@ -6,10 +6,10 @@
 
 rule merge_Fastq_sh:
     output:
-        fastq1=["fastq/" + s + "_R1.fastq.gz" for s in config["DNA_Samples"]],
-        fastq2=["fastq/" + s + "_R2.fastq.gz" for s in config["DNA_Samples"]],
+        fastq1=["fastq/" + s + "_R1.merge_fastq.sh" for s in config["DNA_Samples"]],
+        fastq2=["fastq/" + s + "_R2.merge_fastq.sh" for s in config["DNA_Samples"]],
     log:
-        "logs/fastq/merge/merge_Fastq_sh.log",
+        "logs/fastq/merge/merge_fastq_sh.log",
     params:
         DNA_samples=[s for s in config["DNA_Samples"]],
     run:
@@ -18,24 +18,23 @@ rule merge_Fastq_sh:
         #subprocess.call("mkdir fastq", shell=True)
         i = 0
         for sample in params.DNA_samples:
-            print(sample)
-            bs = open("fastq_temp/" + sample + "_R1.fix_fastq.sh", "w")
+            bs = open("fastq_temp/" + sample + "_R1.merge_fastq.sh", "w")
             bs.write("zcat fastq_temp/" + sample + "_S*_L00*_R1.fastq.gz | pigz > fastq/" + sample + "_R1.fastq.gz\n")
             bs.close()
-            subprocess.call("chmod 774 fastq_temp/" + sample + "_R1.fix_fastq.sh", shell=True)
+            subprocess.call("chmod 774 fastq_temp/" + sample + "_R1.merge_fastq.sh", shell=True)
             i += 1
         i = 0
         for sample in params.DNA_samples:
-            bs = open("fastq_temp/" + sample + "_R2.fix_fastq.sh", "w")
+            bs = open("fastq_temp/" + sample + "_R2.merge_fastq.sh", "w")
             bs.write("zcat fastq_temp/" + sample + "_S*_L00*_R2.fastq.gz | pigz > fastq/" + sample + "_R2.fastq.gz\n")
             bs.close()
-            subprocess.call("chmod 774 fastq_temp/" + sample + "_R2.fix_fastq.sh", shell=True)
+            subprocess.call("chmod 774 fastq_temp/" + sample + "_R2.merge_fastq.sh", shell=True)
             i += 1
 
 
 rule merge_Fastq_run_R1:
     input:
-        bash_scripts_DNA_R1="fastq_temp/{sample}_R1.fix_fastq.sh",
+        bash_scripts_DNA_R1="fastq_temp/{sample}_R1.merge_fastq.sh",
     output:
         merged_fastq_R1_DNA="fastq_temp/{sample}_R1.fastq.gz",
     shell:
@@ -44,7 +43,7 @@ rule merge_Fastq_run_R1:
 
 rule merge_Fastq_run_R2:
     input:
-        bash_scripts_DNA_R2="fastq_temp/{sample}_R2.fix_fastq.sh",
+        bash_scripts_DNA_R2="fastq_temp/{sample}_R2.merge_fastq.sh",
     output:
         merged_fastq_R2_DNA="fastq_temp/{sample}_R2.fastq.gz",
     shell:
