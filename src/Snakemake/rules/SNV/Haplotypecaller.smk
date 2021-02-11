@@ -8,6 +8,8 @@ rule Split_bed:
         bed=config["bed"]["bedfile"],
     output:
         beds=["bedfiles/Twist_Exome_Target_chr" + chrom + ".bed" for chrom in chromosomes],
+    log:
+        "logs/variantCalling/Haplotypecaller/call/{sample}.{chrom}.log",
     run:
         import subprocess
         for chrom in chromosomes :
@@ -19,7 +21,7 @@ rule Haplotypecaller:
         bai="alignment/{sample}.bam.bai",
         bed="bedfiles/Twist_Exome_Target_chr{chrom}.bed"
     output:
-        vcf=temp("haplotypecaller/{sample}.haplotypecaller.{chrom}.fixAF.vcf.gz"),
+        vcf=temp("haplotypecaller/{sample}.haplotypecaller.{chrom}.vcf.gz"),
     params:
         reference=config["reference"]["ref"],
         bed=config["bed"]["bedfile"],
@@ -39,9 +41,9 @@ rule Haplotypecaller:
 
 rule Merge_Haplotypecaller_vcf:
     input:
-        vcf=expand("haplotypecaller/{{sample}}.haplotypecaller.{chrom}.fixAF.vcf.gz"),
+        vcf=expand("haplotypecaller/{{sample}}.haplotypecaller.{chrom}.vcf.gz"),
     output:
-        vcf="haplotypecaller/{sample}.haplotypecaller.fixAF.vcf.gz"
+        vcf="haplotypecaller/{sample}.haplotypecaller.vcf.gz"
     log:
         "logs/variantCalling/Haplotypecaller/merge_vcf/{sample}.log",
     singularity:

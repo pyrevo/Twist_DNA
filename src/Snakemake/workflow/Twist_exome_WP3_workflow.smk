@@ -7,27 +7,18 @@ include: "../rules/Fastq/Merge_fastq_WP3.smk"
 bwa_mem_input = ["fastq/{sample}_R1.fastq.gz", "fastq/{sample}_R2.fastq.gz"]
 bwa_params_extra = r"-R '@RG\tID:{sample}\tSM:{sample}\tPL:illumina\tPU:{sample}' -v 1 -c 250 -M "
 include: "../rules/Alignment/bwa-mem.smk"
-index_bam_input="alignment/{sample}.bam"
-index_bam_output="alignment/{sample}.bam.bai"
 include: "../rules/Alignment/index_bam.smk"
 
-#Uses mosdepth
-#export MOSDEPTH_Q0=NO_COVERAGE && export MOSDEPTH_Q1=LOW_COVERAGE && export MOSDEPTH_Q2=CALLABLE && mosdepth -t 16 -F 1804 -Q 1 --no-per-base --by /beegfs-scratch/wp3/TE41_210122/bcbio/coverage/D20-07453/target-genome.bed --quantize 0:1:4: /beegfs-scratch/wp3/TE41_210122/bcbio/bcbiotx/tmphhl_0f2h/D20-07453-variant_regions /beegfs-scratch/wp3/TE41_210122/bcbio/align/D20-07453/D20-07453-sort.bam
-
-#Uses samtools stats
-#/sw/pipelines/bcbio-nextgen/1.1.5/galaxy/../anaconda/bin/samtools stats -@ 16 /beegfs-scratch/wp3/TE41_210122/bcbio/align/D20-07453/D20-07453-sort.bam > /beegfs-scratch/wp3/TE41_210122/bcbio/bcbiotx/tmpt7yayxf6/D20-07453.txt
-
-#Uses samtools idxstats
-#/sw/pipelines/bcbio-nextgen/1.1.5/galaxy/../anaconda/bin/samtools idxstats /beegfs-scratch/wp3/TE41_210122/bcbio/align/D20-07453/D20-07453-sort.bam > /beegfs-scratch/wp3/TE41_210122/bcbio/bcbiotx/tmpdxq_eq6d/D20-07453-idxstats.txt
 
 #GATK4 Haplotype caller
 #The Genome Analysis Toolkit (GATK) v4.1.3.0 / v4.1.7.0
 #HTSJDK Version: 2.20.1
 #Picard Version: 2.20.5
-#Split run on chromosomes?
 include: "../rules/SNV/Haplotypecaller.smk"
+include: "../rules/SNV/VEP_WP3.smk"
 
-#Uses vcfanno / VAP med dbsnp
+
+#Uses vcfanno / VEP med dbsnp
 #vcfanno -p 16 /beegfs-scratch/wp3/TE41_210122/bcbio/gatk-haplotype/dbsnp.conf /beegfs-scratch/wp3/TE41_210122/bcbio/gatk-haplotype/D20-07453.vcf.gz |  bgzip -c > /beegfs-scratch/wp3/TE41_210122/bcbio/bcbiotx/tmpi5mocnf_/D20-07453-annotated.vcf.gz
 #cat /beegfs-scratch/wp3/TE41_210122/bcbio/gatk-haplotype/D21-00083-annotated-nomissingalt.vcf  | /sw/pipelines/bcbio-nextgen/1.1.5/anaconda/bin/bgzip --threads 16 -c > /beegfs-scratch/wp3/TE41_210122/bcbio/bcbiotx/tmp_j3lp91j/D21-00083-annotated-nomissingalt.vcf.gz
 
@@ -49,6 +40,16 @@ include: "../rules/SNV/Haplotypecaller.smk"
 
 #Bcftools stats
 #bcftools stats -s D20-07453 -f PASS,. /beegfs-scratch/wp3/TE41_210122/bcbio/gatk-haplotype/D20-07453-annotated-nomissingalt-filterSNP-filterINDEL.vcf.gz > /beegfs-scratch/wp3/TE41_210122/bcbio/bcbiotx/tmpj0bar4fk/orig_D20-07453_bcftools_stats.txt
+
+#Uses mosdepth
+#export MOSDEPTH_Q0=NO_COVERAGE && export MOSDEPTH_Q1=LOW_COVERAGE && export MOSDEPTH_Q2=CALLABLE && mosdepth -t 16 -F 1804 -Q 1 --no-per-base --by /beegfs-scratch/wp3/TE41_210122/bcbio/coverage/D20-07453/target-genome.bed --quantize 0:1:4: /beegfs-scratch/wp3/TE41_210122/bcbio/bcbiotx/tmphhl_0f2h/D20-07453-variant_regions /beegfs-scratch/wp3/TE41_210122/bcbio/align/D20-07453/D20-07453-sort.bam
+
+#Uses samtools stats
+#/sw/pipelines/bcbio-nextgen/1.1.5/galaxy/../anaconda/bin/samtools stats -@ 16 /beegfs-scratch/wp3/TE41_210122/bcbio/align/D20-07453/D20-07453-sort.bam > /beegfs-scratch/wp3/TE41_210122/bcbio/bcbiotx/tmpt7yayxf6/D20-07453.txt
+
+#Uses samtools idxstats
+#/sw/pipelines/bcbio-nextgen/1.1.5/galaxy/../anaconda/bin/samtools idxstats /beegfs-scratch/wp3/TE41_210122/bcbio/align/D20-07453/D20-07453-sort.bam > /beegfs-scratch/wp3/TE41_210122/bcbio/bcbiotx/tmpdxq_eq6d/D20-07453-idxstats.txt
+
 
 #QC enligt ariells lina
 
