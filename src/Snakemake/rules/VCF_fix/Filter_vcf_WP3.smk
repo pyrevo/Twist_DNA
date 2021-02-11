@@ -60,7 +60,7 @@ rule VCF_Cartagenia:
         subprocess.call("src/scripts/perl/Vcf_to_Cartagenia.pl " + input.vcf + " " + output.vcf, shell=True)
 
 
-rule Filter_HLA :
+rule Filter_HLA:
     input:
         vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.filteredAF.Cartagenia.vcf",
         bed=config["bed"]["HLA"]
