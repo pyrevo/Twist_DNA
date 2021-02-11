@@ -1,9 +1,4 @@
 
-
-# fastq1_files = ["fastq_temp/" + s + "_" + i + "_L00" + L + "_R1_001.fastq.gz" for s, i, L in zip(config["DNA_Samples"], S_dna, L_numbers)]
-# fastq2_files = ["fastq_temp/" + s + "_" + i + "_L00" + L + "_R2_001.fastq.gz" for s, i, L in zip(config["DNA_Samples"], S_dna, L_numbers)]
-
-
 rule merge_Fastq_sh:
     output:
         fastq1=["fastq_temp/" + s + "_R1.merge_fastq.sh" for s in config["DNA_Samples"]],
