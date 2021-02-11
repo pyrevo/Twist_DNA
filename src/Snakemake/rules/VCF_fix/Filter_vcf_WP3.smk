@@ -41,7 +41,7 @@ rule FilterAF_vcf:
     input:
         vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.vcf.gz",
     output:
-        vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.filteredAF.vcf.gz",
+        vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.filteredAF.vcf",
     log:
         "logs/variantCalling/FilterAF/{sample}.log",
     singularity:

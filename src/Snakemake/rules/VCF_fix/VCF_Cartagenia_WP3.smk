@@ -1,11 +1,11 @@
 
-rule gunzip_VCF_Cartagenia:
-    input:
-        vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.filteredAF.vcf.gz",
-    output:
-        vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.filteredAF.vcf",
-    shell:
-        "gunzip -c {input.vcf} > {output.vcf}"
+# rule gunzip_VCF_Cartagenia:
+#     input:
+#         vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.filteredAF.vcf.gz",
+#     output:
+#         vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.filteredAF.vcf",
+#     shell:
+#         "gunzip -c {input.vcf} > {output.vcf}"
 
 
 rule VCF_Cartagenia:
