@@ -36,7 +36,7 @@ rule merge_Fastq_run_R1:
     input:
         bash_scripts_DNA_R1="fastq_temp/{sample}_R1.merge_fastq.sh",
     output:
-        merged_fastq_R1_DNA="fastq_temp/{sample}_R1.fastq.gz",
+        merged_fastq_R1_DNA="fastq/{sample}_R1.fastq.gz",
     shell:
         "{input.bash_scripts_DNA_R1}"
 
@@ -45,6 +45,6 @@ rule merge_Fastq_run_R2:
     input:
         bash_scripts_DNA_R2="fastq_temp/{sample}_R2.merge_fastq.sh",
     output:
-        merged_fastq_R2_DNA="fastq_temp/{sample}_R2.fastq.gz",
+        merged_fastq_R2_DNA="fastq/{sample}_R2.fastq.gz",
     shell:
         "{input.bash_scripts_DNA_R2}"
