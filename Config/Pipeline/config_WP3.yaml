@@ -37,7 +37,7 @@ singularity:
     GPU: "/opt/parabricks/parabricks-release-v3.2.0.sif"
     vep: "/projects/wp2/nobackup/Twist_Myeloid/Containers/ensembl-vep-99.0.simg"
     gridss: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/gridss_2.10.2.simg"
-    bedtools: "bedtools2.29.2_samtools1.9.0_fgbio1.3.0.simg"
-
+    bedtools: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/bedtools2.29.2_samtools1.9.0_fgbio1.3.0.simg"
+    
 cartool:
     cov: "100 200 1000"
