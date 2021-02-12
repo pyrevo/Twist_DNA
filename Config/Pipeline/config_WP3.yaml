@@ -11,7 +11,7 @@ configfiles:
     vep: "/data/ref_genomes/VEP/"
 
 bed:
-    bedfile: "/projects/wp3/Reference_files/Manifest/Clinical_research_exome/TWIST/Twist_Exome_Target_hg19_annotated.bed"
+    bedfile: "/projects/wp3/Reference_files/Manifest/Clinical_research_exome/TWIST/Twist_Exome_Target_hg19.bed"
     intervals: "/projects/wp3/Reference_files/Manifest/Clinical_research_exome/TWIST/Twist_Exome_Target_hg19_interval_list.bed"
     HLA: "/projects/wp3/Reference_files/Manifest/Clinical_research_exome/HLA_coding_exons.bed"
     bedfile_chrX: "/projects/wp3/Reference_files/Manifest/Clinical_research_exome/TWIST/Twist_Exome_Target_hg19_X_no_pseudo.bed"
