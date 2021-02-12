@@ -1,4 +1,4 @@
-# 
+#
 # rule Haplotypecaller:
 #     input:
 #         bam="alignment/{sample}.bam",
@@ -32,13 +32,13 @@ rule Split_bed:
     input:
         bed=config["bed"]["bedfile"],
     output:
-        beds=["bedfiles/Twist_Exome_Target_chr" + chrom + ".bed" for chrom in chromosomes],
+        beds=expand("bedfiles/Twist_Exome_Target_chr{chrom}.bed", chrom=chromosomes),
     log:
         "logs/variantCalling/Haplotypecaller/call/{sample}.{chrom}.log",
     run:
         import subprocess
         for chrom in chromosomes :
-            subprocess.call("grep -P \"^" + chrom + "\t" input.bed > "bedfiles/Twist_Exome_Target_chr" + chrom + ".bed", shell=True)
+            subprocess.call("grep -P \"^" + chrom + "\t\" " + input.bed + " > bedfiles/Twist_Exome_Target_chr" + chrom + ".bed", shell=True)
 
 rule Haplotypecaller:
     input:
@@ -46,7 +46,7 @@ rule Haplotypecaller:
         bai="alignment/{sample}.bam.bai",
         bed="bedfiles/Twist_Exome_Target_chr{chrom}.bed"
     output:
-        vcf=temp("haplotypecaller/{sample}.haplotypecaller.{chrom}.vcf.gz"),
+        vcf=temp("haplotypecaller/{sample}.{chrom}.vcf.gz"),
     params:
         reference=config["reference"]["ref"],
         annotation="--annotation MappingQualityRankSumTest --annotation MappingQualityZero --annotation QualByDepth \
@@ -67,9 +67,9 @@ rule Haplotypecaller:
 
 rule Merge_Haplotypecaller_vcf:
     input:
-        vcf=expand("haplotypecaller/{{sample}}.haplotypecaller.{chrom}.vcf.gz"),
+        vcf=expand("haplotypecaller/{{sample}}.{chrom}.vcf.gz", chrom=chromosomes),
     output:
-        vcf="haplotypecaller/{sample}.haplotypecaller.vcf.gz"
+        vcf="haplotypecaller/{sample}.vcf.gz"
     log:
         "logs/variantCalling/Haplotypecaller/merge_vcf/{sample}.log",
     singularity:
