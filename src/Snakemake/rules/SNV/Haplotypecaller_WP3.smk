@@ -34,11 +34,11 @@ rule Split_bed:
     output:
         beds=expand("bedfiles/Twist_Exome_Target_chr{chrom}.bed", chrom=chromosomes),
     log:
-        "logs/variantCalling/Haplotypecaller/call/{sample}.{chrom}.log",
+        "logs/variantCalling/Haplotypecaller/split/split.log",
     run:
         import subprocess
         for chrom in chromosomes :
-            subprocess.call("grep -P \"^" + chrom + "\t\" " + input.bed + " > bedfiles/Twist_Exome_Target_chr" + chrom + ".bed", shell=True)
+            subprocess.call("grep -P \"^chr" + chrom + "\t\" " + input.bed + " > bedfiles/Twist_Exome_Target_chr" + chrom + ".bed", shell=True)
 
 rule Haplotypecaller:
     input:
@@ -74,5 +74,8 @@ rule Merge_Haplotypecaller_vcf:
         "logs/variantCalling/Haplotypecaller/merge_vcf/{sample}.log",
     singularity:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
-    wrapper:
-        "0.70.0/bio/bcftools/concat"
+        #config["singularity"].get("default", "")
+    #wrapper:
+    #    "0.70.0/bio/bcftools/concat"
+    shell:
+        "(bcftools concat -o {output} -O z {input}) &> {log}"
