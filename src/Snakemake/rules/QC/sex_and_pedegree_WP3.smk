@@ -29,4 +29,4 @@ rule sex_check:
         vcf="results/sex.{sample}.txt",
     run:
         import subprocess
-        subprocess.call("src/scripts/perl/QC_report_generator.pl {input.vcf} {output.vcf}", shell=True)
+        subprocess.call("src/scripts/perl/QC_report_generator.pl " + input.vcf + " " + output.vcf, shell=True)
