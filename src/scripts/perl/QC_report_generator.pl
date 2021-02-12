@@ -35,7 +35,7 @@ my $RA_count;
 my $hetero;
 my $ratio;
 my $total_count;
-open(IN1, '<', $statfile)
+open(IN1, '<', $statfile);
 #open IN1,$statfile;
 while (<IN1>) {
     chomp;
