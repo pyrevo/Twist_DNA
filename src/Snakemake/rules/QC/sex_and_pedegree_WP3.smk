@@ -20,3 +20,13 @@ rule chrX_vcfstats:
         config["singularity"].get("vcftools", config["singularity"].get("default", ""))
     shell:
         "vcf-stats {input.vcf} > {output.vcf}"
+
+
+rule sex_check:
+    input:
+        vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.filteredAF.Cartagenia.noHLA.chrX.vcfstats.vcf",
+    output:
+        vcf="results/sex.{sample}.txt",
+    run:
+        import subprocess
+        subprocess.call("src/scripts/perl/QC_report_generator.pl {input.vcf} {output.vcf}", shell=True)

@@ -26,6 +26,8 @@ def get_input():
     input_list.append(["haplotypecaller/" + s + ".vep.filteredSNP.filteredINDEL.filteredAF.Cartagenia.noHLA.chrX.vcf" for s in config["DNA_Samples"]])
     input_list.append(["haplotypecaller/" + s + ".vep.filteredSNP.filteredINDEL.filteredAF.Cartagenia.noHLA.chrX.vcfstats.vcf" for s in config["DNA_Samples"]])
 
+    '''QC'''
+    input_list.append(["results/sex." + s + ".txt" for s in config["DNA_Samples"]])
 
     return input_list
 
