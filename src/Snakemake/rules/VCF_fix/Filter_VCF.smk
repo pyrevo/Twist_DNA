@@ -2,12 +2,12 @@
 
 rule intron_filter:
     input:
-        vcf="recall/{sample}/vcf/{sample}.ensemble.final.vcf.gz",
+        vcf="recall/{sample}.ensemble.final.vcf.gz",
         bed=config["bed"]["bedfile"]
     output:
-        vcf="recall/{sample}/vcf/{sample}.ensemble.final.no.introns.vcf.gz",
+        vcf="recall/{sample}.ensemble.final.exon.vcf.gz",
     params:
-        vcf="recall/{sample}/vcf/{sample}.ensemble.final.no.introns.vcf",
+        vcf="recall/{sample}.ensemble.final.exon.vcf",
     shell :
         "python3 src/filter_introns.py {input.vcf} {input.bed} {params.vcf} &&"
         "bgzip {params.vcf} && "
@@ -15,9 +15,9 @@ rule intron_filter:
 
 rule Soft_filter:
     input:
-        vcf="recall/{sample}/vcf/{sample}.ensemble.final.exon.vcf.gz",
+        vcf="recall/{sample}.ensemble.final.exon.vcf.gz",
     output:
-        vcf="recall/{sample}/vcf/{sample}.ensemble.final.exon.soft_filter.vcf",
+        vcf="recall/{sample}.ensemble.final.exon.soft_filter.vcf",
     params:
         filter="-e 'FORMAT/AD<20 || FORMAT/DP<50 || FORMAT/AF<0.05'"
     singularity:
@@ -28,15 +28,15 @@ rule Soft_filter:
 
 rule ffpe_filter:
     input:
-        vcf = "recall/{sample}/vcf/{sample}.ensemble.final.exon.soft_filter.vcf",
+        vcf = "recall/{sample}.ensemble.final.exon.soft_filter.vcf",
         bam = "DNA_bam/{sample}-ready.bam",
         bai = "DNA_bam/{sample}-ready.bam.bai"
     params:
-        vcf_ffpe_temp=temp("recall/{sample}/vcf/{sample}.ensemble.final.exon.soft_filter.ffpe.temp.vcf"),
-        vcf_ffpe=temp("recall/{sample}/vcf/{sample}.ensemble.final.exon.soft_filter.ffpe.vcf"),
+        vcf_ffpe_temp=temp("recall/{sample}.ensemble.final.exon.soft_filter.ffpe.temp.vcf"),
+        vcf_ffpe=temp("recall/{sample}.ensemble.final.exon.soft_filter.ffpe.vcf"),
     output:
-        gvcf="recall/{sample}/vcf/{sample}.ensemble.final.exon.soft_filter.vcf.gz",
-        gvcf_ffpe="recall/{sample}/vcf/{sample}.ensemble.final.exon.soft_filter.ffpe.vcf.gz",
+        gvcf="recall/{sample}.ensemble.final.exon.soft_filter.vcf.gz",
+        gvcf_ffpe="recall/{sample}.ensemble.final.exon.soft_filter.ffpe.vcf.gz",
     shell:
         #"module load oracle-jdk-1.8/1.8.0_162 && "
         "java -jar SOBDetector/SOBDetector_v1.0.1.jar --input-type VCF --input-variants {input.vcf} --input-bam {input.bam} --output-variants {params.vcf_ffpe_temp} && "

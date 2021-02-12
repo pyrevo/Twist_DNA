@@ -6,10 +6,8 @@ invcf = sys.argv[1]
 inbed = open(sys.argv[2])
 outvcf = open(sys.argv[3], w)
 
-#inbed1 = open("DATA/TSO500_exon_regions.txt")
-#inbed2 = open("DATA/TST500C_manifest.bed")
 
-#Add all regions annotated with Exons
+# Add all regions annotated with Exons
 exon_dict = {}
 for line in inbed:
     lline = line.strip().split("\t")
@@ -17,7 +15,7 @@ for line in inbed:
     start_pos = int(lline[1])
     end_pos = int(lline[2])
     region = lline[3]
-    if region.find("Exon") != -1 :
+    if region.find("Exon") != -1:
         if chrom not in exon_dict:
             exon_dict[chrom] = []
         exon_dict[chrom].append([start_pos, end_pos])

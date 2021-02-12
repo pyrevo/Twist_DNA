@@ -1,9 +1,4 @@
 
-
-localrules:
-    indexDecomp,
-
-
 rule decompose:  #Do we need decompose as well, maybe for all but vardict??
     input:
         vcf="{method}/{sample}.{method}.okAF.vcf.gz",
@@ -34,7 +29,7 @@ rule normalizeAll:
 
 rule indexNormalize:
     input:
-        vcf="{method}/{sample}.{method}.normalized.vcf.gz", 
+        vcf="{method}/{sample}.{method}.normalized.vcf.gz",
     output:
         tbi="{method}/{sample}.{method}.normalized.vcf.gz.tbi",
     log:
