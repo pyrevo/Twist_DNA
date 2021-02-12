@@ -34,7 +34,7 @@ rule normalizeAll:
 
 rule indexNormalize:
     input:
-        vcf="{method}/{sample}.{method}.normalized.vcf.gz", 
+        vcf="{method}/{sample}.{method}.normalized.vcf.gz",
     output:
         tbi="{method}/{sample}.{method}.normalized.vcf.gz.tbi",
     log:

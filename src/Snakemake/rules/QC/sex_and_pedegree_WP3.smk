@@ -2,7 +2,7 @@
 rule Extract_chrX_vcf:
     input:
         vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.filteredAF.Cartagenia.noHLA.vcf",
-        bed=config["bed"]["bedfile_chrX"]
+        bed=config["bed"]["bedfile_chrX"],
     output:
         vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.filteredAF.Cartagenia.noHLA.chrX.vcf",
     singularity:
@@ -29,4 +29,5 @@ rule sex_check:
         vcf="results/sex.{sample}.txt",
     run:
         import subprocess
+
         subprocess.call("src/scripts/perl/QC_report_generator.pl " + input.vcf + " " + output.vcf, shell=True)
