@@ -1,5 +1,5 @@
 
-#snakemake -p -j 64 --drmaa "-A wp1 -p core -n {cluster.n} -t {cluster.time}"  -s ./Twist_exome_WP3.smk --use-singularity --singularity-args "--bind /data --bind /projects --bind /scratch " --cluster-config Config/Slurm/cluster.json
+#snakemake -p -j 120 --drmaa "-A wp1 -p core -n {cluster.n} -t {cluster.time}"  -s ./Twist_exome_WP3.smk --use-singularity --singularity-args "--bind /data --bind /projects --bind /scratch " --cluster-config Config/Slurm/cluster.json
 
 configfile: "Twist_exome_WP3.yaml"
 

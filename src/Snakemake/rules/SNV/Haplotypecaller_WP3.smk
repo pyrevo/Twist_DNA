@@ -47,6 +47,7 @@ rule Haplotypecaller:
         bed="bedfiles/Twist_Exome_Target_chr{chrom}.bed"
     output:
         vcf=temp("haplotypecaller/{sample}.{chrom}.vcf.gz"),
+        vcf=temp("haplotypecaller/{sample}.{chrom}.vcf.gz.tbi"),
     params:
         reference=config["reference"]["ref"],
         annotation="--annotation MappingQualityRankSumTest --annotation MappingQualityZero --annotation QualByDepth \

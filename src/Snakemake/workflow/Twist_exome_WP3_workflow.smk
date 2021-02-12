@@ -10,11 +10,10 @@ include: "../rules/Alignment/bwa-mem.smk"
 include: "../rules/Alignment/index_bam.smk"
 
 
-#GATK4 Haplotype caller
-#The Genome Analysis Toolkit (GATK) v4.1.3.0 / v4.1.7.0
-#HTSJDK Version: 2.20.1
-#Picard Version: 2.20.5
+
+#Bcbio reports variants not included in the bed file
 include: "../rules/SNV/Haplotypecaller_WP3.smk"
+#Only annotate with rs_number?
 include: "../rules/VCF_fix/VEP_WP3.smk"
 include: "../rules/VCF_fix/Filter_vcf_WP3.smk"
 #Only sex check
