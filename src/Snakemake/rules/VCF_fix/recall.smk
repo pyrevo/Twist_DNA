@@ -18,29 +18,26 @@ rule recall:
         vcf=temp("recall/{sample}.unsorted.vcf.gz"),
     params:
         support="1",  #"{support}" ,
-        order="mutect2,vardict,varscan,freebayes",  #,Manta" #Make sure that the order is correct! Order of methods in configfile
+        order="mutect2,vardict,varscan,freebayes",
     log:
         "logs/variantCalling/recall/{sample}.log",
     singularity:
         config["singularity"]["ensemble"]
-    shell:  ##Remove filtered?? if so --nofiltered
+    shell:
         "(bcbio-variation-recall ensemble -n {params.support} --names {params.order} {output.vcf} {input.ref} {input.vcfs}) &> {log}"
 
 
 rule sort_recall:
     input:
-        "recall/{sample}.unsorted.vcf.gz",  #multiAllelic.vcf"
+        "recall/{sample}.unsorted.vcf.gz",
     output:
         vcf="recall/{sample}.all.vcf.gz",
         tbi="recall/{sample}.all.vcf.gz.tbi",
     log:
         "logs/variantCalling/recall/{sample}.sort.log",
-    # params:
-    # vcf = "recall/{sample}.unsorted.vcf"
     singularity:
         config["singularity"]["bcftools"]
     shell:
-        #"(gunzip {input} && bgzip {params.vcf} &&
         "(tabix {input} && bcftools sort -o {output.vcf} -O z {input} && tabix {output.vcf} ) &> {log}"
 
 
@@ -69,7 +66,7 @@ rule index_filterRecall:
     singularity:
         config["singularity"]["bcftools"]
     shell:
-        "( tabix {input} ) &> {log}"
+        "(tabix {input}) &> {log}"
 
 
 # # ##Add in multiallelic Variants
