@@ -1,5 +1,6 @@
 # snakemake -p -j 1 --drmaa "-A wp1 -p core -n 1 -t 2:00:00 "  -s ./src/Snakemake/rules/Twist_DNA_yaml/Twist_exome_WP3_yaml.smk
 
+
 localrules:
     all,
     Create_Twist_DNA_yaml,

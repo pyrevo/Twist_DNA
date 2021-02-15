@@ -22,7 +22,7 @@ chromosomes = [
     "21",
     "22",
     "X",
-    "Y"
+    "Y",
 ]
 
 
@@ -36,17 +36,18 @@ rule Split_bed:
     run:
         import subprocess
 
-        for chrom in chromosomes :
+        for chrom in chromosomes:
             subprocess.call(
                 "grep -P \"^chr" + chrom + "\t\" " + input.bed + " > bedfiles/Twist_Exome_Target_chr" + chrom + ".bed",
                 shell=True,
             )
 
+
 rule Haplotypecaller:
     input:
         bam="alignment/{sample}.bam",
         bai="alignment/{sample}.bam.bai",
-        bed="bedfiles/Twist_Exome_Target_chr{chrom}.bed"
+        bed="bedfiles/Twist_Exome_Target_chr{chrom}.bed",
     output:
         vcf=temp("haplotypecaller/{sample}.{chrom}.vcf.gz"),
         vcf=temp("haplotypecaller/{sample}.{chrom}.vcf.gz.tbi"),

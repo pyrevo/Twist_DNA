@@ -18,6 +18,7 @@ rule Filter_SNP_vcf:
         #"| sed 's/\"//g' "
         #"| bgzip -c > {output.vcf}"
 
+
 rule Filter_INDEL_vcf:
     input:
         vcf="haplotypecaller/{sample}.vep.filteredSNP.vcf.gz",
@@ -36,6 +37,7 @@ rule Filter_INDEL_vcf:
         "| bgzip -c > {output.vcf}"
         #"| sed 's/\"//g' "
         #"| bgzip -c > {output.vcf}"
+
 
 rule FilterAF_vcf:
     input:
