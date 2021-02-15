@@ -6,7 +6,6 @@ include: "../rules/Fastq/Merge_fastq_WP3.smk"
 # -c 250 / 10000
 # -M	Mark shorter split hits as secondary (for Picard compatibility).
 bwa_mem_input = ["fastq/{sample}_R1.fastq.gz", "fastq/{sample}_R2.fastq.gz"]
-bwa_params_extra = r"-R '@RG\tID:{sample}\tSM:{sample}\tPL:illumina\tPU:{sample}' -v 1 -c 250 -M "
 
 
 include: "../rules/Alignment/bwa-mem.smk"

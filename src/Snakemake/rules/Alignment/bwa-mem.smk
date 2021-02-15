@@ -61,12 +61,6 @@ try:
 except:
     pass
 
-_bwa_params_extra = r"-R '@RG\tID:{sample}\tSM:{sample}\tPL:illumina\tPU:{sample}' -v 1"
-try:
-    _bwa_params_extra = bwa_params_extra
-except:
-    pass
-
 
 rule bwa_mem:
     input:
@@ -77,7 +71,7 @@ rule bwa_mem:
         "logs/map/bwa/{sample}.log",
     params:
         index=config["reference"]["ref"],
-        extra=_bwa_params_extra,
+        extra=r"-R '@RG\tID:{sample}\tSM:{sample}\tPL:illumina\tPU:{sample}' -v 1 " + config.get("bam_extra" , ""),
         sort="samtools",
         sort_order="coordinate",
         sort_extra="-@ 10",
