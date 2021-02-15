@@ -71,7 +71,7 @@ rule bwa_mem:
         "logs/map/bwa/{sample}.log",
     params:
         index=config["reference"]["ref"],
-        extra=r"-R '@RG\tID:{sample}\tSM:{sample}\tPL:illumina\tPU:{sample}' -v 1 " + config.get("bam_extra" , ""),
+        extra=r"-R '@RG\tID:{sample}\tSM:{sample}\tPL:illumina\tPU:{sample}' -v 1 " + config.get("bam_extra", ""),
         sort="samtools",
         sort_order="coordinate",
         sort_extra="-@ 10",
