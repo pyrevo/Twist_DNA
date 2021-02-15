@@ -3,15 +3,16 @@
 rule intron_filter:
     input:
         vcf="recall/{sample}.ensemble.final.vcf.gz",
-        bed=config["bed"]["bedfile"]
+        bed=config["bed"]["bedfile"],
     output:
         vcf="recall/{sample}.ensemble.final.exon.vcf.gz",
     params:
         vcf="recall/{sample}.ensemble.final.exon.vcf",
-    shell :
+    shell:
         "python3 src/filter_introns.py {input.vcf} {input.bed} {params.vcf} &&"
         "bgzip {params.vcf} && "
         "tabix {output.vcf}"
+
 
 rule Soft_filter:
     input:
@@ -19,18 +20,18 @@ rule Soft_filter:
     output:
         vcf="recall/{sample}.ensemble.final.exon.soft_filter.vcf",
     params:
-        filter="-e 'FORMAT/AD<20 || FORMAT/DP<50 || FORMAT/AF<0.05'"
+        filter="-e 'FORMAT/AD<20 || FORMAT/DP<50 || FORMAT/AF<0.05'",
     singularity:
         "/projects/wp2/nobackup/Twist_Myeloid/Containers/bcftools-1.9--8.simg"
-    shell :
+    shell:
         "bcftools filter -O v -o {output.vcf} --soft-filter 'Soft_filter' {params.filter} -m '+' {input.vcf}"
 
 
 rule ffpe_filter:
     input:
-        vcf = "recall/{sample}.ensemble.final.exon.soft_filter.vcf",
-        bam = "DNA_bam/{sample}-ready.bam",
-        bai = "DNA_bam/{sample}-ready.bam.bai"
+        vcf="recall/{sample}.ensemble.final.exon.soft_filter.vcf",
+        bam="DNA_bam/{sample}-ready.bam",
+        bai="DNA_bam/{sample}-ready.bam.bai",
     params:
         vcf_ffpe_temp=temp("recall/{sample}.ensemble.final.exon.soft_filter.ffpe.temp.vcf"),
         vcf_ffpe=temp("recall/{sample}.ensemble.final.exon.soft_filter.ffpe.vcf"),
