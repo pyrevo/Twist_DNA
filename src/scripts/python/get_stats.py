@@ -12,7 +12,7 @@ picardMet4 = snakemake.input.picardMet4
 samtools = snakemake.input.samtools
 multiQCheader = snakemake.input.multiQCheader
 # cartoolLog = sys.argv[7]
-sample = wildcards.sample
+sample = snakemake.wildcards.sample
 outFile = snakemake.output.sample
 batchFile = snakemake.input.batch
 
