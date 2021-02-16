@@ -52,6 +52,7 @@ singularity:
     gridss: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/gridss_2.10.2.simg"
     cnvkit: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/cnvkit_0.9.7--py_1.sif"
     ONCOCNV: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/ONCOCNV.simg"
+    bamtools: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/bamtools2.5.1.simg"
 
 
 
