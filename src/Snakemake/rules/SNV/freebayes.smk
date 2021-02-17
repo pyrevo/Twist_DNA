@@ -10,19 +10,19 @@ __license__ = "GPL3"
  Collection of rules that calls variants using Freebayes.
  Input, output and config
  ------------------------------------------------------------------------------
- Input variable: 
+ Input variable:
     freebayes_input: optional
         Default:
             "alignment/temp/{sample}.{chr}.bam",
 
- Output variable:  
+ Output variable:
     freebayes_output: optional
         Default:
             "freebayes/{sample}.freebayes.fixAF.vcf"
-    
+
  Config dict keys: values
     config["reference"]["ref"]': required
-    config["singularity"]["freebayes"]' or config["singularity"]["default"]'  : required 
+    config["singularity"]["freebayes"]' or config["singularity"]["default"]'  : required
     config["singularity"]["bcftools"] or config["singularity"]["default"]': required
     config["singularity"]["bcftools"] or config["singularity"]["default"]': required
  Overriding input and output
@@ -32,7 +32,7 @@ __license__ = "GPL3"
  Override input format
  Ex
   freebayes_input=alignment/{sample}.{chr}.bam
-  
+
  Override output format
  Ex
    "freebayes/{sample}.freebayes.vcf"
@@ -83,7 +83,7 @@ rule filter_freebayes:
     singularity:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     wrapper:
-        "bcftools-filter/bio/bcftools/filter"
+        "0.72.0/bio/bcftools/filter"
 
 
 rule filter_iupac_codes:

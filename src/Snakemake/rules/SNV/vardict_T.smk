@@ -67,6 +67,7 @@ except:
 rule vardict:
     input:
         bam=_vardict_input,
+        bai=_vardict_input + ".bai",
         reference=config["reference"]["ref"],
         regions="mutect2/bedfile.{chr}.bed",
     output:
