@@ -26,6 +26,7 @@ def get_input():
     input_list.append(["recall/" + s + ".ensemble.vep.vcf.gz.tbi" for s in config["DNA_Samples"]])
     input_list.append(["recall/" + s + ".ensemble.final.exon.soft_filter.vcf.gz" for s in config["DNA_Samples"]])
     input_list.append(["recall/" + s + ".ensemble.final.exon.soft_filter.ffpe.vcf.gz" for s in config["DNA_Samples"]])
+    input_list.append(["recall/" + s + ".ensemble.final.exon.soft_filter.ffpe.multibp.vcf.gz" for s in config["DNA_Samples"]])
 
     '''Variant filtering'''
     #input_list.append(["Results/DNA/" + s + "/vcf/" + s + "-ensemble.final.no.introns.vcf.gz" for s in config["DNA_Samples"]])
