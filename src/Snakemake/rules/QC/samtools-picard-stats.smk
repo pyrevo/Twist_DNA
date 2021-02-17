@@ -133,5 +133,5 @@ rule sortBatchStats:
         "logs/qc/sortBatch_Stats.log",
     singularity:
         config["singularity"]["python"]
-    shell:
+    script:
         "../../../scripts/python/sortBatchStats.py"

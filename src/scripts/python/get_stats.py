@@ -5,14 +5,14 @@ import csv
 
 # picardDup = sys.argv[1]
 
-picardMet1 = input.picardMet1
-picardMet2 = input.picardMet2
-picardMet3 = input.picardMet3
-picardMet4 = input.picardMet4
-samtools = input.samtools
-multiQCheader = input.multiQCheader
+picardMet1 = snakemake.input.picardMet1
+picardMet2 = snakemake.input.picardMet2
+picardMet3 = snakemake.input.picardMet3
+picardMet4 = snakemake.input.picardMet4
+samtools = snakemake.input.samtools
+multiQCheader = snakemake.input.multiQCheader
 # cartoolLog = sys.argv[7]
-sample = wildcards.sample
+sample = snakemake.wildcards.sample
 outFile = snakemake.output.sample
 batchFile = snakemake.input.batch
 

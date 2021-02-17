@@ -3,9 +3,9 @@
 import sys
 import csv
 
-batchFile = input.batchUnsorted
-SampleSheetUsed = input.SampleSheetUsed
-outFile = output.batch  # should end with _mqc.json for MultiQC
+batchFile = snakemake.input.batchUnsorted
+SampleSheetUsed = snakemake.input.SampleSheetUsed
+outFile = snakemake.output.batch  # should end with _mqc.json for MultiQC
 
 # Get all lines from get_stats.py output
 with open(batchFile, 'r') as bFile:

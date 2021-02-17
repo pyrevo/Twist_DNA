@@ -25,6 +25,7 @@ bed:
     #exonbed: "DATA/Twist_RNA_pool1_2_annotated.bed"
 
 singularity:
+    default: "docker://gmsuppsala/somatic:develop"
     execute: "singularity exec -B /data -B /projects -B /scratch "
     multiqc: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/multiqc-1.9.simg"
     samtools: "/projects/wp2/nobackup/Twist_Myeloid/Containers/bwa0.7.17-samtools-1.9.simg"
@@ -53,7 +54,6 @@ singularity:
     gridss: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/gridss_2.10.2.simg"
     cnvkit: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/cnvkit_0.9.7--py_1.sif"
     ONCOCNV: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/ONCOCNV.simg"
-
 
 
 cartool:
