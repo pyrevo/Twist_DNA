@@ -24,5 +24,6 @@
     "fgbio" : {"n" : 2, "time" : "6:00:00"},
     "Call_cnv": {"n": 10},
     "gridss": {"n": 5, "time" : "6:00:00"},
+    "mutect2": {"time" : "4:00:00"},
     "GPU_align" : {"partition" : "GPU", "time" : "3:00:00", "n": 40},
 }

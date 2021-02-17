@@ -27,6 +27,6 @@ rule bgzipVep:
     log:
         "logs/recall/vep/{sample}.bgzip.log",
     singularity:
-        config["singularity"]["bcftools"]
+        config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     shell:
         "(bgzip {input} && tabix {input}.gz) &> {log}"

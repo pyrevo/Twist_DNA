@@ -36,7 +36,7 @@ rule sort_recall:
     log:
         "logs/variantCalling/recall/{sample}.sort.log",
     singularity:
-        config["singularity"]["bcftools"]
+        config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     shell:
         "(tabix {input} && bcftools sort -o {output.vcf} -O z {input} && tabix {output.vcf} ) &> {log}"
 
@@ -64,7 +64,7 @@ rule index_filterRecall:
     log:
         "logs/variantCalling/recall/{sample}.index_recallFilter.log",
     singularity:
-        config["singularity"]["bcftools"]
+        config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     shell:
         "(tabix {input}) &> {log}"
 
