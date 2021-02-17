@@ -44,7 +44,7 @@ singularity:
     gatk4: "/projects/wp2/nobackup/Twist_Myeloid/Containers/gatk-4.1.7.0.broad.simg"
     vt: "/projects/wp2/nobackup/Twist_Myeloid/Containers/vt-0.57721-2.simg"
     ensemble: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/bcbio-variation-recall-0.2.6-0_bcftools-1.9.simg"
-    vardict: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/vardict_java_1.5.1.simg"
+    #vardict: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/vardict_java_1.5.1.simg"
     varscan: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/varscan_2.4.3-0.simg"
     msisensor2: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/msisensor2_large.simg" #https://hub.docker.com/r/hsun9/msisensor2
     cutadapt: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/cutadaptv2.5-0.simg"
