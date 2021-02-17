@@ -2,9 +2,6 @@
 include: "../rules/Fastq/Merge_fastq_WP3.smk"
 
 
-# PU:X_210122_TWIST / PU:{sample}
-# -c 250 / 10000
-# -M	Mark shorter split hits as secondary (for Picard compatibility).
 bwa_mem_input = ["fastq/{sample}_R1.fastq.gz", "fastq/{sample}_R2.fastq.gz"]
 
 

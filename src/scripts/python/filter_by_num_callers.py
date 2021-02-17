@@ -24,7 +24,9 @@ with gzip.open(args.variantfile, 'r') as lines:
                 ref = data.group(1)
                 var = data.group(2)
                 callers = data.group(3).split(",")
-                if len(callers) > 1:
+                if len(callers) > 1 and (len(var) == 1 and len(ref) == 1):
+                    print(line, end='')
+                elif len(callers) > 1 and ("mutect2" in callers or "vardict" in callers):
                     print(line, end='')
                 elif args.deletions and (len(var) > 1 or len(ref) > 1) and ("mutect2" in callers or "vardict" in callers):
                     print(line, end='')
