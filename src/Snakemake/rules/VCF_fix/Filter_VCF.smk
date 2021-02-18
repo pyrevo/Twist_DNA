@@ -8,7 +8,7 @@ rule intron_filter:
         vcf="recall/{sample}.ensemble.vep.exon.vcf.gz",
     params:
         vcf="recall/{sample}.ensemble.vep.exon.vcf",
-    #singularity:
+    # singularity:
     #    config["singularity"]["python"]
     shell:
         "python3 src/scripts/python/filter_introns.py {input.vcf} {input.bed} {params.vcf} &&"
