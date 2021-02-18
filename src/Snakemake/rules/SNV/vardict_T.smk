@@ -95,7 +95,7 @@ rule filter_vardict:
     singularity:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     wrapper:
-        "bcftools-filter/bio/bcftools/filter"
+        "0.72.0/bio/bcftools/filter"
 
 
 rule filter_iupac_codes_vardict:
