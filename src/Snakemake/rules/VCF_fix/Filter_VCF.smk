@@ -8,8 +8,10 @@ rule intron_filter:
         vcf="recall/{sample}.ensemble.vep.exon.vcf.gz",
     params:
         vcf="recall/{sample}.ensemble.vep.exon.vcf",
+    #singularity:
+    #    config["singularity"]["python"]
     shell:
-        "python3 src/filter_introns.py {input.vcf} {input.bed} {params.vcf} &&"
+        "python3 src/scripts/python/filter_introns.py {input.vcf} {input.bed} {params.vcf} &&"
         "bgzip {params.vcf} && "
         "tabix {output.vcf}"
 
@@ -41,7 +43,7 @@ rule ffpe_filter:
     shell:
         #"module load oracle-jdk-1.8/1.8.0_162 && "
         "java -jar SOBDetector/SOBDetector_v1.0.1.jar --input-type VCF --input-variants {input.vcf} --input-bam {input.bam} --output-variants {params.vcf_ffpe_temp} && "
-        "python src/Add_FFPE_column_to_vcf.py {params.vcf_ffpe_temp} {params.vcf_ffpe} && "
+        "python src/scripts/python/Add_FFPE_column_to_vcf.py {params.vcf_ffpe_temp} {params.vcf_ffpe} && "
         "bgzip {params.vcf_ffpe} && "
         "tabix {output.gvcf_ffpe} && "
         "bgzip {input.vcf} && "

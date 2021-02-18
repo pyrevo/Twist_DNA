@@ -4,7 +4,7 @@ import sys
 
 invcf = sys.argv[1]
 inbed = open(sys.argv[2])
-outvcf = open(sys.argv[3], w)
+outvcf = open(sys.argv[3], "w")
 
 
 # Add all regions annotated with Exons
