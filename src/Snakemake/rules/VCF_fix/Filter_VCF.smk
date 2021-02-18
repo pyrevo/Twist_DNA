@@ -37,12 +37,13 @@ rule ffpe_filter:
     params:
         vcf_ffpe_temp=temp("recall/{sample}.ensemble.vep.exon.soft_filter.ffpe.temp.vcf"),
         vcf_ffpe=temp("recall/{sample}.ensemble.vep.exon.soft_filter.ffpe.vcf"),
+        java=config["java"]["SOBDetector"],
     output:
         gvcf="recall/{sample}.ensemble.vep.exon.soft_filter.vcf.gz",
         gvcf_ffpe="recall/{sample}.ensemble.vep.exon.soft_filter.ffpe.vcf.gz",
     shell:
         #"module load oracle-jdk-1.8/1.8.0_162 && "
-        "java -jar SOBDetector/SOBDetector_v1.0.1.jar --input-type VCF --input-variants {input.vcf} --input-bam {input.bam} --output-variants {params.vcf_ffpe_temp} && "
+        "java -jar {params.java} --input-type VCF --input-variants {input.vcf} --input-bam {input.bam} --output-variants {params.vcf_ffpe_temp} && "
         "python src/scripts/python/Add_FFPE_column_to_vcf.py {params.vcf_ffpe_temp} {params.vcf_ffpe} && "
         "bgzip {params.vcf_ffpe} && "
         "tabix {output.gvcf_ffpe} && "

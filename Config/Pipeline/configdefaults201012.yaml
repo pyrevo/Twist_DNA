@@ -24,6 +24,9 @@ bed:
     GATK_CNV: "DATA/pool1_pool2_nochr_3c.annotated.preprocessed.interval_list"
     #exonbed: "DATA/Twist_RNA_pool1_2_annotated.bed"
 
+java:
+    SOBDetector: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/SOBDetector_v1.0.1.jar"
+
 singularity:
     default: "docker://gmsuppsala/somatic:develop"
     execute: "singularity exec -B /data -B /projects -B /scratch "
