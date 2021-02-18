@@ -46,8 +46,6 @@ rule filter_recall:
         "recall/{sample}.all.vcf.gz",
     output:
         "recall/{sample}.ensemble.vcf.gz",
-    params:
-        "DATA/indel_artifacts.bed",
     log:
         "logs/variantCalling/recall/{sample}.filter_recall.log",
     singularity:
