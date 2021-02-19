@@ -35,6 +35,6 @@ rule indexNormalize:
     log:
         "logs/variantCalling/vt/{sample}.{method}.index.log",
     singularity:
-        config["singularity"]["bcftools"]
+        config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     shell:
         "(tabix {input.vcf}) 2> {log}"

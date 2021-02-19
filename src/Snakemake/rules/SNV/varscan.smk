@@ -36,7 +36,7 @@ rule sortVarscan:
     output:
         temp("varscan/{sample}.varscan.fixAF.vcf"),
     singularity:
-        config["singularity"]["bcftools"]
+        config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     log:
         "logs/variantCalling/varscan/{sample}.sort.log",
     shell:

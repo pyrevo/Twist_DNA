@@ -10,15 +10,15 @@ __license__ = "GPL3"
  Collection of rules that calls variants using Mutect2.
  Input, output and config
  ------------------------------------------------------------------------------
- Input variable: 
+ Input variable:
     mutect2_input_bam: optional
         Default:
             "mutect2/bam_temp/{sample}.{chr}.bam",
     mutect2_input_bai: optional
         Default:
             "mutect2/bam_temp/{sample}.{chr}.bam.bai",
-    
- Output variable:  
+
+ Output variable:
     bwa_mem_output: optional
         Default:
             "alignment/{sample}.bam"
@@ -27,7 +27,7 @@ __license__ = "GPL3"
             "alignment/{sample}.bai"
  Config dict keys: values
     config["reference"]["ref"]': required
-    config["singularity"]["bwa"]' or config["singularity"]["default"]'  : required 
+    config["singularity"]["bwa"]' or config["singularity"]["default"]'  : required
     config["singularity"]["samtools"] or config["singularity"]["default"]': required
  Overriding input and output
  ------------------------------------------------------------------------------
@@ -98,7 +98,7 @@ rule mutect2:
         vcf=temp("mutect2/temp/{sample}.{chr}.mutect2.unfilt.vcf.gz"),
         vcf_tbi=temp("mutect2/temp/{sample}.{chr}.mutect2.unfilt.vcf.gz.tbi"),
     params:
-        extra="",
+        extra="--intervals {chr} ",
     threads: 1
     log:
         "logs/variantCalling/mutect2_{sample}.{chr}.log",

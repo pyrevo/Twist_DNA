@@ -10,23 +10,23 @@ __license__ = "GPL3"
  Collection of rules that calls variants using Vardict.
  Input, output and config
  ------------------------------------------------------------------------------
- Input variable: 
+ Input variable:
     _vardict_input: optional
         Default:
             "alignment/temp/{sample}.{chr}.bam",
     _vardict_input_bed: optional
-        Default: 
+        Default:
             "mutect2/bedfile.{chr}.bed"
 
- Output variable:  
+ Output variable:
     _vardict_output: optional
         Default:
             temp("vardict/{sample}.vardict.okAF.vcf")
-    
+
  Config dict keys: values
     config["reference"]["ref"]': required
     config["singularity"]["vardict"] or config["singularity"]["default"]'  : required
-    config["singularity"]["bcftools"]' or config["singularity"]["default"]'  : required 
+    config["singularity"]["bcftools"]' or config["singularity"]["default"]'  : required
  Overriding input and output
  ------------------------------------------------------------------------------
  Required wildcards:
@@ -36,7 +36,7 @@ __license__ = "GPL3"
  Ex
   vardict_input="alignment/{sample}.{chr}.bam"
   vardict_input_bed="bedfile/bedfile.{chr}.bed"
-                       
+
  Override output format
  Ex
    vardict_output="vardict/{sample}.vardict.vcf"
@@ -67,6 +67,7 @@ except:
 rule vardict:
     input:
         bam=_vardict_input,
+        bai=_vardict_input + ".bai",
         reference=config["reference"]["ref"],
         regions="mutect2/bedfile.{chr}.bed",
     output:
@@ -79,7 +80,7 @@ rule vardict:
     singularity:
         config["singularity"].get("vardict", config["singularity"].get("default", ""))
     wrapper:
-        "vardict-wrapper/bio/vardict"
+        "0.72.0/bio/vardict"
 
 
 rule filter_vardict:
@@ -94,7 +95,7 @@ rule filter_vardict:
     singularity:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     wrapper:
-        "bcftools-filter/bio/bcftools/filter"
+        "0.72.0/bio/bcftools/filter"
 
 
 rule filter_iupac_codes_vardict:
