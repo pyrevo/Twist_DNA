@@ -66,12 +66,16 @@ prev_pos = 0
 prev_candidate = []
 Multibp_list = []
 for candidate in candidate_list:
-    gene_change = candidate[7].split("|c.")[1].split("|")[0]
+    gene_change = candidate[7].split("c.")[1].split("|")[0]
+    if gene_change[:-3].find("-") != -1 or gene_change[:-3].find("+") != -1 or gene_change[:-3].find("*") != -1 :
+        continue
     gene_pos = int(gene_change[:-3])
     aa_nr = math.ceil(gene_pos / 3.0)
     print(candidate[:2], gene_change, aa_nr)
     chrom = candidate[0]
     pos = int(candidate[1])
+    #if candidate[7].find("TYPE=Complex") != -1 :
+    #    continue
     if chrom == prev_chrom and pos - prev_pos <= 2 and aa_nr == prev_aa_nr:
         if Multibp_list != [] and Multibp_list[-1][1][0] == prev_chrom and int(Multibp_list[-1][1][1]) == prev_pos:
             Multibp_list[-1].append(candidate)
@@ -89,7 +93,7 @@ Write variants to file.
 for Multibp in Multibp_list:
     codon_pos_list = []
     for variant in Multibp:
-        gene_change = variant[7].split("|c.")[1].split("|")[0]
+        gene_change = variant[7].split("c.")[1].split("|")[0]
         gene_pos = int(gene_change[:-3])
         codon_pos = (gene_pos - 1) % 3
         codon_pos_list.append(codon_pos)
@@ -101,7 +105,7 @@ for Multibp in Multibp_list:
     alt = ["X", "X", "X"]
     AF_list = []
     for variant in Multibp:
-        gene_change = variant[7].split("|c.")[1].split("|")[0]
+        gene_change = variant[7].split("c.")[1].split("|")[0]
         dna_change = gene_change[-3:].split(">")
         gene_pos = int(gene_change[:-3])
         codon_pos = (gene_pos - 1) % 3

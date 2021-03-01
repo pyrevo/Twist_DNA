@@ -6,7 +6,7 @@ rule Find_multibp_SNV:
     output:
         vcf=temp("recall/{sample}.ensemble.vep.exon.soft_filter.multibp.vcf.temp"),
     singularity:
-        config["singularity"]["python"]
+        config["singularity"].get("python_samtools", config["singularity"].get("default", ""))
     script:
         "../../../scripts/python/Multibp_SNV.py"
 
