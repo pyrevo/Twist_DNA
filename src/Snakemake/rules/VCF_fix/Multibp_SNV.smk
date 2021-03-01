@@ -16,6 +16,6 @@ rule sort_multiplebp_vcf:
     output:
         vcf="recall/{sample}.ensemble.vep.exon.soft_filter.multibp.vcf",
     singularity:
-        config["singularity"]["bcftools"]
+        config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     shell:
         "bcftools sort -o {output.vcf} -O v {input.vcf}"
