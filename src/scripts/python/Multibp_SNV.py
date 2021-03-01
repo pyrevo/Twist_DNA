@@ -67,15 +67,12 @@ prev_candidate = []
 Multibp_list = []
 for candidate in candidate_list:
     gene_change = candidate[7].split("c.")[1].split("|")[0]
-    if gene_change[:-3].find("-") != -1 or gene_change[:-3].find("+") != -1 or gene_change[:-3].find("*") != -1 :
+    if gene_change[:-3].find("-") != -1 or gene_change[:-3].find("+") != -1 or gene_change[:-3].find("*") != -1:
         continue
     gene_pos = int(gene_change[:-3])
     aa_nr = math.ceil(gene_pos / 3.0)
-    print(candidate[:2], gene_change, aa_nr)
     chrom = candidate[0]
     pos = int(candidate[1])
-    #if candidate[7].find("TYPE=Complex") != -1 :
-    #    continue
     if chrom == prev_chrom and pos - prev_pos <= 2 and aa_nr == prev_aa_nr:
         if Multibp_list != [] and Multibp_list[-1][1][0] == prev_chrom and int(Multibp_list[-1][1][1]) == prev_pos:
             Multibp_list[-1].append(candidate)
@@ -121,8 +118,8 @@ for Multibp in Multibp_list:
     AF_min = 1.0
     AF_min_i = 0
     i = 0
-    for AF in AF_list :
-        if AF < AF_min :
+    for AF in AF_list:
+        if AF < AF_min:
             AF_min = AF
             AF_min_i = i
         i += 1
@@ -144,9 +141,9 @@ for Multibp in Multibp_list:
     ref_AA = ""
     alt_AA = ""
     for AA in AA_dict:
-        if ref_AA in AA_dict[AA] :
+        if ref_AA in AA_dict[AA]:
             ref_AA = AA
-        if alt_AA in AA_dict[AA] :
+        if alt_AA in AA_dict[AA]:
             alt_AA = AA
     out_vcf.write(chrom + "\t" + str(pos) + "\t.\t" + "".join(ref) + "\t" + "".join(alt) + "\t.\tPASS\t")
     out_vcf.write(ref_AA + ">" + alt_AA + "\t" + Multibp[AF_min_i][8] + "\t" + Multibp[AF_min_i][9] + "\n")
