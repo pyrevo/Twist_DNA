@@ -141,5 +141,12 @@ for Multibp in Multibp_list:
             ref[i] = ref_bp
             alt[i] = ref_bp
         i += 1
+    ref_AA = ""
+    alt_AA = ""
+    for AA in AA_dict:
+        if ref_AA in AA_dict[AA] :
+            ref_AA = AA
+        if alt_AA in AA_dict[AA] :
+            alt_AA = AA
     out_vcf.write(chrom + "\t" + str(pos) + "\t.\t" + "".join(ref) + "\t" + "".join(alt) + "\t.\tPASS\t")
-    out_vcf.write(Multibp[AF_min_i][7] + "\t" + Multibp[AF_min_i][8] + "\t" + Multibp[AF_min_i][9] + "\n")
+    out_vcf.write(ref_AA + ">" + alt_AA + "\t" + Multibp[AF_min_i][8] + "\t" + Multibp[AF_min_i][9] + "\n")
