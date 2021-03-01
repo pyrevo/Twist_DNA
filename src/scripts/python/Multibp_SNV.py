@@ -39,10 +39,10 @@ prev_pos = 0
 prev_chrom = ""
 prev_lline = []
 for line in in_vcf:
+    out_vcf.write(line)
     if header:
         if line[:6] == "#CHROM":
             header = False
-        out_vcf.write(line)
         continue
     lline = line.strip().split()
     chrom = lline[0]
@@ -99,6 +99,7 @@ for Multibp in Multibp_list:
 
     ref = ["X", "X", "X"]
     alt = ["X", "X", "X"]
+    AF_list = []
     for variant in Multibp:
         gene_change = variant[7].split("|c.")[1].split("|")[0]
         dna_change = gene_change[-3:].split(">")
@@ -110,6 +111,17 @@ for Multibp in Multibp_list:
         else:
             ref[codon_pos] = dna_change[0]
             alt[codon_pos] = dna_change[1]
+        AF = float(variant[7].split("AF=")[1].split(";")[0])
+        AF_list.append(AF)
+
+    AF_min = 1.0
+    AF_min_i = 0
+    i = 0
+    for AF in AF_list :
+        if AF < AF_min :
+            AF_min = AF
+            AF_min_i = i
+        i += 1
 
     chrom = Multibp[0][0]
     if flip_bp:
@@ -125,4 +137,5 @@ for Multibp in Multibp_list:
             ref[i] = ref_bp
             alt[i] = ref_bp
         i += 1
-    out_vcf.write(chrom + "\t" + str(pos) + "\t.\t" + "".join(ref) + "\t" + "".join(alt) + "\t.\tPASS\n")
+    out_vcf.write(chrom + "\t" + str(pos) + "\t.\t" + "".join(ref) + "\t" + "".join(alt) + "\t.\tPASS\t")
+    out_vcf.write(Multibp[AF_min_i][7] + "\t" + Multibp[AF_min_i][8] + "\t" + Multibp[AF_min_i][9] + "\n")
