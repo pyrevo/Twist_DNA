@@ -1,4 +1,4 @@
-name: gms_somatic
+name: rd
 channels:
   - bioconda
   - conda-forge
