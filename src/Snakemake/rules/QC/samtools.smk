@@ -24,5 +24,3 @@ rule samtools_stats:
         config["singularity"].get("samtools", config["singularity"].get("default", ""))
     wrapper:
         "0.72.0/bio/samtools/stats"
-    # shell:
-    #    "(samtools stats {params.extra} {input} > {output} ) &> {log}"

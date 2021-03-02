@@ -28,7 +28,7 @@ try:
 except:
     pass
 
-_picardInsertSize_output_pdf = pdf="qc/{sample}/{sample}.insert_size_histogram.pdf"
+_picardInsertSize_output_pdf = "qc/{sample}/{sample}.insert_size_histogram.pdf"
 try:
     _picardInsertSize_output_pdf = picardInsertSize_output_pdf
 except:
@@ -47,8 +47,6 @@ rule picardInsertSize:
         config["singularity"].get("picard", config["singularity"].get("default", ""))
     wrapper:
         "0.72.0/bio/picard/collectinsertsizemetrics"
-    # shell:
-    #    "(java -Xmx4g -jar /opt/conda/share/picard-2.20.1-0/picard.jar CollectInsertSizeMetrics INPUT={input.bam} O={output.txt} H={output.pdf}) &> {log}"
 
 
 _PicardAlignmentSummaryMetrics_input_bam = "DNA_bam/{sample}-ready.bam"
@@ -82,8 +80,6 @@ rule PicardAlignmentSummaryMetrics:
         config["singularity"].get("picard", config["singularity"].get("default", ""))
     wrapper:
         "0.72.0/bio/picard/collectalignmentsummarymetrics"
-    # shell:
-    #    "(java -Xmx4g -jar /opt/conda/share/picard-2.20.1-0/picard.jar CollectAlignmentSummaryMetrics INPUT={input.bam} R={input.ref} OUTPUT={output}) &> {log}"
 
 
 rule GcBiasSummaryMetrics:
