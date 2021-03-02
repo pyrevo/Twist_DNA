@@ -31,7 +31,5 @@ rule sort_multiplebp_vcf:
         vcf=_sort_output,
     singularity:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
-    #shell:
-        #"bcftools sort -o {output.vcf} -O v {input.vcf}"
     wrapper:
         "0.72.0/bio/bcftools/sort"
