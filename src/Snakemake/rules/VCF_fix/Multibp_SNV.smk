@@ -11,12 +11,27 @@ rule Find_multibp_SNV:
         "../../../scripts/python/Multibp_SNV.py"
 
 
+_sort_input = "recall/{sample}.ensemble.vep.exon.soft_filter.multibp.vcf.temp"
+try:
+    _sort_input = sort_input
+except:
+    pass
+
+_sort_output = "recall/{sample}.ensemble.vep.exon.soft_filter.multibp.vcf"
+try:
+    _sort_output = sort_output
+except:
+    pass
+
+
 rule sort_multiplebp_vcf:
     input:
-        vcf="recall/{sample}.ensemble.vep.exon.soft_filter.multibp.vcf.temp",
+        vcf=_sort_input,
     output:
-        vcf="recall/{sample}.ensemble.vep.exon.soft_filter.multibp.vcf",
+        vcf=_sort_output,
     singularity:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
-    shell:
-        "bcftools sort -o {output.vcf} -O v {input.vcf}"
+    #shell:
+        #"bcftools sort -o {output.vcf} -O v {input.vcf}"
+    wrapper:
+        "0.72.0/bio/bcftools/sort"
