@@ -24,7 +24,6 @@ dependencies:
   - cutadapt=3.2
   - fastqc=0.11.9
   - multiqc=1.9
-  - htslib=1.11
   - vt=2015.11.10
   - bcbio-variation-recall=0.2.6
-  - ensembl-vep=103.1
+#  - ensembl-vep=103.1
