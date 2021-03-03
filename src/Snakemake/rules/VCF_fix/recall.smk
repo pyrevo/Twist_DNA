@@ -22,7 +22,7 @@ rule recall:
     log:
         "logs/variantCalling/recall/{sample}.log",
     singularity:
-        config["singularity"]["ensemble"]
+        config["singularity"].get("ensemble", config["singularity"].get("default", ""))
     shell:
         "(bcbio-variation-recall ensemble -n {params.support} --names {params.order} {output.vcf} {input.ref} {input.vcfs}) &> {log}"
 
@@ -49,7 +49,7 @@ rule filter_recall:
     log:
         "logs/variantCalling/recall/{sample}.filter_recall.log",
     singularity:
-        config["singularity"]["python"]
+        config["singularity"].get("python", config["singularity"].get("default", ""))
     script:
         "../../../scripts/python/filter_recall.py"
 

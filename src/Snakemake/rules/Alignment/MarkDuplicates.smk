@@ -35,7 +35,7 @@ rule Split_bam_Markdup:
     log:
         "logs/map/MarkDup/split_bam_realign_{sample}-sort.{chr}.log",
     singularity:
-        config["singularity"]["samtools"]
+        config["singularity"].get("samtools", config["singularity"].get("default", ""))
     shell:
         "(samtools view -b {input.bam} {wildcards.chr} > {output.bam} &> {log}"
 
@@ -52,7 +52,7 @@ rule MarkDuplicates:
         "logs/map/MarkDup/{sample}-ready.{chr}.log",
     threads: 2
     singularity:
-        config["singularity"]["picard"]
+        config["singularity"].get("picard", config["singularity"].get("default", ""))
     shell:
         "(java -Xmx4g -jar /opt/conda/share/picard-2.20.1-0/picard.jar MarkDuplicates INPUT={input.bam} OUTPUT={output.bam} METRICS_FILE={params.metric}) &> {log}"
 
@@ -65,6 +65,6 @@ rule Merge_bam_Markdup:
     log:
         "logs/map/MarkDup/merge_bam/{sample}.log",
     singularity:
-        config["singularity"]["samtools"]
+        config["singularity"].get("samtools", config["singularity"].get("default", ""))
     shell:
         "(samtools merge {output.bam} {input.bams} &> {log}"

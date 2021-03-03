@@ -13,7 +13,7 @@ rule collectReadCounts:
     log:
         "logs/CNV_GATK/{sample}.collectReadCounts.log",
     singularity:
-        config["singularity"]["gatk4"]
+        config["singularity"].get("gatk4", config["singularity"].get("default", ""))
     shell:
         "(gatk --java-options '-Xmx4g' CollectReadCounts -I {input.bam} -L {input.interval} "
         "--interval-merging-rule {params.mergingRule} -O {output}) &> {log}"
@@ -30,7 +30,7 @@ rule denoiseReadCounts:
     log:
         "logs/CNV_GATK/{sample}-denoise.log",
     singularity:
-        config["singularity"]["gatk4"]
+        config["singularity"].get("gatk4", config["singularity"].get("default", ""))
     shell:
         "(gatk --java-options '-Xmx4g' DenoiseReadCounts -I {input.hdf5Tumor} "
         "--count-panel-of-normals {input.hdf5PoN} "
@@ -49,7 +49,7 @@ rule collectAllelicCounts:
     log:
         "logs/CNV_GATK/{sample}_allelicCounts.log",
     singularity:
-        config["singularity"]["gatk4"]
+        config["singularity"].get("gatk4", config["singularity"].get("default", ""))
     shell:
         "(gatk --java-options '-Xmx4g' CollectAllelicCounts -L {input.intervalList} "
         "-I {input.bam} -R {input.ref} "
@@ -75,7 +75,7 @@ rule modelSegments:
     log:
         "logs/CNV_GATK/{sample}_modelSegments.log",
     singularity:
-        config["singularity"]["gatk4"]
+        config["singularity"].get("gatk4", config["singularity"].get("default", ""))
     shell:
         "(gatk --java-options '-Xmx4g' ModelSegments "
         "--denoised-copy-ratios {input.denoisedCopyRatio} "
@@ -91,7 +91,7 @@ rule callCopyRatioSegments:
     log:
         "logs/CNV_GATK/{sample}_calledCRSegments.log",
     singularity:
-        config["singularity"]["gatk4"]
+        config["singularity"].get("gatk4", config["singularity"].get("default", ""))
     shell:
         "(gatk CallCopyRatioSegments --input {input} --output {output}) &> {log}"
 
@@ -111,7 +111,7 @@ rule plotModeledSegments:
     log:
         "logs/CNV_GATK/{sample}_plotSegments.log",
     singularity:
-        config["singularity"]["gatk4"]
+        config["singularity"].get("gatk4", config["singularity"].get("default", ""))
     shell:
         "(gatk PlotModeledSegments --denoised-copy-ratios {input.denoisedCopyRatio} "
         "--allelic-counts {input.allelicCounts} --segments {input.segments} "

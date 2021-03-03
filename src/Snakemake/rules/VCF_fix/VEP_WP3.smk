@@ -10,7 +10,7 @@ rule vep:
     log:
         "logs/variantCalling/vep/{sample}.log",
     singularity:
-        config["singularity"]["vep"]
+        config["singularity"].get("vep", config["singularity"].get("default", ""))
     threads: 10
     shell:
         "(vep --vcf --no_stats -o {output.vcf} -i {input.vcf} --dir_cache {input.cache} --fork {threads} --cache --refseq --offline --fasta {input.fasta} {params} ) &> {log}"
@@ -25,6 +25,6 @@ rule bgzipVep:
     log:
         "logs/recall/vep/{sample}.bgzip.log",
     singularity:
-        config["singularity"]["bcftools"]
+        config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     shell:
         "(bgzip {input} && tabix {input}.gz) &> {log}"

@@ -31,7 +31,7 @@ rule fastqcR1:
     log:
         "logs/qc/fastqc/{sample}_R1.log",
     singularity:
-        config["singularity"]["fastqc"]
+        config["singularity"].get("fastqc", config["singularity"].get("default", ""))
     shell:
         "(fastqc --quiet --outdir {params.outdir} {input}) &> {log}"
 
@@ -47,6 +47,6 @@ rule fastqcR2:
     log:
         "logs/qc/fastqc/{sample}_R2.log",
     singularity:
-        config["singularity"]["fastqc"]
+        config["singularity"].get("fastqc", config["singularity"].get("default", ""))
     shell:
         "(fastqc --quiet --outdir {params.outdir} {input}) &> {log}"

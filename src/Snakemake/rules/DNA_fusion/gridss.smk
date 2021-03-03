@@ -14,6 +14,6 @@ rule gridss:
     log:
         "logs/DNA_fusion/gridss/{sample}.log",
     singularity:
-        config["singularity"]["gridss"]
+        config["singularity"].get("gridss", config["singularity"].get("default", ""))
     shell:
         "(gridss.sh --reference {params.ref} --output {output.vcf} --assembly {output.bam} --threads {threads} --blacklist {params.blacklist} --workingdir {params.workingdir} {input.bam}) > {log}"
