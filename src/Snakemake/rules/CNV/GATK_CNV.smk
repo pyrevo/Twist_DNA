@@ -111,7 +111,8 @@ rule plotModeledSegments:
     log:
         "logs/CNV_GATK/{sample}_plotSegments.log",
     singularity:
-        config["singularity"].get("gatk4", config["singularity"].get("default", ""))
+        #config["singularity"].get("gatk4", config["singularity"].get("default", ""))
+        config["singularity"].get("gatk4_cnv", config["singularity"].get("default", ""))
     shell:
         "(gatk PlotModeledSegments --denoised-copy-ratios {input.denoisedCopyRatio} "
         "--allelic-counts {input.allelicCounts} --segments {input.segments} "

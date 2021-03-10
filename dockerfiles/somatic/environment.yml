@@ -22,7 +22,7 @@ dependencies:
   - cnvkit=0.9.8
   - gridss=2.10.2
   - cutadapt=3.2
-  - fastqc=0.11.9
+  - fastqc=0.11.8
   - multiqc=1.9
   - vt=2015.11.10
   - bcbio-variation-recall=0.2.6

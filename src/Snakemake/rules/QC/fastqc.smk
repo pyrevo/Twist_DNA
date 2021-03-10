@@ -30,10 +30,13 @@ rule fastqcR1:
         outdir="qc/{sample}/",
     log:
         "logs/qc/fastqc/{sample}_R1.log",
+    threads: 10
     singularity:
         config["singularity"].get("fastqc", config["singularity"].get("default", ""))
     shell:
-        "(fastqc --quiet --outdir {params.outdir} {input}) &> {log}"
+        "(fastqc --quiet -t {threads} --outdir {params.outdir} {input}) &> {log}"
+    #wrapper:
+    #    "0.38.0/bio/fastqc"
 
 
 rule fastqcR2:
@@ -46,7 +49,10 @@ rule fastqcR2:
         outdir="qc/{sample}/",
     log:
         "logs/qc/fastqc/{sample}_R2.log",
+    threads: 10
     singularity:
         config["singularity"].get("fastqc", config["singularity"].get("default", ""))
     shell:
-        "(fastqc --quiet --outdir {params.outdir} {input}) &> {log}"
+        "(fastqc --quiet -t {threads} --outdir {params.outdir} {input}) &> {log}"
+    #wrapper:
+    #    "0.38.0/bio/fastqc"
