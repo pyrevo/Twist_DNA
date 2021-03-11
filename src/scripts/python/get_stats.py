@@ -8,7 +8,7 @@ import csv
 picardMet1 = snakemake.input.picardMet1
 picardMet2 = snakemake.input.picardMet2
 picardMet3 = snakemake.input.picardMet3
-#picardMet4 = snakemake.input.picardMet4
+# picardMet4 = snakemake.input.picardMet4
 picardMet5 = snakemake.input.picardMet5
 samtools = snakemake.input.samtools
 multiQCheader = snakemake.input.multiQCheader

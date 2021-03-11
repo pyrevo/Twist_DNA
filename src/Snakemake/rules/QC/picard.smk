@@ -14,7 +14,7 @@ rule picardHsMetrics:
         "logs/qc/picard/HsMetrics/{sample}.log",
     singularity:
         config["singularity"].get("picard", config["singularity"].get("default", ""))
-    #shell:
+    # shell:
     #    "(java -Xmx4g -jar /opt/conda/share/picard-2.20.1-0/picard.jar CollectHsMetrics BAIT_INTERVALS={input.intervals} TARGET_INTERVALS={input.intervals} INPUT={input.bam} OUTPUT={output}) &> {log}"
     wrapper:
         "0.72.0/bio/picard/collecthsmetrics"
