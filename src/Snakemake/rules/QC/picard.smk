@@ -106,7 +106,7 @@ rule DuplicationMetrics:
     input:
         bam="DNA_bam/{sample}-ready.bam",
     output:
-        metrics="qc/{sample}/{sample}.duplication.metrics.txt",
+        metrics="qc/{sample}/{sample}.duplication_metrics.txt",
     log:
         "logs/qc/picard/DuplicationMetrics/{sample}.log",
     singularity:
