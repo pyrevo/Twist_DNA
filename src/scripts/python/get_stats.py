@@ -8,7 +8,8 @@ import csv
 picardMet1 = snakemake.input.picardMet1
 picardMet2 = snakemake.input.picardMet2
 picardMet3 = snakemake.input.picardMet3
-picardMet4 = snakemake.input.picardMet4
+#picardMet4 = snakemake.input.picardMet4
+picardMet5 = snakemake.input.picardMet5
 samtools = snakemake.input.samtools
 multiQCheader = snakemake.input.multiQCheader
 # cartoolLog = sys.argv[7]
@@ -40,6 +41,12 @@ met = subprocess.run(metCmd, stdout=subprocess.PIPE, shell='TRUE').stdout.decode
 metrics = met.split('\n')
 zipObject = zip(metrics[0].split('\t'), metrics[1].split('\t'))
 metricsDict4 = dict(zipObject)
+
+metCmd = 'grep -A1 LIBRARY ' + picardMet5
+met = subprocess.run(metCmd, stdout=subprocess.PIPE, shell='TRUE').stdout.decode('utf-8')
+metrics = met.split('\n')
+zipObject = zip(metrics[0].split('\t'), metrics[1].split('\t'))
+metricsDict5 = dict(zipObject)
 
 # Samtools
 samCmd = 'grep SN ' + samtools
@@ -81,15 +88,15 @@ line = [
     sample,
     metricsDict3['TOTAL_READS'],
     100 * float(metricsDict3['PCT_PF_READS_ALIGNED']),
-    100 * float(samDict['reads duplicated']) / float(samDict['raw total sequences']),
+    100 * float(metricsDict5['PERCENT_DUPLICATION']),
     100 * float(metricsDict1['PCT_SELECTED_BASES']),
     100 * float(metricsDict1['PCT_TARGET_BASES_100X']),
     metricsDict1['MEAN_TARGET_COVERAGE'],
     metricsDict1['MEDIAN_TARGET_COVERAGE'],
     metricsDict2['MEDIAN_INSERT_SIZE'],
     metricsDict2['STANDARD_DEVIATION'],
-    100 * float(metricsDict4['AT_DROPOUT']),
-    100 * float(metricsDict4['GC_DROPOUT']),
+    100 * float(metricsDict1['AT_DROPOUT']),
+    100 * float(metricsDict1['GC_DROPOUT']),
     100 * float(metricsDict1['ZERO_CVG_TARGETS_PCT']),
     metricsDict1['FOLD_80_BASE_PENALTY'],
 ]

@@ -11,11 +11,11 @@ rule touchBatch:
 
 rule getStatsforMqc:
     input:
-        #picardDup = "qc/{sample}/{sample}_DuplicationMetrics.txt", #Not running this step in picard
         picardMet1="qc/{sample}/{sample}.HsMetrics.txt",
         picardMet2="qc/{sample}/{sample}.insert_size_metrics.txt",
         picardMet3="qc/{sample}/{sample}.alignment_summary_metrics.txt",
-        picardMet4="qc/{sample}/{sample}.gc_bias.summary_metrics.txt",
+        #picardMet4="qc/{sample}/{sample}.gc_bias.summary_metrics.txt",
+        picardMet5="qc/{sample}/{sample}.duplication_metrics.txt",
         samtools="qc/{sample}/{sample}.samtools-stats.txt",
         #multiQCheader = config["programdir"]["dir"]+"src/qc/multiqc-header.txt",
         multiQCheader="DATA/multiqc-header.txt",

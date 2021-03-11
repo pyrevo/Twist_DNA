@@ -5,15 +5,19 @@ localrules:
 rule picardHsMetrics:
     input:
         bam="DNA_bam/{sample}-ready.bam",
-        intervals=config["bed"]["intervals"],
+        bait_intervals=config["bed"]["intervals"],
+        target_intervals=config["bed"]["intervals"],
+        reference=config["reference"]["ref"],
     output:
         "qc/{sample}/{sample}.HsMetrics.txt",
     log:
         "logs/qc/picard/HsMetrics/{sample}.log",
     singularity:
         config["singularity"].get("picard", config["singularity"].get("default", ""))
-    shell:
-        "(java -Xmx4g -jar /opt/conda/share/picard-2.20.1-0/picard.jar CollectHsMetrics BAIT_INTERVALS={input.intervals} TARGET_INTERVALS={input.intervals} INPUT={input.bam} OUTPUT={output}) &> {log}"
+    #shell:
+    #    "(java -Xmx4g -jar /opt/conda/share/picard-2.20.1-0/picard.jar CollectHsMetrics BAIT_INTERVALS={input.intervals} TARGET_INTERVALS={input.intervals} INPUT={input.bam} OUTPUT={output}) &> {log}"
+    wrapper:
+        "0.72.0/bio/picard/collecthsmetrics"
 
 
 _picardInsertSize_input = "DNA_bam/{sample}-ready.bam"
@@ -82,17 +86,30 @@ rule PicardAlignmentSummaryMetrics:
         "0.72.0/bio/picard/collectalignmentsummarymetrics"
 
 
-rule GcBiasSummaryMetrics:
+# rule GcBiasSummaryMetrics:
+#     input:
+#         bam="DNA_bam/{sample}-ready.bam",
+#         ref=config["reference"]["ref"],
+#     output:
+#         summary="qc/{sample}/{sample}.gc_bias.summary_metrics.txt",
+#         gc="qc/{sample}/{sample}.gc_bias.metrics.txt",
+#         pdf="qc/{sample}/{sample}.gc_bias.metrics.pdf",
+#     log:
+#         "logs/qc/picard/GcBiasSummaryMetrics/{sample}.log",
+#     singularity:
+#         config["singularity"].get("picard", config["singularity"].get("default", ""))
+#     shell:
+#         "(java -Xmx4g -jar /opt/conda/share/picard-2.20.1-0/picard.jar CollectGcBiasMetrics I={input.bam} R={input.ref} O={output.gc} CHART={output.pdf} S={output.summary}) &> {log}"
+
+
+rule DuplicationMetrics:
     input:
         bam="DNA_bam/{sample}-ready.bam",
-        ref=config["reference"]["ref"],
     output:
-        summary="qc/{sample}/{sample}.gc_bias.summary_metrics.txt",
-        gc="qc/{sample}/{sample}.gc_bias.metrics.txt",
-        pdf="qc/{sample}/{sample}.gc_bias.metrics.pdf",
+        metrics="qc/{sample}/{sample}.duplication.metrics.txt",
     log:
-        "logs/qc/picard/GcBiasSummaryMetrics/{sample}.log",
+        "logs/qc/picard/DuplicationMetrics/{sample}.log",
     singularity:
         config["singularity"].get("picard", config["singularity"].get("default", ""))
     shell:
-        "(java -Xmx4g -jar /opt/conda/share/picard-2.20.1-0/picard.jar CollectGcBiasMetrics I={input.bam} R={input.ref} O={output.gc} CHART={output.pdf} S={output.summary}) &> {log}"
+        "(picard CollectDuplicationMetrics INPUT={input.bam} M={output.metrics}) &> {log}"
