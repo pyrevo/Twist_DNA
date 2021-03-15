@@ -61,7 +61,7 @@ rule Merge_bam_Markdup:
     input:
         bams=expand("bam/Markdup_temp/{{sample}}-dup.{chr}.bam", chr=chrom_list),
     output:
-        bam=temp("DNA_bam/{sample}-ready_unsorted.bam"),
+        bam="DNA_bam/{sample}-ready.bam",
     log:
         "logs/map/MarkDup/merge_bam/{sample}.log",
     container:
