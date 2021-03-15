@@ -27,7 +27,7 @@ rule Soft_filter:
         filter="-e 'FORMAT/AD<20 || FORMAT/DP<50 || FORMAT/AF<0.05'",
     singularity:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
-        #"/projects/wp2/nobackup/Twist_Myeloid/Containers/bcftools-1.9--8.simg"
+        # "/projects/wp2/nobackup/Twist_Myeloid/Containers/bcftools-1.9--8.simg"
     shell:
         "bcftools filter -O v -o {output.vcf} --soft-filter 'Soft_filter' {params.filter} -m '+' {input.vcf}"
 
