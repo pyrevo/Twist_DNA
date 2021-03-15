@@ -38,7 +38,6 @@ rule AD_filter:
         vcf="Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.AD20.vcf",
     singularity:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
-        #"/projects/wp2/nobackup/Twist_Myeloid/Containers/bcftools-1.9--8.simg"
     shell:
         "bcftools filter -O v -o {output.vcf} -e \"FORMAT/AD<20\" {input.vcf}"
 
