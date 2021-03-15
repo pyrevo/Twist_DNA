@@ -51,10 +51,9 @@ rule MarkDuplicates:
     log:
         "logs/map/MarkDup/{sample}-ready.{chr}.log",
     threads: 2
-    singularity:
+    container:
         config["singularity"].get("picard", config["singularity"].get("default", ""))
     shell:
-        #"(java -Xmx4g -jar /opt/conda/share/picard-2.20.1-0/picard.jar MarkDuplicates INPUT={input.bam} OUTPUT={output.bam} METRICS_FILE={params.metric}) &> {log}"
         "(picard MarkDuplicates INPUT={input.bam} OUTPUT={output.bam} METRICS_FILE={params.metric}) &> {log}"
 
 
@@ -65,7 +64,7 @@ rule Merge_bam_Markdup:
         bam=temp("DNA_bam/{sample}-ready_unsorted.bam"),
     log:
         "logs/map/MarkDup/merge_bam/{sample}.log",
-    singularity:
+    conatiner:
         config["singularity"].get("samtools", config["singularity"].get("default", ""))
     shell:
         "(samtools merge {output.bam} {input.bams}) &> {log}"
