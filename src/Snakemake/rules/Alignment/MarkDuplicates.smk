@@ -64,7 +64,7 @@ rule Merge_bam_Markdup:
         bam=temp("DNA_bam/{sample}-ready_unsorted.bam"),
     log:
         "logs/map/MarkDup/merge_bam/{sample}.log",
-    conatiner:
+    container:
         config["singularity"].get("samtools", config["singularity"].get("default", ""))
     shell:
         "(samtools merge {output.bam} {input.bams}) &> {log}"
