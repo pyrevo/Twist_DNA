@@ -39,7 +39,7 @@ try:
 except:
     pass
 
-_bam_split_output = "alignment/temp/{sample}.{chr}.sort.bam"
+_bam_split_output = "alignment/temp/{sample}.{chr}.bam"
 try:
     _bam_split_output = bam_split_output
 except:
@@ -48,9 +48,10 @@ except:
 
 rule bam_split:
     input:
-        _bam_split_input,
+        bam=_bam_split_input,
+        bai=_bam_split_input + ".bai",
     output:
-        _bam_split_output
+        bam=_bam_split_output
     singularity:
         config["singularity"].get("samtools", config["singularity"].get("default", ""))
     log:
