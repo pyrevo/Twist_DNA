@@ -8,7 +8,9 @@ rule varscan:
     output:
         temp("varscan/{sample}.varscan.vcf"),
     params:
-        samtools_singularity=config["singularity"]["execute"] + config["singularity"].get("samtools", config["singularity"].get("default", "")),
+        samtools_singularity=config["singularity"]["execute"] + config["singularity"].get(
+            "samtools", config["singularity"].get("default", "")
+        ),
         varscan_singularity=config["singularity"]["execute"] + config["singularity"]["varscan"],
         mpileup="-d 1000 -L 1000",
         varscan="--min-coverage 5 --p-value 0.98 --strand-filter 1 --min-var-freq 0.01 --output-vcf --variants",

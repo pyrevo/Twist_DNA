@@ -7,10 +7,14 @@ rule bwa_mem_fgbio1:
     log:
         "logs/fgbio/bwa1/{sample}.log",
     params:
-        bwa_singularity=config["singularity"]["execute"] + config["singularity"].get("bwa", config["singularity"].get("default", "")),
+        bwa_singularity=config["singularity"]["execute"] + config["singularity"].get(
+            "bwa", config["singularity"].get("default", "")
+        ),
         bamsormadup_singularity=config["singularity"]["execute"] + config["singularity"]["bamsormadup"],
         umis_singularity=config["singularity"]["execute"] + config["singularity"]["umis"],
-        samtools_singularity=config["singularity"]["execute"] + config["singularity"].get("samtools", config["singularity"].get("default", "")),
+        samtools_singularity=config["singularity"]["execute"] + config["singularity"].get(
+            "samtools", config["singularity"].get("default", "")
+        ),
         index=config["reference"]["ref"],
         extra=r"-c 250 -M -R '@RG\tID:{sample}\tSM:{sample}\tPL:illumina\tPU:{sample}' -v 1",
         tmp_dir="tmpfile=bam/{sample}",
