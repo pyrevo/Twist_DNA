@@ -26,4 +26,6 @@
     "gridss": {"n": 5, "time" : "6:00:00"},
     "mutect2": {"time" : "4:00:00"},
     "GPU_align" : {"partition" : "GPU", "time" : "3:00:00", "n": 40},
+    "fastqcR1" : {"n" : 10, "time" : "8:00:00"},
+    "fastqcR2" : {"n" : 10, "time" : "8:00:00"},
 }

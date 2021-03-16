@@ -20,7 +20,7 @@ rule multiqcBatch:
     log:
         "logs/report/multiqc.log",
     singularity:
-        config["singularity"]["multiqc"]
+        config["singularity"].get("multiqc", config["singularity"].get("default", ""))
     shell:
         "(multiqc {params.extra} --force -o {params.output_dir} -n {params.output_name} {params.input_dir} ) &> {log} && "
         "cp qc/MultiQC.html Results/DNA/MultiQC.html"

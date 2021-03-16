@@ -12,7 +12,7 @@ rule picardHsMetrics:
         "qc/{sample}/{sample}.HsMetrics.txt",
     log:
         "logs/qc/picard/HsMetrics/{sample}.log",
-    singularity:
+    container:
         config["singularity"].get("picard", config["singularity"].get("default", ""))
     # shell:
     #    "(java -Xmx4g -jar /opt/conda/share/picard-2.20.1-0/picard.jar CollectHsMetrics BAIT_INTERVALS={input.intervals} TARGET_INTERVALS={input.intervals} INPUT={input.bam} OUTPUT={output}) &> {log}"
@@ -109,7 +109,7 @@ rule DuplicationMetrics:
         metrics="qc/{sample}/{sample}.duplication_metrics.txt",
     log:
         "logs/qc/picard/DuplicationMetrics/{sample}.log",
-    singularity:
+    container:
         config["singularity"].get("picard", config["singularity"].get("default", ""))
     shell:
         "(picard CollectDuplicationMetrics INPUT={input.bam} M={output.metrics}) &> {log}"

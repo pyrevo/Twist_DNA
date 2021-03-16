@@ -7,7 +7,7 @@ rule Create_targets:
     log:
         "logs/CNV_cnvkit/Create_targets.log",
     singularity:
-        config["singularity"]["cnvkit"]
+        config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
     shell:
         "(cnvkit.py target --split {input.bed} -o {output.bed}) &> {log}"
 
@@ -20,7 +20,7 @@ rule Create_anti_targets:
     log:
         "logs/CNV_cnvkit/Create_anti_targets.log",
     singularity:
-        config["singularity"]["cnvkit"]
+        config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
     shell:
         "(cnvkit.py antitarget {input.bed} -o {output.bed}) &> {log}"
 
@@ -38,7 +38,7 @@ rule Call_cnv:
         "logs/CNV_cnvkit/Call_cnv.log",
     threads: 8
     singularity:
-        config["singularity"]["cnvkit"]
+        config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
     shell:
         "(cnvkit.py batch {input.bams} -r {input.PoN} -p {threads} -d {params.outdir}) &> {log}"
 
@@ -58,6 +58,6 @@ rule Filter_cnv:
     log:
         "logs/CNV_cnvkit/Filter_cnv.log",
     singularity:
-        config["singularity"]["python"]
+        config["singularity"].get("python", config["singularity"].get("default", ""))
     script:
         "../../../scripts/python/Filter_cnv.py"

@@ -80,6 +80,6 @@ rule CNV_event:
     log:
         "logs/CNV_ONCOCNV/CNV_event.log",
     singularity:
-        config["singularity"]["python"]
+        config["singularity"].get("python", config["singularity"].get("default", ""))
     script:
         "../../../scripts/python/get_cnv_ONCOCNV.py"

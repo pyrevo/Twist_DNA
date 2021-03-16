@@ -18,6 +18,6 @@ rule cutadapt:
         "logs/trimming/cutadapt/{sample}.log",
     threads: 10
     singularity:
-        config["singularity"]["cutadapt"]
+        config["singularity"].get("cutadapt", config["singularity"].get("default", ""))
     shell:
         "(cutadapt {params.adapters_r1} {params.adapters_r2} {params.others} -o {output.fastq1} -p {output.fastq2} -j {threads} {input.fastq1} {input.fastq2} > {params.qc} ) &> {log}"

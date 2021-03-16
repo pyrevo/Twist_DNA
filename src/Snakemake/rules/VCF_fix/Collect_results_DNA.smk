@@ -9,8 +9,10 @@ rule ensemble_filter:
         vcf="recall/{sample}.ensemble.vcf.gz",
     output:
         vcf="Results/DNA/{sample}/vcf/{sample}-ensemble.final.vcf.gz",
+    singularity:
+        config["singularity"].get("python_htslib", config["singularity"].get("default", ""))
     shell:
-        "python3 src/filter_by_num_callers.py -v {input.vcf} -d | bgzip > {output.vcf} && "
+        "python src/filter_by_num_callers.py -v {input.vcf} -d | bgzip > {output.vcf} && "
         "tabix {output.vcf}"
 
 
@@ -21,8 +23,10 @@ rule intron_filter:
         vcf="Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.vcf.gz",
     params:
         vcf="Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.vcf",
+    singularity:
+        config["singularity"].get("python_htslib", config["singularity"].get("default", ""))
     shell:
-        "python3 src/filter_TSO500_introns.py {input.vcf} &&"
+        "python src/filter_TSO500_introns.py {input.vcf} &&"
         "bgzip {params.vcf} && "
         "tabix {output.vcf}"
 
@@ -33,7 +37,7 @@ rule AD_filter:
     output:
         vcf="Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.AD20.vcf",
     singularity:
-        "/projects/wp2/nobackup/Twist_Myeloid/Containers/bcftools-1.9--8.simg"
+        config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     shell:
         "bcftools filter -O v -o {output.vcf} -e \"FORMAT/AD<20\" {input.vcf}"
 

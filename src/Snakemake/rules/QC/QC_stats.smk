@@ -27,7 +27,7 @@ rule getStatsforMqc:
     log:
         "logs/qc/{sample}_stats.log",
     singularity:
-        config["singularity"]["python"]
+        config["singularity"].get("python", config["singularity"].get("default", ""))
     script:
         "../../../scripts/python/get_stats.py"
 
@@ -42,6 +42,6 @@ rule sortBatchStats:
     log:
         "logs/qc/sortBatch_Stats.log",
     singularity:
-        config["singularity"]["python"]
+        config["singularity"].get("python", config["singularity"].get("default", ""))
     script:
         "../../../scripts/python/sortBatchStats.py"

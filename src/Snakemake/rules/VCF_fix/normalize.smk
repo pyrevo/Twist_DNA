@@ -8,7 +8,7 @@ rule decompose:  #Do we need decompose as well, maybe for all but vardict??
     log:
         "logs/variantCalling/vt/{sample}.{method}.decomposed.log",
     singularity:
-        config["singularity"]["vt"]
+        config["singularity"].get("vt", config["singularity"].get("default", ""))
     shell:
         "(vt decompose -s {input.vcf} | vt decompose_blocksub -o {output} -) &> {log}"
 
@@ -22,7 +22,7 @@ rule normalizeAll:
     log:
         "logs/variantCalling/vt/{sample}.{method}.normalized.log",
     singularity:
-        config["singularity"]["vt"]
+        config["singularity"].get("vt", config["singularity"].get("default", ""))
     shell:
         "(vt normalize -n -r {input.ref} -o {output} {input.vcf} ) &> {log}"
 

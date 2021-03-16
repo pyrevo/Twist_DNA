@@ -10,8 +10,10 @@ rule intron_filter:
         vcf="recall/{sample}.ensemble.vep.exon.vcf",
     # singularity:
     #    config["singularity"]["python"]
+    singularity:
+        config["singularity"].get("python_htslib", config["singularity"].get("default", ""))
     shell:
-        "python3 src/scripts/python/filter_introns.py {input.vcf} {input.bed} {params.vcf} &&"
+        "python src/scripts/python/filter_introns.py {input.vcf} {input.bed} {params.vcf} &&"
         "bgzip {params.vcf} && "
         "tabix {output.vcf}"
 
@@ -24,7 +26,8 @@ rule Soft_filter:
     params:
         filter="-e 'FORMAT/AD<20 || FORMAT/DP<50 || FORMAT/AF<0.05'",
     singularity:
-        "/projects/wp2/nobackup/Twist_Myeloid/Containers/bcftools-1.9--8.simg"
+        config["singularity"].get("bcftools", config["singularity"].get("default", ""))
+        # "/projects/wp2/nobackup/Twist_Myeloid/Containers/bcftools-1.9--8.simg"
     shell:
         "bcftools filter -O v -o {output.vcf} --soft-filter 'Soft_filter' {params.filter} -m '+' {input.vcf}"
 

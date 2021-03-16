@@ -35,7 +35,7 @@ rule Split_bam_Markdup:
     log:
         "logs/map/MarkDup/split_bam_realign_{sample}-sort.{chr}.log",
     singularity:
-        config["singularity"]["samtools"]
+        config["singularity"].get("samtools", config["singularity"].get("default", ""))
     shell:
         "(samtools view -b {input.bam} {wildcards.chr} > {output.bam}) &> {log}"
 
@@ -65,6 +65,6 @@ rule Merge_bam_Markdup:
     log:
         "logs/map/MarkDup/merge_bam/{sample}.log",
     container:
-        config["singularity"]["samtools"]
+        config["singularity"].get("samtools", config["singularity"].get("default", ""))
     shell:
         "(samtools merge {output.bam} {input.bams}) &> {log}"
