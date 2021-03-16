@@ -36,11 +36,11 @@ metrics = met.split('\n')
 zipObject = zip(metrics[0].split('\t'), metrics[3].split('\t'))
 metricsDict3 = dict(zipObject)
 
-metCmd = 'grep -A1 READS_USED ' + picardMet4
-met = subprocess.run(metCmd, stdout=subprocess.PIPE, shell='TRUE').stdout.decode('utf-8')
-metrics = met.split('\n')
-zipObject = zip(metrics[0].split('\t'), metrics[1].split('\t'))
-metricsDict4 = dict(zipObject)
+# metCmd = 'grep -A1 READS_USED ' + picardMet4
+# met = subprocess.run(metCmd, stdout=subprocess.PIPE, shell='TRUE').stdout.decode('utf-8')
+# metrics = met.split('\n')
+# zipObject = zip(metrics[0].split('\t'), metrics[1].split('\t'))
+# metricsDict4 = dict(zipObject)
 
 metCmd = 'grep -A1 LIBRARY ' + picardMet5
 met = subprocess.run(metCmd, stdout=subprocess.PIPE, shell='TRUE').stdout.decode('utf-8')

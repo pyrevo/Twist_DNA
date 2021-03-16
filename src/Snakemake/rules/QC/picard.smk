@@ -112,4 +112,4 @@ rule DuplicationMetrics:
     container:
         config["singularity"].get("picard", config["singularity"].get("default", ""))
     shell:
-        "(picard CollectDuplicationMetrics INPUT={input.bam} M={output.metrics}) &> {log}"
+        "(picard CollectDuplicateMetrics INPUT={input.bam} M={output.metrics}) &> {log}"
