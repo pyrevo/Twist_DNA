@@ -7,10 +7,14 @@ rule bwa_mem_fgbio1:
     log:
         "logs/fgbio/bwa1/{sample}.log",
     params:
-        bwa_singularity=config["singularity"]["execute"] + config["singularity"]["bwa_fgbio"],
+        bwa_singularity=config["singularity"]["execute"] + config["singularity"].get(
+            "bwa", config["singularity"].get("default", "")
+        ),
         bamsormadup_singularity=config["singularity"]["execute"] + config["singularity"]["bamsormadup"],
         umis_singularity=config["singularity"]["execute"] + config["singularity"]["umis"],
-        samtools_singularity=config["singularity"]["execute"] + config["singularity"]["samtools_fgbio"],
+        samtools_singularity=config["singularity"]["execute"] + config["singularity"].get(
+            "samtools", config["singularity"].get("default", "")
+        ),
         index=config["reference"]["ref"],
         extra=r"-c 250 -M -R '@RG\tID:{sample}\tSM:{sample}\tPL:illumina\tPU:{sample}' -v 1",
         tmp_dir="tmpfile=bam/{sample}",
@@ -71,6 +75,6 @@ rule bwa_mem_fgbio2:
         extra=r"-C -c 250 -M -R '@RG\tID:{sample}\tSM:{sample}\tPL:illumina\tPU:{sample}' -v 1",
     threads: 10
     singularity:
-        config["singularity"]["bwa_fgbio"]
+        config["singularity"].get("bwa", config["singularity"].get("default", ""))
     shell:
         "(bwa mem -t {threads} {params.extra} {params.index} {input.reads} | samtools sort -@ {threads} -m 3G -o {output} - ) &> {log}"
