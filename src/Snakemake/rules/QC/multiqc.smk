@@ -11,16 +11,23 @@ rule multiqcBatch:
         #qc7=expand("qc/{sample}/{sample}.gc_bias.summary_metrics.txt", sample=config["DNA_Samples"]),
         qc7=expand("qc/{sample}/{sample}.duplication_metrics.txt", sample=config["DNA_Samples"]),
     output:
-        "Results/DNA/MultiQC.html",
+        "qc/MultiQC.html",
     params:
-        extra="-c " + config["configfiles"]["multiqc"] + " --ignore *_stats_mqc.csv",  # --ignore *HsMetrics.txt --ignore *samtools-stats.txt",
-        input_dir="qc",
-        output_dir="qc",
-        output_name="MultiQC.html",
+        "-c " + config["configfiles"]["multiqc"] + " --ignore *_stats_mqc.csv",
     log:
         "logs/report/multiqc.log",
     singularity:
         config["singularity"].get("multiqc", config["singularity"].get("default", ""))
+    wrapper:
+        "0.72.0/bio/multiqc"
+
+
+rule copy_multiqc:
+    input:
+        "qc/MultiQC.html",
+    output:
+        "Results/DNA/MultiQC.html",
+    log:
+        "logs/report/multiqc_copy.log",
     shell:
-        "(multiqc {params.extra} --force -o {params.output_dir} -n {params.output_name} {params.input_dir} ) &> {log} && "
-        "cp qc/MultiQC.html Results/DNA/MultiQC.html"
+        "(cp qc/MultiQC.html Results/DNA/MultiQC.html) &> {log}"
