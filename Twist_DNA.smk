@@ -58,6 +58,8 @@ def get_input():
     input_list.append(["qc/" + s + "/" + s + ".samtools-stats.txt" for s in config["DNA_Samples"]])
     input_list.append(["qc/" + s + "/" + s + ".HsMetrics.txt" for s in config["DNA_Samples"]])
     input_list.append(["qc/" + s + "/" + s + "_stats_mqc.csv" for s in config["DNA_Samples"]])
+    input_list.append(["qc/" + s + "/Low_coverage_positions.txt" for s in config["DNA_Samples"]])
+    input_list.append(["qc/" + s + "/All_coverage_positions.txt" for s in config["DNA_Samples"]])
     input_list.append("qc/batchQC_stats_mqc.json")
     input_list.append("qc/batchQC_stats_unsorted.csv")
     input_list.append("Results/DNA/MultiQC.html")
