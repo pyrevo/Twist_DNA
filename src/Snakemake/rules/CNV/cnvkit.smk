@@ -27,7 +27,7 @@ rule Create_anti_targets:
 
 rule Call_cnv:
     input:
-        bams=["DNA_bam/" + s + "-ready.bam" for s in config["DNA_Samples"]],
+        bams=["Bam/DNA/" + s + "-ready.bam" for s in config["DNA_Samples"]],
         PoN=config["PoN"]["cnvkit"],
     output:
         regions=["CNV/cnvkit_calls/" + sample_id + "-ready.cnr" for sample_id in config["DNA_Samples"]],
@@ -51,8 +51,7 @@ rule Filter_cnv:
         ONCOCNV_events="CNV/ONCOCNV_calls/cnv_event.txt",
         bed_file="CNV/bed/cnvkit_manifest.target.bed",
     output:
-        #cnv_done="CNV/CNV_calls/cnv_done.txt",
-        relevant_cnvs="CNV/CNV_calls/relevant_cnv.txt",
+        relevant_cnvs="Results/DNA/CNV/relevant_cnv.txt",
     params:
         raw_cnv="CNV/CNV_calls/cnv_raw_event.txt",
     log:

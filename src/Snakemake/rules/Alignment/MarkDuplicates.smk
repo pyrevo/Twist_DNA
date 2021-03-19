@@ -28,10 +28,10 @@ chrom_list = [
 
 rule Split_bam_Markdup:
     input:
-        bam="bam/{sample}-sort.bam",
-        bai="bam/{sample}-sort.bam.bai",
+        bam="alignment/{sample}-sort.bam",
+        bai="alignment/{sample}-sort.bam.bai",
     output:
-        bam=temp("bam/Markdup_temp/{sample}-sort.{chr}.bam"),
+        bam=temp("alignment/Markdup_temp/{sample}-sort.{chr}.bam"),
     log:
         "logs/map/MarkDup/split_bam_realign_{sample}-sort.{chr}.log",
     singularity:
@@ -42,10 +42,10 @@ rule Split_bam_Markdup:
 
 rule MarkDuplicates:
     input:
-        bam="bam/Markdup_temp/{sample}-sort.{chr}.bam",
-        bai="bam/Markdup_temp/{sample}-sort.{chr}.bam.bai",
+        bam="alignment/Markdup_temp/{sample}-sort.{chr}.bam",
+        bai="alignment/Markdup_temp/{sample}-sort.{chr}.bam.bai",
     output:
-        bam=temp("bam/Markdup_temp/{sample}-dup.{chr}.bam"),
+        bam=temp("alignment/Markdup_temp/{sample}-dup.{chr}.bam"),
     params:
         metric="qc/{sample}_DuplicationMetrics.{chr}.txt",
     log:
@@ -59,9 +59,9 @@ rule MarkDuplicates:
 
 rule Merge_bam_Markdup:
     input:
-        bams=expand("bam/Markdup_temp/{{sample}}-dup.{chr}.bam", chr=chrom_list),
+        bams=expand("alignment/Markdup_temp/{{sample}}-dup.{chr}.bam", chr=chrom_list),
     output:
-        bam="DNA_bam/{sample}-ready.bam",
+        bam="Bam/DNA/{sample}-ready.bam",
     log:
         "logs/map/MarkDup/merge_bam/{sample}.log",
     container:

@@ -17,7 +17,7 @@ try:
 except:
     pass
 
-_sort_output = "recall/{sample}.ensemble.vep.exon.soft_filter.multibp.vcf"
+_sort_output = "Results/DNA/{sample}/vcf/{sample}.ensemble.vep.exon.soft_filter.multibp.vcf"
 try:
     _sort_output = sort_output
 except:

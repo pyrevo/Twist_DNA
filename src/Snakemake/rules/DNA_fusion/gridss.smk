@@ -1,11 +1,11 @@
 
 rule gridss:
     input:
-        bam="DNA_bam/{sample}-ready.bam",
-        bai="DNA_bam/{sample}-ready.bam.bai",
+        bam="Bam/DNA/{sample}-ready.bam",
+        bai="Bam/DNA/{sample}-ready.bam.bai",
     output:
-        vcf="gridss/{sample}.vcf.gz",
-        bam="gridss/{sample}.bam",
+        vcf="Results/DNA/{sample}/gridss/{sample}.vcf.gz",
+        bam="Results/DNA/{sample}/gridss/{sample}.bam",
     params:
         ref=config["reference"]["ref"],
         blacklist="DATA/hg19-blacklist.v2.bed",

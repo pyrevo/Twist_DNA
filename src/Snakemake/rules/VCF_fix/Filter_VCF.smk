@@ -35,15 +35,15 @@ rule Soft_filter:
 rule ffpe_filter:
     input:
         vcf="recall/{sample}.ensemble.vep.exon.soft_filter.vcf",
-        bam="DNA_bam/{sample}-ready.bam",
-        bai="DNA_bam/{sample}-ready.bam.bai",
+        bam="Bam/DNA/{sample}-ready.bam",
+        bai="Bam/DNA/{sample}-ready.bam.bai",
     params:
         vcf_ffpe_temp=temp("recall/{sample}.ensemble.vep.exon.soft_filter.ffpe.temp.vcf"),
         vcf_ffpe=temp("recall/{sample}.ensemble.vep.exon.soft_filter.ffpe.vcf"),
         java=config["java"]["SOBDetector"],
     output:
-        gvcf="recall/{sample}.ensemble.vep.exon.soft_filter.vcf.gz",
-        gvcf_ffpe="recall/{sample}.ensemble.vep.exon.soft_filter.ffpe.vcf.gz",
+        gvcf="Results/DNA/{sample}/vcf/{sample}.ensemble.vep.exon.soft_filter.vcf.gz",
+        gvcf_ffpe="Results/DNA/{sample}/vcf/{sample}.ensemble.vep.exon.soft_filter.ffpe.vcf.gz",
     shell:
         #"module load oracle-jdk-1.8/1.8.0_162 && "
         "java -jar {params.java} --input-type VCF --input-variants {input.vcf} --input-bam {input.bam} --output-variants {params.vcf_ffpe_temp} && "

@@ -1,6 +1,6 @@
 rule touchBatch:
     input:
-        expand("DNA_bam/{sample}-ready.bam", sample=config["DNA_Samples"]),
+        expand("Bam/DNA/{sample}-ready.bam", sample=config["DNA_Samples"]),
     output:
         temp("qc/batchQC_stats_unsorted.csv"),
     log:

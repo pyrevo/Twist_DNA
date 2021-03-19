@@ -3,8 +3,8 @@
 
 rule collectReadCounts:
     input:
-        bam="DNA_bam/{sample}-ready.bam",
-        bai="DNA_bam/{sample}-ready.bam.bai",
+        bam="Bam/DNA/{sample}-ready.bam",
+        bai="Bam/DNA/{sample}-ready.bam.bai",
         interval=config["bed"]["GATK_CNV"],
     output:
         "CNV/CNV_GATK/{sample}.counts.hdf5",
@@ -41,8 +41,8 @@ rule denoiseReadCounts:
 rule collectAllelicCounts:
     input:
         intervalList=config["bed"]["GATK_CNV"],
-        bam="DNA_bam/{sample}-ready.bam",
-        bai="DNA_bam/{sample}-ready.bam.bai",
+        bam="Bam/DNA/{sample}-ready.bam",
+        bai="Bam/DNA/{sample}-ready.bam.bai",
         ref=config["reference"]["ref"],
     output:
         "CNV/CNV_GATK/{sample}_clean.allelicCounts.tsv",
@@ -87,7 +87,7 @@ rule callCopyRatioSegments:
     input:
         "CNV/CNV_GATK/{sample}_clean.cr.seg",
     output:
-        "CNV/CNV_GATK/{sample}_clean.calledCNVs.seg",
+        "Results/DNA/{sample}/CNV/{sample}_GATK_clean.calledCNVs.seg",
     log:
         "logs/CNV_GATK/{sample}_calledCRSegments.log",
     singularity:
@@ -103,10 +103,10 @@ rule plotModeledSegments:
         segments="CNV/CNV_GATK/{sample}_clean.modelFinal.seg",
         refDict=config["reference"]["ref"][:-5] + "dict",
     output:
-        "CNV/CNV_GATK/{sample}_clean.calledCNVs.modeled.png",
+        png="Results/DNA/{sample}/CNV/{sample}_GATK_clean.calledCNVs.modeled.png",
     params:
-        outDir="CNV/CNV_GATK/",
-        outPrefix="{sample}_clean.calledCNVs",
+        outDir="Results/DNA/{sample}/CNV/",
+        outPrefix="{sample}_GATK_clean.calledCNVs",
         pointSize=2.0,
     log:
         "logs/CNV_GATK/{sample}_plotSegments.log",

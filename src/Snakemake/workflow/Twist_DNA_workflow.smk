@@ -30,7 +30,7 @@ include: "../rules/CNV/GATK_CNV.smk"
 
 
 if config["programs"]["Duplicates"] == "fgbio":
-    bam_split_input = "DNA_bam/{sample}-ready.bam"
+    bam_split_input = "Bam/DNA/{sample}-ready.bam"
 
     include: "../rules/Alignment/fgbio.smk"
 
@@ -43,8 +43,8 @@ else:
 
     else:
 
-        bwa_mem_output = "bam/{sample}-sort.bam"
-        bam_split_input = "DNA_bam/{sample}-ready.bam"
+        bwa_mem_output = "alignment/{sample}-sort.bam"
+        bam_split_input = "Bam/DNA/{sample}-ready.bam"
 
         include: "../rules/Alignment/bwa-mem.smk"
         include: "../rules/Alignment/MarkDuplicates.smk"

@@ -1,10 +1,10 @@
 
 rule msisensor2:
     input:
-        bam="DNA_bam/{sample}-ready.bam",
-        bai="DNA_bam/{sample}-ready.bam.bai",
+        bam="Bam/DNA/{sample}-ready.bam",
+        bai="Bam/DNA/{sample}-ready.bam.bai",
     output:
-        msi_score="MSI/{sample}.msi",
+        msi_score="Results/DNA/{sample}/MSI/{sample}.msi",
     params:
         prefix="MSI/{sample}.msi",
         models="/opt/msisensor2/models_hg38",

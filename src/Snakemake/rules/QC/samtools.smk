@@ -1,4 +1,4 @@
-_samtools_stats_input = "DNA_bam/{sample}-ready.bam"
+_samtools_stats_input = "Bam/DNA/{sample}-ready.bam"
 try:
     _samtools_stats_input = samtools_stats_input
 except:

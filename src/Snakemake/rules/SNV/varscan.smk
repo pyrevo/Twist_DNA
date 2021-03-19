@@ -1,8 +1,8 @@
 
 rule varscan:
     input:
-        bam="DNA_bam/{sample}-ready.bam",
-        bai="DNA_bam/{sample}-ready.bam.bai",
+        bam="Bam/DNA/{sample}-ready.bam",
+        bai="Bam/DNA/{sample}-ready.bam.bai",
         ref=config["reference"]["ref"],
         bed=config["bed"]["bedfile"],
     output:

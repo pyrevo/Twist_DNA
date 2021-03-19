@@ -5,7 +5,7 @@ rule GPU_align:
         fastq1="fastq/DNA/{sample}_R1.fastq.gz",
         fastq2="fastq/DNA/{sample}_R2.fastq.gz",
     output:
-        bam="DNA_bam/{sample}-ready.bam",
+        bam="Bam/DNA/{sample}-ready.bam",
     params:
         ref=config["reference"]["ref"],
     log:
@@ -24,9 +24,9 @@ rule GPU_align:
 
 rule samtools_index_GPU:
     input:
-        "DNA_bam/{sample}-ready.bam",
+        "Bam/DNA/{sample}-ready.bam",
     output:
-        "DNA_bam/{sample}-ready.bam.bai",
+        "Bam/DNA/{sample}-ready.bam.bai",
     log:
         "logs/map/samtools_index/{sample}.log",
     singularity:

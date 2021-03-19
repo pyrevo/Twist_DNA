@@ -4,7 +4,7 @@ localrules:
 
 rule picardHsMetrics:
     input:
-        bam="DNA_bam/{sample}-ready.bam",
+        bam="Bam/DNA/{sample}-ready.bam",
         bait_intervals=config["bed"]["intervals"],
         target_intervals=config["bed"]["intervals"],
         reference=config["reference"]["ref"],
@@ -20,7 +20,7 @@ rule picardHsMetrics:
         "0.72.0/bio/picard/collecthsmetrics"
 
 
-_picardInsertSize_input = "DNA_bam/{sample}-ready.bam"
+_picardInsertSize_input = "Bam/DNA/{sample}-ready.bam"
 try:
     _picardInsertSize_input = picardInsertSize_input
 except:
@@ -53,7 +53,7 @@ rule picardInsertSize:
         "0.72.0/bio/picard/collectinsertsizemetrics"
 
 
-_PicardAlignmentSummaryMetrics_input_bam = "DNA_bam/{sample}-ready.bam"
+_PicardAlignmentSummaryMetrics_input_bam = "Bam/DNA/{sample}-ready.bam"
 try:
     _PicardAlignmentSummaryMetrics_input_bam = PicardAlignmentSummaryMetrics_input_bam
 except:
@@ -88,7 +88,7 @@ rule PicardAlignmentSummaryMetrics:
 
 # rule GcBiasSummaryMetrics:
 #     input:
-#         bam="DNA_bam/{sample}-ready.bam",
+#         bam="Bam/DNA/{sample}-ready.bam",
 #         ref=config["reference"]["ref"],
 #     output:
 #         summary="qc/{sample}/{sample}.gc_bias.summary_metrics.txt",
@@ -104,7 +104,7 @@ rule PicardAlignmentSummaryMetrics:
 
 rule DuplicationMetrics:
     input:
-        bam="DNA_bam/{sample}-ready.bam",
+        bam="Bam/DNA/{sample}-ready.bam",
     output:
         metrics="qc/{sample}/{sample}.duplication_metrics.txt",
     log:
