@@ -48,7 +48,7 @@ rule preprocessIntervals:
 rule collectReadCounts:
     input:
         #bam=lambda wildcards: config["normal"][wildcards.normal],
-        bam="DNA_bam/{normal}-ready.bam",
+        bam="Bam/DNA/{normal}-ready.bam",
         interval="bedFiles/pool1_pool2_nochr_3c.annotated.preprocessed.interval_list",
     output:
         "Normals/GATK4/{normal}.counts.hdf5",  #Should have date in it?

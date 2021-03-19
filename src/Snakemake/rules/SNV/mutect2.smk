@@ -59,7 +59,7 @@ except:
     pass
 
 
-_mutect_output_bam = "DNA_bam/mutect2_bam/{sample}-ready.indel.bam"
+_mutect_output_bam = "Bam/DNA/{sample}-ready.indel.bam"
 try:
     _mutect_output_bam = mutect_output_bam
 except:

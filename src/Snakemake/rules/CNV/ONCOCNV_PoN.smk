@@ -2,7 +2,7 @@
 configfile: "Twist_DNA.yaml"
 
 
-input_string = ",".join(["DNA_bam/" + s + "-ready.bam" for s in config["DNA_Samples"]])
+input_string = ",".join(["Bam/DNA/" + s + "-ready.bam" for s in config["DNA_Samples"]])
 
 
 rule all:
@@ -53,7 +53,7 @@ rule Target_GC:
 rule Normal_levels:
     input:
         #bams=expand("{normal_sample}", normal_sample=config["Normal_samples"]),
-        bams=["DNA_bam/" + s + "-ready.bam" for s in config["DNA_Samples"]],
+        bams=["Bam/DNA/" + s + "-ready.bam" for s in config["DNA_Samples"]],
         bed="CNV/bed/ONCOCNV.bed",
     output:
         stats="DATA/ONCOCNV_Twist_PoN.txt",

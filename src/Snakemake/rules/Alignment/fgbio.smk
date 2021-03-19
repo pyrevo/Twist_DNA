@@ -3,7 +3,7 @@ rule bwa_mem_fgbio1:
     input:
         reads=["fastq/DNA/{sample}_R1.fastq.gz", "fastq/DNA/{sample}_R2.fastq.gz"],
     output:
-        "bam/{sample}-sort.bam",
+        temp("alignment/{sample}-sort.bam"),
     log:
         "logs/fgbio/bwa1/{sample}.log",
     params:
@@ -41,14 +41,14 @@ rule bwa_mem_fgbio1:
 
 rule fgbio:
     input:
-        bam="bam/{sample}-sort.bam",
+        bam="alignment/{sample}-sort.bam",
         ref=config["reference"]["ref"],
     output:
         fq1=temp("fastq_temp/{sample}-cumi-R1.fq.gz"),
         fq2=temp("fastq_temp/{sample}-cumi-R2.fq.gz"),
         qc="qc/{sample}/{sample}_fgbio.txt",
     params:
-        bam_tmp="bam/{sample}-cumi-1-bamtofastq-tmp",
+        bam_tmp="alignment/{sample}-cumi-1-bamtofastq-tmp",
         fgbio_singularity=config["singularity"]["execute"] + config["singularity"]["fgbio"],
         bamtofastq_singularity=config["singularity"]["execute"] + config["singularity"]["bamtofastq"],
     log:
@@ -66,8 +66,7 @@ rule bwa_mem_fgbio2:
     input:
         reads=["fastq_temp/{sample}-cumi-R1.fq.gz", "fastq_temp/{sample}-cumi-R2.fq.gz"],
     output:
-        #"bam/{sample}-sort-cumi.bam"
-        "DNA_bam/{sample}-ready.bam",
+        "Bam/DNA/{sample}-ready.bam",
     log:
         "logs/fgbio/bwa2/{sample}.log",
     params:

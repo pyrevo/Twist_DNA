@@ -1,7 +1,7 @@
 # rule fastqc_bam:
 #     input:
 #         #"fastq/{sample}_R1-fastq.gz" ##one for each R1 and one for R2 should be from a samples.yaml file
-#         #"DNA_bam/{sample}-ready.bam"
+#         #"Bam/DNA/{sample}-ready.bam"
 #         #"bam/{sample}-sort.bam"
 #         bam = "STAR2/{sample}Aligned.sortedByCoord.out.bam"
 #     output:

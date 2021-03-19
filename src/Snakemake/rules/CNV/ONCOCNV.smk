@@ -12,7 +12,7 @@ rule fix_bed_file:
 
 rule Tumor_levels:
     input:
-        bam="DNA_bam/{sample}-ready.bam",
+        bam="Bam/DNA/{sample}-ready.bam",
         PoN=config["PoN"]["ONCOCNV"],
     output:
         sample_stats="CNV/ONCOCNV_stats/{sample}.stats.txt",
