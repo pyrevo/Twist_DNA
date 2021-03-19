@@ -98,14 +98,35 @@ rule mutect2:
         vcf=temp("mutect2/temp/{sample}.{chr}.mutect2.unfilt.vcf.gz"),
         vcf_tbi=temp("mutect2/temp/{sample}.{chr}.mutect2.unfilt.vcf.gz.tbi"),
     params:
-        extra="--intervals {chr} ",
+        extra="--intervals mutect2/bedfile.{chr}.bed ",
     threads: 1
     log:
         "logs/variantCalling/mutect2_{sample}.{chr}.log",
     singularity:
         config["singularity"].get("mutect2", config["singularity"].get("default", ""))
     wrapper:
-        "master/bio/gatk/mutect"
+        "0.72.0/bio/gatk/mutect"
+
+
+rule mutect2_gvcf:
+    input:
+        map=_mutect_input,
+        bai=_mutect_input + ".bai",
+        fasta=config["reference"]["ref"],
+        bed="mutect2/bedfile.{chr}.bed",
+    output:
+        stats=temp("mutect2/temp/{sample}.{chr}.mutect2.gvcf.gz.stats"),
+        vcf=temp("mutect2/temp/{sample}.{chr}.mutect2.gvcf.gz"),
+        vcf_tbi=temp("mutect2/temp/{sample}.{chr}.mutect2.gvcf.gz.tbi"),
+    params:
+        extra="--intervals mutect2/bedfile.{chr}.bed -ERC GVCF ",
+    threads: 1
+    log:
+        "logs/variantCalling/mutect2_gvcf_{sample}.{chr}.log",
+    singularity:
+        config["singularity"].get("mutect2", config["singularity"].get("default", ""))
+    wrapper:
+        "0.72.0/bio/gatk/mutect"
 
 
 rule filterMutect2:
@@ -136,6 +157,23 @@ rule Merge_vcf:
         temp("mutect2/temp/{sample}.mutect2.SB.vcf"),
     log:
         "logs/variantCalling/mutect2/merge_vcf/{sample}.log",
+    singularity:
+        config["singularity"].get("bcftools", config["singularity"].get("default", ""))
+    wrapper:
+        "0.70.0/bio/bcftools/concat"
+
+
+rule Merge_gvcf:
+    input:
+        calls=expand(
+            "mutect2/temp/{{sample}}.{chr}.mutect2.gvcf.gz", chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
+        ),
+    output:
+        "mutect2/{sample}.mutect2.gvcf",
+    params:
+        "-O z ",
+    log:
+        "logs/variantCalling/mutect2/merge_gvcf/{sample}.log",
     singularity:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     wrapper:
