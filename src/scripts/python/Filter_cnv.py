@@ -2,7 +2,6 @@
 import glob
 import gzip
 import os
-import sys
 import subprocess
 
 
@@ -138,7 +137,7 @@ for line in cnv_event:
     if sample not in sample_purity_dict:
         print("Error: sample %s not in tumor purity file" % sample)
         cnv_relevant.close()
-        subprocess.call("rm " + sys.argv[-1], shell=True)
+        subprocess.call("rm " + snakemake.output.relevant_cnvs, shell=True)
         quit()
     chrom = lline[1]
     start_pos = int(lline[2])
