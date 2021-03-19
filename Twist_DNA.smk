@@ -16,6 +16,7 @@ def get_input():
 
     '''Callers'''
     input_list.append(["mutect2/" + s + ".mutect2.normalized.vcf.gz.tbi" for s in config["DNA_Samples"]])
+    input_list.append(["mutect2/" + s + ".mutect2.gvcf" for s in config["DNA_Samples"]])
     input_list.append(["freebayes/" + s + ".freebayes.normalized.vcf.gz.tbi" for s in config["DNA_Samples"]])
     input_list.append(["varscan/" + s + ".varscan.normalized.vcf.gz.tbi" for s in config["DNA_Samples"]])
     input_list.append(["vardict/" + s + ".vardict.normalized.vcf.gz.tbi" for s in config["DNA_Samples"]])
