@@ -15,8 +15,6 @@ rule Filter_SNP_vcf:
         "(QD < 10.0 && AD[0:1] / (AD[0:1] + AD[0:0]) < 0.25 && ReadPosRankSum < 0.0) || MQ < 30.0)' "
         "-m '+' {input.vcf} "
         "| bgzip -c > {output.vcf}"
-        #"| sed 's/\"//g' "
-        #"| bgzip -c > {output.vcf}"
 
 
 rule Filter_INDEL_vcf:
@@ -35,8 +33,6 @@ rule Filter_INDEL_vcf:
         "|| (QD < 10.0 && AD[0:1] / (AD[0:1] + AD[0:0]) < 0.25 && ReadPosRankSum < 0.0))' "
         "-m '+' {input.vcf} "
         "| bgzip -c > {output.vcf}"
-        #"| sed 's/\"//g' "
-        #"| bgzip -c > {output.vcf}"
 
 
 rule FilterAF_vcf:

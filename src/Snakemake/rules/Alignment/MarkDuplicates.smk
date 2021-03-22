@@ -1,3 +1,16 @@
+# vim: syntax=python tabstop=4 expandtab
+# coding: utf-8
+
+__author__ = "Patrik Smeds, Jonas Almlöf"
+__copyright__ = "Copyright 2021, Patrik Smeds, Jonas Almlöf"
+__email__ = "patrik.smeds@scilifelab.uu.se"
+__license__ = "MIT"
+
+"""
+ Rule that will marke duplicates
+
+ """
+
 
 _markduplicates_input = "alignment/temp/{sample}.sort.{chr}.bam"
 try:

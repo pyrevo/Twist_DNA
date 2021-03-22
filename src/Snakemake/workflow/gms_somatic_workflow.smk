@@ -15,7 +15,7 @@ include: "../rules/Fastq/Fastp_trimming.smk"
 include: "../rules/Alignment/bwa-mem.smk"
 
 
-bam_split_input=_bwa_mem_output
+bam_split_input = _bwa_mem_output
 
 
 include: "../rules/Alignment/bam-split.smk"
