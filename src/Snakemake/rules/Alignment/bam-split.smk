@@ -51,7 +51,7 @@ rule bam_split:
         bam=_bam_split_input,
         bai=_bam_split_input + ".bai",
     output:
-        bam=_bam_split_output
+        bam=_bam_split_output,
     singularity:
         config["singularity"].get("samtools", config["singularity"].get("default", ""))
     log:

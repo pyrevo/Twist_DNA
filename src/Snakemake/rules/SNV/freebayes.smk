@@ -38,6 +38,9 @@ __license__ = "GPL3"
    "freebayes/{sample}.freebayes.vcf"
 """
 
+import src.lib.python.utils as utils
+
+
 _freebayes_input = "alignment/temp/{sample}.{chr}.bam"
 try:
     _freebayes_input = freebayes_input

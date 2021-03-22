@@ -61,7 +61,10 @@ except:
 
 rule bam_merge:
     input:
-        [_bam_merge_input.replace(_merge_separator, chr) for chr in utils.extract_chr(config['reference']['ref'] + ".fai", filter_out=config.get("skip_chrs",[]))],
+        [
+            _bam_merge_input.replace(_merge_separator, chr)
+            for chr in utils.extract_chr(config['reference']['ref'] + ".fai", filter_out=config.get("skip_chrs",[]))
+        ],
     output:
         _bam_merge_output,
     singularity:

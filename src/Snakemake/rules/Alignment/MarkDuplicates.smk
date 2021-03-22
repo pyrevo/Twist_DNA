@@ -11,13 +11,12 @@ try:
     _markduplicates_output = markduplicates_output
 except:
     pass
->>>>>>> 0092b51... Convert bam-split to use samtools instead of bamtools.
 
 
 rule MarkDuplicates:
     input:
         bam=_markduplicates_input,
-        bai=_markduplicates_input +  ".bai",
+        bai=_markduplicates_input + ".bai",
     output:
         bam=temp(_markduplicates_output),
     params:
