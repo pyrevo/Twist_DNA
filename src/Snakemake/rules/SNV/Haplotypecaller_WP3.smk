@@ -54,8 +54,6 @@ rule Haplotypecaller:
     params:
         reference=config["reference"]["ref"],
         annotation="--annotation MappingQualityRankSumTest --annotation MappingQualityZero --annotation QualByDepth --annotation ReadPosRankSumTest --annotation RMSMappingQuality --annotation BaseQualityRankSumTest --annotation FisherStrand --annotation MappingQuality --annotation DepthPerAlleleBySample --annotation Coverage --annotation ClippingRankSumTest --annotation DepthPerSampleHC",
-        #extra="--interval-set-rule INTERSECTION --native-pair-hmm-threads 1 -ploidy 2",
-        #Add padding?
         extra="--interval-set-rule INTERSECTION --native-pair-hmm-threads 1 -ploidy 2",
     log:
         "logs/variantCalling/Haplotypecaller/call/{sample}.{chrom}.log",
@@ -75,8 +73,5 @@ rule Merge_Haplotypecaller_vcf:
         "logs/variantCalling/Haplotypecaller/merge_vcf/{sample}.log",
     singularity:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
-        #config["singularity"].get("default", "")
-    # wrapper:
-    #    "0.70.0/bio/bcftools/concat"
     shell:
         "(bcftools concat -o {output} -O z {input}) &> {log}"

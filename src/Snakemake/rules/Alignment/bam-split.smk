@@ -7,23 +7,19 @@ __email__ = "patrik.smeds@scilifelab.uu.se"
 __license__ = "MIT"
 
 """
- Rule that will split a bam file into multiple sub files, by reference. 
+ Rule that will split a bam file into multiple sub files, by reference.
  Input, output and config
  ------------------------------------------------------------------------------
- Input variable: 
+ Input variable:
     bwa_split_input: optional
         Default:
-            "alignment/{sample}.bam"
- Output variable:   
+            "alignment/{sample}.sort.bam"
+ Output variable:
     bwa_split_output: optional
         Default:
-            "alignment/temp/{sample}.__REF__.bam" 
-        where __REF__ will be converted to chr1, ... chrX if chromosome 1 is named chr1 in the fai file
-            ["alignment/{sample}.chr1.bam", ... , "alignment/{sample}.chrXX.bam"]. __REF__ can be change by
-            setting "split_separator"    
+            "alignment/temp/{sample}.{chr}.sort.bam"
  Config dict keys: values
-    config["reference"]["ref"]': required for default output, used to locate fai-file
-    config["singularity"]["bamtools"]' or config["singularity"]["default"]'  : required 
+    config["singularity"]["samtools"]' or config["singularity"]["default"]'  : required
  Overriding input and output
  ------------------------------------------------------------------------------
  Required wildcards:
@@ -33,25 +29,17 @@ __license__ = "MIT"
   bwa_split_input="alignment/{sample}.test.bam"
  Override output format
  Ex
-   bwa_split_output="alignment/{sample}.test.__REF__.bam"
+   bwa_split_output="alignment/{sample}.test.{chr}.bam"
 """
 
-import src.lib.python.utils as utils
 
-
-_split_separator = "__REF__"
-try:
-    _split_separator = split_separator
-except:
-    pass
-
-_bam_split_input = "alignment/{sample}.bam"
+_bam_split_input = "alignment/{sample}.sort.bam"
 try:
     _bam_split_input = bam_split_input
 except:
     pass
 
-_bam_split_output = "alignment/temp/{sample}.__REF__.bam"
+_bam_split_output = "alignment/temp/{sample}.{chr}.bam"
 try:
     _bam_split_output = bam_split_output
 except:
@@ -60,15 +48,13 @@ except:
 
 rule bam_split:
     input:
-        _bam_split_input,
+        bam=_bam_split_input,
+        bai=_bam_split_input + ".bai",
     output:
-        [
-            _bam_split_output.replace(_split_separator, chr)
-            for chr in utils.extract_chr(config['reference']['ref'] + ".fai")
-        ],
-    params:
-        extra="-reference -refPrefix '' -stub " + utils.extract_stub(_bam_split_output, "." + _split_separator),
+        bam=_bam_split_output,
     singularity:
-        config["singularity"].get("bamtools", config["singularity"].get("default", ""))
-    wrapper:
-        "master/bio/bamtools/split"
+        config["singularity"].get("samtools", config["singularity"].get("default", ""))
+    log:
+        "logs/bam/split_bam_{sample}.{chr}.log",
+    shell:
+        "(samtools view -b {input.bam} {wildcards.chr} > {output.bam}) &> {log}"

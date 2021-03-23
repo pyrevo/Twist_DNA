@@ -28,8 +28,8 @@ include: "../rules/CNV/GATK_CNV.smk"
 # include: "../rules/VCF_fix/Collect_results_DNA.smk" #Change folder!
 # include: "../rules/Mutect2/Mutect2.smk"
 
-
 if config["programs"]["Duplicates"] == "fgbio":
+
     bam_split_input = "Bam/DNA/{sample}-ready.bam"
 
     include: "../rules/Alignment/fgbio.smk"
@@ -43,14 +43,17 @@ else:
 
     else:
 
-        bwa_mem_output = "alignment/{sample}-sort.bam"
+        bwa_mem_output = "Bam/DNA/{sample}-ready.bam"
         bam_split_input = "Bam/DNA/{sample}-ready.bam"
+        markduplicates_input = "alignment/temp/{sample}.{chr}.bam"
+        markduplicates_output = "alignmnet/{sample}.dup.{chr}.bam"
 
         include: "../rules/Alignment/bwa-mem.smk"
         include: "../rules/Alignment/MarkDuplicates.smk"
 
 
 include: "../rules/Alignment/bam-split.smk"
+include: "../rules/Alignment/bam-merge.smk"
 include: "../rules/SNV/freebayes.smk"
 include: "../rules/SNV/mutect2.smk"
 include: "../rules/SNV/vardict_T.smk"
