@@ -5,6 +5,8 @@
 #    - type: regex
 #      pattern: '_R[12]'
 # extra_fn_clean_trim:   #if found in beginning or end
+fn_ignore_dirs:
+  - "alignment"
 
 custom_content:
   order:

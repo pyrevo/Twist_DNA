@@ -33,7 +33,7 @@ rule MarkDuplicates:
     output:
         bam=temp(_markduplicates_output),
     params:
-        metric="qc/{sample}_DuplicationMetrics.{chr}.txt",
+        metric=temp("qc/{sample}_DuplicationMetrics.{chr}.txt"),
     log:
         "logs/map/MarkDup/{sample}-ready.{chr}.log",
     threads: 2

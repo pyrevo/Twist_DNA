@@ -46,6 +46,7 @@ else:
         bam_split_input = "alignment/{sample}.sort.bam"
         markduplicates_input = "alignment/{sample}.{chr}.bam"
         markduplicates_output = "alignment/{sample}.dedup.{chr}.bam"
+        bam_merge_input = "alignment/{sample}.dedup.__CHR__.bam"
         bam_merge_output = "Bam/DNA/{sample}-ready.bam"
         mutect_input = "alignment/{sample}.dedup.{chr}.bam"
         freebayes_input = "alignment/{sample}.dedup.{chr}.bam"
