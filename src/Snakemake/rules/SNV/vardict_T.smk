@@ -43,7 +43,7 @@ __license__ = "GPL3"
 """
 
 
-_vardict_input = "alignment/temp/{sample}.{chr}.bam"
+_vardict_input = "alignment/{sample}.{chr}.bam"
 try:
     _vardict_input = vardict_input
 except:

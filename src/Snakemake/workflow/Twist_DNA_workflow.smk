@@ -43,10 +43,13 @@ else:
 
     else:
 
-        bwa_mem_output = "Bam/DNA/{sample}-ready.bam"
-        bam_split_input = "Bam/DNA/{sample}-ready.bam"
-        markduplicates_input = "alignment/temp/{sample}.{chr}.bam"
-        markduplicates_output = "alignmnet/{sample}.dup.{chr}.bam"
+        bam_split_input = "alignment/{sample}.sort.bam"
+        markduplicates_input = "alignment/{sample}.{chr}.bam"
+        markduplicates_output = "alignment/{sample}.dedup.{chr}.bam"
+        bam_merge_output = "Bam/DNA/{sample}-ready.bam"
+        mutect_input = "alignment/{sample}.dedup.{chr}.bam"
+        freebayes_input = "alignment/{sample}.dedup.{chr}.bam"
+        vardict_input = "alignment/{sample}.dedup.{chr}.bam"
 
         include: "../rules/Alignment/bwa-mem.smk"
         include: "../rules/Alignment/MarkDuplicates.smk"

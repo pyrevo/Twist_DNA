@@ -10,7 +10,7 @@ cnv_relevant_genes = open(snakemake.input.relevant_genes)
 cnv_files = snakemake.input.segments
 cnv_ONCOCNV = open(snakemake.input.ONCOCNV_events)
 cnv_bed_file = open(snakemake.input.bed_file)
-raw_cnv_filename = snakemake.params.raw_cnv
+raw_cnv_filename = snakemake.output.raw_cnv
 cnv_relevant = open(snakemake.output.relevant_cnvs, "w")
 
 

@@ -52,8 +52,7 @@ rule Filter_cnv:
         bed_file="CNV/bed/cnvkit_manifest.target.bed",
     output:
         relevant_cnvs="Results/DNA/CNV/relevant_cnv.txt",
-    params:
-        raw_cnv="CNV/CNV_calls/cnv_raw_event.txt",
+        raw_cnv="CNV/cnvkit_calls/cnv_raw_event.txt",
     log:
         "logs/CNV_cnvkit/Filter_cnv.log",
     singularity:

@@ -12,14 +12,14 @@ __license__ = "MIT"
  """
 
 
-_markduplicates_input = "alignment/temp/{sample}.sort.{chr}.bam"
+_markduplicates_input = "alignment/{sample}.{chr}.bam"
 try:
     _markduplicates_input = markduplicates_input
 except:
     pass
 
 
-_markduplicates_output = "alignment/temp/{sample}.dup.{chr}.bam"
+_markduplicates_output = "alignment/{sample}.dup.{chr}.bam"
 try:
     _markduplicates_output = markduplicates_output
 except:

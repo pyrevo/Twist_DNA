@@ -37,8 +37,8 @@ rule ffpe_filter:
         bam="Bam/DNA/{sample}-ready.bam",
         bai="Bam/DNA/{sample}-ready.bam.bai",
     params:
-        vcf_ffpe_temp=temp("recall/{sample}.ensemble.vep.exon.soft_filter.ffpe.temp.vcf"),
-        vcf_ffpe=temp("recall/{sample}.ensemble.vep.exon.soft_filter.ffpe.vcf"),
+        vcf_ffpe_temp=temp("Results/DNA/{sample}/vcf/{sample}.ensemble.vep.exon.soft_filter.ffpe.temp.vcf"),
+        vcf_ffpe=temp("Results/DNA/{sample}/vcf/{sample}.ensemble.vep.exon.soft_filter.ffpe.vcf"),
         java=config["java"]["SOBDetector"],
     output:
         gvcf="Results/DNA/{sample}/vcf/{sample}.ensemble.vep.exon.soft_filter.vcf.gz",
