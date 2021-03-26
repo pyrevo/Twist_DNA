@@ -2,7 +2,7 @@
 import subprocess
 import sys
 
-bed = snakemake.input.bed
+bed = open(snakemake.input.bed)
 bam_file = snakemake.input.bam
 outfile = open(snakemake.output.coverage, "w")
 outfile2 = open(snakemake.output.coverage2, "w")

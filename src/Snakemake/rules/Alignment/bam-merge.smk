@@ -70,4 +70,4 @@ rule bam_merge:
     singularity:
         config["singularity"].get("samtools", config["singularity"].get("default", ""))
     shell:
-        "(samtools view -b {input.bam} {wildcards.chr} > {output.bam}) &> {log}"
+        "samtools merge -c -p {output} {input}"

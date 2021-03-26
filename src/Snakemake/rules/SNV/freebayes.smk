@@ -41,7 +41,7 @@ __license__ = "GPL3"
 import src.lib.python.utils as utils
 
 
-_freebayes_input = "alignment/temp/{sample}.{chr}.bam"
+_freebayes_input = "alignment/{sample}.{chr}.bam"
 try:
     _freebayes_input = freebayes_input
 except:

@@ -55,7 +55,7 @@ try:
 except:
     pass
 
-_bwa_mem_output = "alignment/{sample}.bam"
+_bwa_mem_output = "alignment/{sample}.sort.bam"
 try:
     _bwa_mem_output = bwa_mem_output
 except:

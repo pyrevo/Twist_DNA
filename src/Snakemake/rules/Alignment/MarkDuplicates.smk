@@ -12,14 +12,14 @@ __license__ = "MIT"
  """
 
 
-_markduplicates_input = "alignment/temp/{sample}.sort.{chr}.bam"
+_markduplicates_input = "alignment/{sample}.{chr}.bam"
 try:
     _markduplicates_input = markduplicates_input
 except:
     pass
 
 
-_markduplicates_output = "alignment/temp/{sample}.dup.{chr}.bam"
+_markduplicates_output = "alignment/{sample}.dup.{chr}.bam"
 try:
     _markduplicates_output = markduplicates_output
 except:
@@ -33,7 +33,7 @@ rule MarkDuplicates:
     output:
         bam=temp(_markduplicates_output),
     params:
-        metric="qc/{sample}_DuplicationMetrics.{chr}.txt",
+        metric=temp("qc/{sample}_DuplicationMetrics.{chr}.txt"),
     log:
         "logs/map/MarkDup/{sample}-ready.{chr}.log",
     threads: 2
