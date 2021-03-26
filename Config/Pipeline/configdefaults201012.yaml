@@ -19,9 +19,9 @@ configfiles:
     vep: "/data/ref_genomes/VEP/"
 
 bed:
-    bedfile: "DATA/pool1_pool2_nochr_3c.sort.merged.hg19.210311.annotated.bed" #Change to HG38 coordiantes
-    intervals: "DATA/pool1_pool2_nochr_3c.sort.merged.hg19.210311.annotated.interval_list"
-    GATK_CNV: "DATA/pool1_pool2_nochr_3c.sort.merged.hg19.210311.annotated.preprocessed.interval_list"
+    bedfile: "DATA/merged_probe_Gruvberger_GMS_st_v2_pool1_2_TE-94032855_hg19_200921230943.annotated.bed" #Change to HG38 coordiantes
+    intervals: "DATA/merged_probe_Gruvberger_GMS_st_v2_pool1_2_TE-94032855_hg19_200921230943.annotated.interval_list"
+    GATK_CNV: "DATA/merged_probe_Gruvberger_GMS_st_v2_pool1_2_TE-94032855_hg19_200921230943.annotated.preprocessed.interval_list"
 
 java:
     SOBDetector: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/SOBDetector_v1.0.1.jar"
