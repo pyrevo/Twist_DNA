@@ -32,7 +32,7 @@ def get_input():
     '''CNV'''
     #input_list.append(["CNV_calls/" + sample_id + "-ready.cnr" for sample_id in config["DNA_Samples"]])
     #input_list.append(["CNV_calls/" + sample_id + "-ready.cns" for sample_id in config["DNA_Samples"]])
-    input_list.append("Results/DNA/CNV/relevant_cnv.txt")
+    input_list.append("Results/DNA/CNV/cnvkit_cnv.txt")
     #input_list.append("CNV_calls/cnv_event.txt")
     #input_list.append(["Results/DNA/" + s + "/CNV/" + s + "-ready.png" for s in config["DNA_Samples"]])
     input_list.append(["Results/DNA/" + s + "/CNV/" + s + "_GATK_clean.calledCNVs.modeled.png" for s in config["DNA_Samples"]])

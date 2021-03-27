@@ -8,16 +8,14 @@ import subprocess
 cnv_purity = open(snakemake.input.purity)
 cnv_relevant_genes = open(snakemake.input.relevant_genes)
 cnv_files = snakemake.input.segments
-cnv_ONCOCNV = open(snakemake.input.ONCOCNV_events)
 cnv_bed_file = open(snakemake.input.bed_file)
-raw_cnv_filename = snakemake.output.raw_cnv
 cnv_relevant = open(snakemake.output.relevant_cnvs, "w")
 
 
 cnv_event = open(raw_cnv_filename, "w")
 
-cnv_relevant.write("sample_path\tsample\tgene\tchrom\tregion\tCNVkit_copy_ratio\tCN_CNVkit_100%\t")
-cnv_relevant.write("CN_ONCOCNV_100%\tpurity\tCN_CNVkit\tCN_ONCOCNV\n")
+cnv_relevant.write("sample_path\tsample\tgene\tchrom\tregion\tregion_size\tnr_exons\tCNVkit_copy_ratio\tCN_CNVkit_100%\t")
+cnv_relevant.write("\tpurity\tCN_CNVkit\n")
 
 chrom_len = {"chr1": 249250621, "chr2": 243199373, "chr3": 198022430, "chr4": 191154276, "chr5": 180915260, "chr6": 171115067,
              "chr7": 159138663, "chr8": 146364022, "chr9": 141213431, "chr10": 135534747, "chr11": 135006516, "chr12": 133851895,
@@ -42,36 +40,14 @@ for line in cnv_bed_file:
         gene_regions[gene] = [chrom, start, end]
 
 
-'''Extract copy numbers from ONCOCNV'''
-for line in cnv_ONCOCNV:
+'''Pathological purity'''
+sample_purity_dict = {}
+for line in cnv_purity:
     lline = line.strip().split("\t")
-    sample = lline[0].split("/")[1].split(".")[0]
-    regions = lline[6].split(",")
-    # #Filter flanking and intron only
-    # Flanking_intron_only = True
-    # for region in regions:
-    #     if (region.find("Flanking") == -1 and region.find("Intron") == -1):
-    #         Flanking_intron_only = False
-    #         break
-    # if Flanking_intron_only:
-    #     continue
-    relevant_gene = False
-    genes = []
-    for region in regions:
-        if region.split("_")[0] in relevant_genes:
-            relevant_gene = True
-            genes.append(region.split("_")[0])
-    if not relevant_gene:
-        continue
-    CN = float(lline[5].split("=")[1])
-    for gene in genes:
-        if sample not in relevant_genes[gene]:
-            relevant_genes[gene][sample] = [2, 2]
-        if CN > relevant_genes[gene][sample][1]:
-            relevant_genes[gene][sample][1] = CN
-        elif CN < relevant_genes[gene][sample][0]:
-            relevant_genes[gene][sample][0] = CN
-cnv_ONCOCNV.close()
+    sample = lline[0]
+    purity = float(lline[1])
+    sample_purity_dict[sample] = [0, 0, 0, purity]
+cnv_purity.close()
 
 
 '''Extract events from CNVkit'''
@@ -85,6 +61,7 @@ for cnv_file_name in cnv_files:
             continue
         lline = line.strip().split("\t")
         chrom = lline[0]
+        sample = lline[0].split("/")[-1].split(".")[0]
         if chrom == "chrX":
             continue
         cnv_regions = lline[3].split(",")
@@ -96,72 +73,48 @@ for cnv_file_name in cnv_files:
                 break
         if Flanking_intron_only:
             continue
+        regions = lline[3].split(",")
+        relevant_gene = False
+        genes = {}
+        nr_exons = 0
+        for region in regions:
+            if (region.find("Exon") != -1 :
+                nr_exons += 1
+            gene = region.split("_")[0]
+            if gene in relevant_genes:
+                relevant_gene = True
+                if gene in genes:
+                    genes[gene].append(region)
+                else:
+                    genes[gene] = [region]
+        if not relevant_gene:
+            continue
         CR = float(lline[4])
-        if CR >= 0.25:
-            cnv_event.write(cnv_file_name + "\t" + line)
-        # elif CR <= -0.25:
-        #     cnv_event.write(cnv_file_name + "\t" + line)
-    cnv_file.close()
-cnv_event.close()
+        if CR >= 0.5 or CR < -0.33:
+            if sample not in sample_purity_dict:
+                print("Error: sample %s not in tumor purity file" % sample)
+                cnv_relevant.close()
+                subprocess.call("rm " + snakemake.output.relevant_cnvs, shell=True)
+                quit()
+            cnvkit_cn_100 = round(2*pow(2, CR), 2)
+            purity = sample_purity_dict[sample][3]
+            cnvkit_corrected_cn = round(2 + (cnvkit_cn_100 - 2) * (1/purity), 1)
+            region_size = end_pos - start_pos
+            for gene in genes:
+                sample2 = sample.split("-ready")[0]
+                if cnvkit_corrected_cn > 4.0 :
+                    cnv_relevant.write(long_sample + "\t" + sample2 + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" +
+                                       str(end_pos) + "\t" + str(region_size) + "\t" + str(nr_exons) + "\t" +
+                                       str(round(Copy_ratio, 2)) + "\t" + str(cnvkit_cn_100) + "\t" +
+                                       str(purity) + "\t" + str(cnvkit_corrected_cn) + "\n")
+                elif cnvkit_corrected_cn < 1.0 :
+                    cnv_relevant.write(long_sample + "\t" + sample2 + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" +
+                                       str(end_pos) + "\t" + str(region_size) + "\t" + str(nr_exons) + "\t" +
+                                       str(round(Copy_ratio, 2)) + "\t" + str(cnvkit_cn_100) + "\t" +
+                                       str(purity) + "\t" + str(cnvkit_corrected_cn) + "\n")
 
 
-'''Pathological purity'''
-sample_purity_dict = {}
-for line in cnv_purity:
-    lline = line.strip().split("\t")
-    sample = lline[0]
-    purity = float(lline[1])
-    sample_purity_dict[sample] = [0, 0, 0, purity]
-cnv_purity.close()
 
-
-'''Find cnvs above cutoffs'''
-cnv_event = open(raw_cnv_filename)
-for line in cnv_event:
-    lline = line.strip().split("\t")
-    regions = lline[4].split(",")
-    relevant_gene = False
-    genes = {}
-    for region in regions:
-        gene = region.split("_")[0]
-        if gene in relevant_genes:
-            relevant_gene = True
-            if gene in genes:
-                genes[gene].append(region)
-            else:
-                genes[gene] = [region]
-    if not relevant_gene:
-        continue
-    long_sample = lline[0]
-    sample = lline[0].split("/")[-1].split(".")[0]
-    if sample not in sample_purity_dict:
-        print("Error: sample %s not in tumor purity file" % sample)
-        cnv_relevant.close()
-        subprocess.call("rm " + snakemake.output.relevant_cnvs, shell=True)
-        quit()
-    chrom = lline[1]
-    start_pos = int(lline[2])
-    end_pos = int(lline[3])
-    Copy_ratio = float(lline[5])
-    cnvkit_cn_100 = round(2*pow(2, Copy_ratio), 2)
-    purity = sample_purity_dict[sample][3]
-
-    cnvkit_corrected_cn = round(2 + (cnvkit_cn_100 - 2) * (1/purity), 1)
-    for gene in genes:
-        ONCOCNV_CN_100 = 2
-        sample2 = sample.split("-ready")[0]
-        if sample2 in relevant_genes[gene]:
-            if Copy_ratio > 0:
-                ONCOCNV_CN_100 = relevant_genes[gene][sample2][1]
-            else:
-                ONCOCNV_CN_100 = relevant_genes[gene][sample2][0]
-        ONCOCNV_corrected_cn = round(2 + (ONCOCNV_CN_100 - 2) * (1/purity), 1)
-        if cnvkit_corrected_cn > 6.0 and ONCOCNV_corrected_cn > 6.0:
-            cnv_relevant.write(long_sample + "\t" + sample2 + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" +
-                               str(end_pos) + "\t" + str(round(Copy_ratio, 2)) + "\t" + str(cnvkit_cn_100) + "\t" +
-                               str(ONCOCNV_CN_100) + "\t" + str(purity) + "\t" + str(cnvkit_corrected_cn) + "\t" +
-                               str(ONCOCNV_corrected_cn) + "\n")
-cnv_relevant.close()
 
 
 # '''Create plots'''
