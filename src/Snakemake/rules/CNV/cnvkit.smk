@@ -70,9 +70,12 @@ rule Filter_cnv2:
         bed_file="CNV/bed/cnvkit_manifest.target.bed",
     output:
         relevant_cnvs="Results/DNA/CNV/cnvkit_cnv.txt",
+    params:
+        in_path="CNV/cnvkit_calls/"
+        out_path="Results/DNA/CNV/"
     log:
         "logs/CNV_cnvkit/Filter_cnv.log",
-    singularity:
-        config["singularity"].get("python", config["singularity"].get("default", ""))
+    #singularity:
+    #    config["singularity"].get("python", config["singularity"].get("default", ""))
     script:
         "../../../scripts/python/Filter_cnv.py"

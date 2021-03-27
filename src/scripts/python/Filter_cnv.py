@@ -10,7 +10,8 @@ cnv_relevant_genes = open(snakemake.input.relevant_genes)
 cnv_files = snakemake.input.segments
 cnv_bed_file = open(snakemake.input.bed_file)
 cnv_relevant = open(snakemake.output.relevant_cnvs, "w")
-
+in_path = "CNV/cnvkit_calls/"
+out_path = "Results/DNA/CNV/"
 
 cnv_relevant.write("sample\tgene\tchrom\tregion\tregion_size\tnr_exons\tCNVkit_copy_ratio\tCN_CNVkit_100%\t")
 cnv_relevant.write("\tpurity\tCN_CNVkit\n")
@@ -117,12 +118,10 @@ for cnv_file_name in cnv_files:
 cnv_relevant.close()
 
 
-
 '''Create plots'''
 for sample_file in cnv_files:
-    sample = sample_file.split(".cns")[0].split("/")[1]
+    sample = sample_file.split(".cns")[0].split("/")[-1]
     sample2 = sample.split("-ready")[0]
-    path = sample_file.split("/")[0]
     #vcf = "Results/DNA/" + sample2 + "/vcf/" + sample2 + "-ensemble.final.vcf"
     #os.system("gunzip -c " + vcf + ".gz > " + vcf)
     #vcf_in = open(vcf)
@@ -153,9 +152,9 @@ for sample_file in cnv_files:
     # vcf_out.close()
     command_line = "singularity exec /projects/wp4/nobackup/workspace/somatic_dev/singularity/cnvkit_0.9.7--py_1.sif "
     command_line += "cnvkit.py scatter "
-    command_line += path + "/" + sample + ".cnr "
-    command_line += "-s " + path + "/" + sample + ".cns "
-    command_line += "-o CNV_results/" + sample + ".png "
+    command_line += in_path + sample + ".cnr "
+    command_line += "-s " + in_path + sample + ".cns "
+    command_line += "-o " + out_path + sample + ".png "
     #command_line += "-v " + vcf + ".rs "
     command_line += "--y-min -2 --y-max 2"
     print(command_line)
@@ -171,11 +170,10 @@ for line in cnv_relevant:
         continue
     lline = line.strip().split("\t")
     print(lline)
-    sample = lline[0]
-    path = "Results/DNA/CNV/"
+    sample = lline[0] + "-ready"
     #vcf = "Results/DNA/" + sample + "/vcf/" + sample + "-ensemble.final.vcf.rs"
-    gene = lline[2]
-    chrom = lline[3]
+    gene = lline[1]
+    chrom = lline[2]
     #gene_region = lline[4]
     gene_regions_info = gene_regions[gene]
     #gene_region1 = str(int(gene_regions_info[1])) + "-" + str(int(gene_regions_info[2]))
@@ -186,7 +184,7 @@ for line in cnv_relevant:
     start_pos = int(gene_region1.split("-")[0])
     end_pos = int(gene_region1.split("-")[1])
 
-    bed = open("DATA/TST500C_manifest.bed")
+    bed = open(snakemake.input.bed_file)
     gene_string = ""
     gene_name_dict = {}
     for region in bed:
@@ -209,19 +207,19 @@ for line in cnv_relevant:
     bed.close()
     command_line = "singularity exec /projects/wp4/nobackup/workspace/somatic_dev/singularity/cnvkit_0.9.7--py_1.sif "
     command_line += "cnvkit.py scatter "
-    command_line += path + "/" + sample + ".cnr "
-    command_line += "-s " + path + "/" + sample + ".cns "
+    command_line += in_path + "/" + sample + ".cnr "
+    command_line += "-s " + in_path + "/" + sample + ".cns "
     command_line += "-c " + chrom + ":" + gene_region1
     command_line += " -g " + gene_string
     #command_line += " -v " + vcf
     command_line += " --title '" + sample + " " + chrom + " " + gene_region1 + " " + gene + "'"
-    command_line += " -o CNV_results/" + sample + "_" + gene + "_" + chrom + ":" + gene_region1 + ".png"
+    command_line += " -o " + out_path + sample + "_" + gene + "_" + chrom + ":" + gene_region1 + ".png"
     print(command_line)
     os.system(command_line)
     command_line = "singularity exec /projects/wp4/nobackup/workspace/somatic_dev/singularity/cnvkit_0.9.7--py_1.sif "
     command_line += "cnvkit.py scatter "
-    command_line += path + "/" + sample + ".cnr "
-    command_line += "-s " + path + "/" + sample + ".cns "
+    command_line += in_path + "/" + sample + ".cnr "
+    command_line += "-s " + in_path + "/" + sample + ".cns "
     command_line += "-c " + chrom + ":" + gene_region2
     command_line += " -g " + gene_string
     #command_line += " -v " + vcf
