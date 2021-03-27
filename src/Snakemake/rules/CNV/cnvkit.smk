@@ -43,26 +43,9 @@ rule Call_cnv:
         "(cnvkit.py batch {input.bams} -r {input.PoN} -p {threads} -d {params.outdir}) &> {log}"
 
 
+
+
 rule Filter_cnv:
-    input:
-        segments=["CNV/cnvkit_calls/" + sample_id + "-ready.cns" for sample_id in config["DNA_Samples"]],
-        purity="DATA/Pathological_purity_BMS_validation.txt",
-        relevant_genes="DATA/TSO500_relevant_genes.txt",
-        ONCOCNV_events="CNV/ONCOCNV_calls/cnv_event.txt",
-        bed_file="CNV/bed/cnvkit_manifest.target.bed",
-    output:
-        relevant_cnvs="Results/DNA/CNV/relevant_cnv.txt",
-        raw_cnv="CNV/cnvkit_calls/cnv_raw_event.txt",
-    log:
-        "logs/CNV_cnvkit/Filter_cnv.log",
-    singularity:
-        config["singularity"].get("python", config["singularity"].get("default", ""))
-    script:
-        "../../../scripts/python/Filter_cnv.py"
-
-
-
-rule Filter_cnv2:
     input:
         segments=["CNV/cnvkit_calls/" + sample_id + "-ready.cns" for sample_id in config["DNA_Samples"]],
         purity="DATA/Pathological_purity_BMS_validation.txt",

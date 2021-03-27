@@ -10,8 +10,8 @@ cnv_relevant_genes = open(snakemake.input.relevant_genes)
 cnv_files = snakemake.input.segments
 cnv_bed_file = open(snakemake.input.bed_file)
 cnv_relevant = open(snakemake.output.relevant_cnvs, "w")
-in_path = "CNV/cnvkit_calls/"
-out_path = "Results/DNA/CNV/"
+in_path = snakemake.params.in_path
+out_path = snakemake.params.out_path
 
 cnv_relevant.write("sample\tgene\tchrom\tregion\tregion_size\tnr_exons\tCNVkit_copy_ratio\tCN_CNVkit_100%\t")
 cnv_relevant.write("\tpurity\tCN_CNVkit\n")
