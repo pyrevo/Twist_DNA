@@ -14,7 +14,7 @@ cnv_relevant = open(snakemake.output.relevant_cnvs, "w")
 in_path = snakemake.params.in_path
 out_path = snakemake.params.out_path
 
-cnv_relevant.write("caller\tsample\tgene\tchrom\tregion\tregion_size\tnr_exons\tCopy_ratio\tCN_100%_TC\t")
+cnv_relevant.write("caller\tsample\tgene\tchrom\tregion\tregion_size\tnr_exons/nr_points\tCopy_ratio\tCN_100%_TC\t")
 cnv_relevant.write("\tpurity\tCN_adjusted\n")
 
 chrom_len = {"chr1": 249250621, "chr2": 243199373, "chr3": 198022430, "chr4": 191154276, "chr5": 180915260, "chr6": 171115067,
@@ -136,10 +136,11 @@ for cnv_file_name in GATK_CNV_files:
         MAF = "NA"
         if nr_points_AF > 0 :
             MAF = float(lline[9])
-        sample = cnv_file_name.split("/")[-1].split("_")[0]
+        sample = cnv_file_name.split("/")[-1].split("_")[0] + "-ready"
         if chrom == "chrX":
             continue
-        if (CR >= 0.5 and CR < -0.33:
+        gene = ""
+        if (CR >= 0.5 or CR < -0.33):
             if sample not in sample_purity_dict:
                 print("Error: sample %s not in tumor purity file" % sample)
                 cnv_relevant.close()
@@ -153,19 +154,19 @@ for cnv_file_name in GATK_CNV_files:
                 sample2 = sample.split("-ready")[0]
                 if corrected_cn > 4.0 :
                     cnv_relevant.write("GATK_CNV\t" + sample2 + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" +
-                                       str(end_pos) + "\t" + str(region_size) + "\t" + str(nr_exons) + "\t" +
+                                       str(end_pos) + "\t" + str(region_size) + "\t" + str(nr_points_CR) + "\t" +
                                        str(round(CR, 2)) + "\t" + str(cn_100) + "\t" +
                                        str(purity) + "\t" + str(corrected_cn) + "\n")
                 elif corrected_cn < 1.0 :
                     cnv_relevant.write("GATK_CNV\t" + sample2 + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" +
-                                       str(end_pos) + "\t" + str(region_size) + "\t" + str(nr_exons) + "\t" +
+                                       str(end_pos) + "\t" + str(region_size) + "\t" + str(nr_points_CR) + "\t" +
                                        str(round(CR, 2)) + "\t" + str(cn_100) + "\t" +
                                        str(purity) + "\t" + str(corrected_cn) + "\n")
 cnv_relevant.close()
 
 
 '''Create CNVkit plots'''
-for sample_file in cnv_files:
+for sample_file in cnvkit_files:
     sample = sample_file.split(".cns")[0].split("/")[-1]
     sample2 = sample.split("-ready")[0]
     #vcf = "Results/DNA/" + sample2 + "/vcf/" + sample2 + "-ensemble.final.vcf"
@@ -212,13 +213,16 @@ cnv_relevant = open(snakemake.output.relevant_cnvs)
 header = True
 for line in cnv_relevant:
     if header:
-        header = False
+        if line[:6] == "CONTIG" :
+            header = False
         continue
     lline = line.strip().split("\t")
     print(lline)
     sample = lline[0] + "-ready"
     #vcf = "Results/DNA/" + sample + "/vcf/" + sample + "-ensemble.final.vcf.rs"
     gene = lline[1]
+    if gene == "" :
+        continue
     chrom = lline[2]
     #gene_region = lline[4]
     gene_regions_info = gene_regions[gene]
