@@ -7,14 +7,15 @@ import subprocess
 
 cnv_purity = open(snakemake.input.purity)
 cnv_relevant_genes = open(snakemake.input.relevant_genes)
-cnv_files = snakemake.input.segments
+cnvkit_files = snakemake.input.cnvkit_segments
+GATK_CNV_files = snakemake.input.GATK_CNV_segments
 cnv_bed_file = open(snakemake.input.bed_file)
 cnv_relevant = open(snakemake.output.relevant_cnvs, "w")
 in_path = snakemake.params.in_path
 out_path = snakemake.params.out_path
 
-cnv_relevant.write("sample\tgene\tchrom\tregion\tregion_size\tnr_exons\tCNVkit_copy_ratio\tCN_CNVkit_100%\t")
-cnv_relevant.write("\tpurity\tCN_CNVkit\n")
+cnv_relevant.write("caller\tsample\tgene\tchrom\tregion\tregion_size\tnr_exons\tCopy_ratio\tCN_100%_TC\t")
+cnv_relevant.write("\tpurity\tCN_adjusted\n")
 
 chrom_len = {"chr1": 249250621, "chr2": 243199373, "chr3": 198022430, "chr4": 191154276, "chr5": 180915260, "chr6": 171115067,
              "chr7": 159138663, "chr8": 146364022, "chr9": 141213431, "chr10": 135534747, "chr11": 135006516, "chr12": 133851895,
@@ -52,8 +53,7 @@ cnv_purity.close()
 
 
 '''Extract events from CNVkit'''
-gain_loss_dict = {}
-for cnv_file_name in cnv_files:
+for cnv_file_name in cnvkit_files:
     cnv_file = open(cnv_file_name)
     header = True
     for line in cnv_file:
@@ -105,20 +105,66 @@ for cnv_file_name in cnv_files:
             for gene in genes:
                 sample2 = sample.split("-ready")[0]
                 if cnvkit_corrected_cn > 4.0 :
-                    cnv_relevant.write(sample2 + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" +
+                    cnv_relevant.write("CNVkit\t" + sample2 + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" +
                                        str(end_pos) + "\t" + str(region_size) + "\t" + str(nr_exons) + "\t" +
                                        str(round(CR, 2)) + "\t" + str(cnvkit_cn_100) + "\t" +
                                        str(purity) + "\t" + str(cnvkit_corrected_cn) + "\n")
                 elif cnvkit_corrected_cn < 1.0 :
-                    cnv_relevant.write(sample2 + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" +
+                    cnv_relevant.write("CNVkit\t" + sample2 + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" +
                                        str(end_pos) + "\t" + str(region_size) + "\t" + str(nr_exons) + "\t" +
                                        str(round(CR, 2)) + "\t" + str(cnvkit_cn_100) + "\t" +
                                        str(purity) + "\t" + str(cnvkit_corrected_cn) + "\n")
 
+
+'''Extract events from GATK_CNV'''
+for cnv_file_name in GATK_CNV_files:
+    cnv_file = open(cnv_file_name)
+    header = True
+    for line in cnv_file:
+        if header:
+            header = False
+            continue
+        lline = line.strip().split("\t")
+        chrom = lline[0]
+        start_pos = int(lline[1])
+        end_pos = int(lline[2])
+        nr_points_CR = int(lline[3])
+        if nr_points_CR <= 2 :
+            continue
+        nr_points_AF = int(lline[4])
+        CR = float(lline[6])
+        MAF = "NA"
+        if nr_points_AF > 0 :
+            MAF = float(lline[9])
+        sample = cnv_file_name.split("/")[-1].split("_")[0]
+        if chrom == "chrX":
+            continue
+        if (CR >= 0.5 and CR < -0.33:
+            if sample not in sample_purity_dict:
+                print("Error: sample %s not in tumor purity file" % sample)
+                cnv_relevant.close()
+                subprocess.call("rm " + snakemake.output.relevant_cnvs, shell=True)
+                quit()
+            cn_100 = round(2*pow(2, CR), 2)
+            purity = sample_purity_dict[sample][3]
+            corrected_cn = round(2 + (cn_100 - 2) * (1/purity), 1)
+            region_size = end_pos - start_pos
+            for gene in genes:
+                sample2 = sample.split("-ready")[0]
+                if corrected_cn > 4.0 :
+                    cnv_relevant.write("GATK_CNV\t" + sample2 + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" +
+                                       str(end_pos) + "\t" + str(region_size) + "\t" + str(nr_exons) + "\t" +
+                                       str(round(CR, 2)) + "\t" + str(cn_100) + "\t" +
+                                       str(purity) + "\t" + str(corrected_cn) + "\n")
+                elif corrected_cn < 1.0 :
+                    cnv_relevant.write("GATK_CNV\t" + sample2 + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" +
+                                       str(end_pos) + "\t" + str(region_size) + "\t" + str(nr_exons) + "\t" +
+                                       str(round(CR, 2)) + "\t" + str(cn_100) + "\t" +
+                                       str(purity) + "\t" + str(corrected_cn) + "\n")
 cnv_relevant.close()
 
 
-'''Create plots'''
+'''Create CNVkit plots'''
 for sample_file in cnv_files:
     sample = sample_file.split(".cns")[0].split("/")[-1]
     sample2 = sample.split("-ready")[0]
@@ -210,7 +256,7 @@ for line in cnv_relevant:
     command_line += in_path + "/" + sample + ".cnr "
     command_line += "-s " + in_path + "/" + sample + ".cns "
     command_line += "-c " + chrom + ":" + gene_region1
-    command_line += " -g " + gene_string
+    #command_line += " -g " + gene_string
     #command_line += " -v " + vcf
     command_line += " --title '" + sample + " " + chrom + " " + gene_region1 + " " + gene + "'"
     command_line += " -o " + out_path + sample + "_" + gene + "_" + chrom + ":" + gene_region1 + ".png"
@@ -220,11 +266,12 @@ for line in cnv_relevant:
     command_line += "cnvkit.py scatter "
     command_line += in_path + "/" + sample + ".cnr "
     command_line += "-s " + in_path + "/" + sample + ".cns "
-    command_line += "-c " + chrom + ":" + gene_region2
-    command_line += " -g " + gene_string
+    #command_line += "-c " + chrom + ":" + gene_region2
+    command_line += "-c " + chrom
+    #command_line += " -g " + gene_string
     #command_line += " -v " + vcf
     command_line += " --title '" + sample + " " + chrom + " " + gene + "'"
-    command_line += " -o CNV_results/" + sample + "_" + gene + "_" + chrom + ".png"
+    command_line += " -o " + out_path + sample + "_" + gene + "_" + chrom + ".png"
     print(command_line)
     os.system(command_line)
 #
