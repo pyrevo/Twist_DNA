@@ -103,9 +103,9 @@ rule plotModeledSegments:
         segments="CNV/CNV_GATK/{sample}_clean.modelFinal.seg",
         refDict=config["reference"]["ref"][:-5] + "dict",
     output:
-        png="Results/DNA/{sample}/CNV/{sample}_GATK_clean.calledCNVs.modeled.png",
+        png="Results/DNA/CNV/{sample}_GATK_clean.calledCNVs.modeled.png",
     params:
-        outDir="Results/DNA/{sample}/CNV/",
+        outDir="Results/DNA/CNV/",
         outPrefix="{sample}_GATK_clean.calledCNVs",
         pointSize=2.0,
     log:

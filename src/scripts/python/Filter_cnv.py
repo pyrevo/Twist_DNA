@@ -93,7 +93,7 @@ for cnv_file_name in cnvkit_files:
         if not relevant_gene:
             continue
         CR = float(lline[4])
-        if CR >= 0.5 or CR < -0.33:
+        if CR >= 0.35 or CR < -0.25:
             if sample not in sample_purity_dict:
                 print("Error: sample %s not in tumor purity file" % sample)
                 cnv_relevant.close()
@@ -155,7 +155,7 @@ for cnv_file_name in GATK_CNV_files:
             in_cnv_kit = False
             for cnv in cnv_relevant_list :
                 if (cnv[3] == sample2 and cnv[0] == chrom and
-                   ((start_pos >= cnv[1] and start_pos <= cnv[2]) or (end_pos >= cnv[1] and end_pos <= cnv[2])
+                   ((start_pos >= cnv[1] and start_pos <= cnv[2]) or (end_pos >= cnv[1] and end_pos <= cnv[2]) or
                     (start_pos <= cnv[1] and end_pos >= cnv[2]))):
                     in_cnv_kit = True
             cn_100 = round(2*pow(2, CR), 2)
@@ -275,12 +275,12 @@ for line in cnv_relevant:
     command_line += in_path + "/" + sample + ".cnr "
     command_line += "-s " + in_path + "/" + sample + ".cns "
     command_line += "-c " + chrom + ":" + gene_region1
-    #command_line += " -g " + gene_string
+    command_line += " -g " + gene_string
     #command_line += " -v " + vcf
     command_line += " --title '" + sample + " " + chrom + " " + gene_region1 + " " + gene + "'"
     command_line += " -o " + out_path + sample + "_" + gene + "_" + chrom + ":" + gene_region1 + ".png"
     print(command_line)
-    os.system(command_line)
+    #os.system(command_line)
     command_line = "singularity exec /projects/wp4/nobackup/workspace/somatic_dev/singularity/cnvkit_0.9.7--py_1.sif "
     command_line += "cnvkit.py scatter "
     command_line += in_path + "/" + sample + ".cnr "
