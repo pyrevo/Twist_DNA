@@ -39,7 +39,7 @@ def get_input():
 
     '''MSI'''
     #MSI not working
-    #input_list.append(["Results/DNA/" + s + "/MSI/" + s + ".msi" for s in config["DNA_Samples"]])
+    input_list.append(["Results/DNA/" + s + "/MSI/" + s + ".msi" for s in config["DNA_Samples"]])
 
     '''Fusion/SV'''
     input_list.append(["Results/DNA/" + s + "/gridss/" + s + ".vcf.gz" for s in config["DNA_Samples"]])
