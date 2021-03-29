@@ -52,6 +52,7 @@ for line in cnv_purity:
 cnv_purity.close()
 
 
+cnv_relevant_list = []
 '''Extract events from CNVkit'''
 for cnv_file_name in cnvkit_files:
     cnv_file = open(cnv_file_name)
@@ -105,11 +106,13 @@ for cnv_file_name in cnvkit_files:
             for gene in genes:
                 sample2 = sample.split("-ready")[0]
                 if cnvkit_corrected_cn > 4.0 :
+                    cnv_relevant_list.append([chrom, start_pos, end_pos])
                     cnv_relevant.write("CNVkit\t" + sample2 + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" +
                                        str(end_pos) + "\t" + str(region_size) + "\t" + str(nr_exons) + "\t" +
                                        str(round(CR, 2)) + "\t" + str(cnvkit_cn_100) + "\t" +
                                        str(purity) + "\t" + str(cnvkit_corrected_cn) + "\n")
                 elif cnvkit_corrected_cn < 1.0 :
+                    cnv_relevant_list.append([chrom, start_pos, end_pos])
                     cnv_relevant.write("CNVkit\t" + sample2 + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" +
                                        str(end_pos) + "\t" + str(region_size) + "\t" + str(nr_exons) + "\t" +
                                        str(round(CR, 2)) + "\t" + str(cnvkit_cn_100) + "\t" +
@@ -122,7 +125,8 @@ for cnv_file_name in GATK_CNV_files:
     header = True
     for line in cnv_file:
         if header:
-            header = False
+            if line[:6] == "CONTIG" :
+                header = False
             continue
         lline = line.strip().split("\t")
         chrom = lline[0]
@@ -140,28 +144,37 @@ for cnv_file_name in GATK_CNV_files:
         if chrom == "chrX":
             continue
         gene = ""
-        if (CR >= 0.5 or CR < -0.33):
+        #if (CR >= 0.5 or CR < -0.33):
+        if True:
             if sample not in sample_purity_dict:
                 print("Error: sample %s not in tumor purity file" % sample)
                 cnv_relevant.close()
                 subprocess.call("rm " + snakemake.output.relevant_cnvs, shell=True)
                 quit()
+            in_cnv_kit = False
+            for cnv in cnv_relevant_list :
+                if cnv[0] == chrom and ((start_pos >= cnv[1] and start_pos <= cnv[2]) or (end_pos >= cnv[1] and end_pos <= cnv[2]))):
+                    in_cnv_kit = True
             cn_100 = round(2*pow(2, CR), 2)
             purity = sample_purity_dict[sample][3]
             corrected_cn = round(2 + (cn_100 - 2) * (1/purity), 1)
             region_size = end_pos - start_pos
-            for gene in genes:
-                sample2 = sample.split("-ready")[0]
-                if corrected_cn > 4.0 :
-                    cnv_relevant.write("GATK_CNV\t" + sample2 + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" +
+            sample2 = sample.split("-ready")[0]
+            if in_cnv_kit :
+                cnv_relevant.write("GATK_CNV\t" + sample2 + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" +
                                        str(end_pos) + "\t" + str(region_size) + "\t" + str(nr_points_CR) + "\t" +
                                        str(round(CR, 2)) + "\t" + str(cn_100) + "\t" +
                                        str(purity) + "\t" + str(corrected_cn) + "\n")
-                elif corrected_cn < 1.0 :
-                    cnv_relevant.write("GATK_CNV\t" + sample2 + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" +
-                                       str(end_pos) + "\t" + str(region_size) + "\t" + str(nr_points_CR) + "\t" +
-                                       str(round(CR, 2)) + "\t" + str(cn_100) + "\t" +
-                                       str(purity) + "\t" + str(corrected_cn) + "\n")
+            # if corrected_cn > 4.0 :
+            #     cnv_relevant.write("GATK_CNV\t" + sample2 + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" +
+            #                        str(end_pos) + "\t" + str(region_size) + "\t" + str(nr_points_CR) + "\t" +
+            #                        str(round(CR, 2)) + "\t" + str(cn_100) + "\t" +
+            #                        str(purity) + "\t" + str(corrected_cn) + "\n")
+            # elif corrected_cn < 1.0 :
+            #     cnv_relevant.write("GATK_CNV\t" + sample2 + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" +
+            #                        str(end_pos) + "\t" + str(region_size) + "\t" + str(nr_points_CR) + "\t" +
+            #                        str(round(CR, 2)) + "\t" + str(cn_100) + "\t" +
+            #                        str(purity) + "\t" + str(corrected_cn) + "\n")
 cnv_relevant.close()
 
 
@@ -213,17 +226,16 @@ cnv_relevant = open(snakemake.output.relevant_cnvs)
 header = True
 for line in cnv_relevant:
     if header:
-        if line[:6] == "CONTIG" :
-            header = False
+        header = False
         continue
     lline = line.strip().split("\t")
     print(lline)
-    sample = lline[0] + "-ready"
+    sample = lline[1] + "-ready"
     #vcf = "Results/DNA/" + sample + "/vcf/" + sample + "-ensemble.final.vcf.rs"
-    gene = lline[1]
+    gene = lline[2]
     if gene == "" :
         continue
-    chrom = lline[2]
+    chrom = lline[3]
     #gene_region = lline[4]
     gene_regions_info = gene_regions[gene]
     #gene_region1 = str(int(gene_regions_info[1])) + "-" + str(int(gene_regions_info[2]))

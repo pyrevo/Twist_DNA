@@ -53,7 +53,7 @@ rule Filter_cnv:
         relevant_genes="DATA/TSO500_relevant_genes.txt",
         bed_file="CNV/bed/cnvkit_manifest.target.bed",
     output:
-        relevant_cnvs="Results/DNA/CNV/cnvkit_cnv.txt",
+        relevant_cnvs="Results/DNA/CNV/Reported_cnvs.txt",
     params:
         in_path="CNV/cnvkit_calls/",
         out_path="Results/DNA/CNV/",
