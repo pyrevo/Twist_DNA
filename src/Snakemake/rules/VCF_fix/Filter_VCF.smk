@@ -41,13 +41,13 @@ rule ffpe_filter:
         vcf_ffpe=temp("Results/DNA/{sample}/vcf/{sample}.ensemble.vep.exon.soft_filter.ffpe.vcf"),
         java=config["java"]["SOBDetector"],
     output:
-        gvcf="Results/DNA/{sample}/vcf/{sample}.ensemble.vep.exon.soft_filter.vcf.gz",
-        gvcf_ffpe="Results/DNA/{sample}/vcf/{sample}.ensemble.vep.exon.soft_filter.ffpe.vcf.gz",
+        vcf_gz="Results/DNA/{sample}/vcf/{sample}.ensemble.vep.exon.soft_filter.vcf.gz",
+        vcf_gz_ffpe="Results/DNA/{sample}/vcf/{sample}.ensemble.vep.exon.soft_filter.ffpe.vcf.gz",
     shell:
         #"module load oracle-jdk-1.8/1.8.0_162 && "
         "java -jar {params.java} --input-type VCF --input-variants {input.vcf} --input-bam {input.bam} --output-variants {params.vcf_ffpe_temp} && "
         "python src/scripts/python/Add_FFPE_column_to_vcf.py {params.vcf_ffpe_temp} {params.vcf_ffpe} && "
         "bgzip {params.vcf_ffpe} && "
-        "tabix {output.gvcf_ffpe} && "
+        "tabix {output.vcf_gz_ffpe} && "
         "bgzip {input.vcf} && "
-        "tabix {output.gvcf}"
+        "tabix {output.vcf_gz}"
