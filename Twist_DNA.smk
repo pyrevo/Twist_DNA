@@ -35,7 +35,7 @@ def get_input():
     input_list.append("Results/DNA/CNV/Reported_cnvs.txt")
     #input_list.append("CNV_calls/cnv_event.txt")
     #input_list.append(["Results/DNA/" + s + "/CNV/" + s + "-ready.png" for s in config["DNA_Samples"]])
-    input_list.append(["Results/DNA/" + s + "/CNV/" + s + "_GATK_clean.calledCNVs.modeled.png" for s in config["DNA_Samples"]])
+    input_list.append(["Results/DNA/CNV/" + s + "_GATK_clean.calledCNVs.modeled.png" for s in config["DNA_Samples"]])
 
     '''MSI'''
     #MSI not working
