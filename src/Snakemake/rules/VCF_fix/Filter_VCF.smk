@@ -49,5 +49,5 @@ rule ffpe_filter:
         "python src/scripts/python/Add_FFPE_column_to_vcf.py {params.vcf_ffpe_temp} {params.vcf_ffpe} && "
         "bgzip {params.vcf_ffpe} && "
         "tabix {output.vcf_gz_ffpe} && "
-        "bgzip {input.vcf} && "
+        "bgzip -c {input.vcf} > {output.vcf_gz} && "
         "tabix {output.vcf_gz}"
