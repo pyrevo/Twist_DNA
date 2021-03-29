@@ -106,13 +106,13 @@ for cnv_file_name in cnvkit_files:
             for gene in genes:
                 sample2 = sample.split("-ready")[0]
                 if cnvkit_corrected_cn > 4.0 :
-                    cnv_relevant_list.append([chrom, start_pos, end_pos])
+                    cnv_relevant_list.append([chrom, start_pos, end_pos, sample2])
                     cnv_relevant.write("CNVkit\t" + sample2 + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" +
                                        str(end_pos) + "\t" + str(region_size) + "\t" + str(nr_exons) + "\t" +
                                        str(round(CR, 2)) + "\t" + str(cnvkit_cn_100) + "\t" +
                                        str(purity) + "\t" + str(cnvkit_corrected_cn) + "\n")
                 elif cnvkit_corrected_cn < 1.0 :
-                    cnv_relevant_list.append([chrom, start_pos, end_pos])
+                    cnv_relevant_list.append([chrom, start_pos, end_pos, sample2])
                     cnv_relevant.write("CNVkit\t" + sample2 + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" +
                                        str(end_pos) + "\t" + str(region_size) + "\t" + str(nr_exons) + "\t" +
                                        str(round(CR, 2)) + "\t" + str(cnvkit_cn_100) + "\t" +
@@ -140,6 +140,7 @@ for cnv_file_name in GATK_CNV_files:
         MAF = "NA"
         if nr_points_AF > 0 :
             MAF = float(lline[9])
+        sample2 = cnv_file_name.split("/")[-1].split("_")[0]
         sample = cnv_file_name.split("/")[-1].split("_")[0] + "-ready"
         if chrom == "chrX":
             continue
@@ -153,13 +154,14 @@ for cnv_file_name in GATK_CNV_files:
                 quit()
             in_cnv_kit = False
             for cnv in cnv_relevant_list :
-                if cnv[0] == chrom and ((start_pos >= cnv[1] and start_pos <= cnv[2]) or (end_pos >= cnv[1] and end_pos <= cnv[2]))):
+                if (cnv[3] == sample2 and cnv[0] == chrom and
+                   ((start_pos >= cnv[1] and start_pos <= cnv[2]) or (end_pos >= cnv[1] and end_pos <= cnv[2])
+                    (start_pos <= cnv[1] and end_pos >= cnv[2]))):
                     in_cnv_kit = True
             cn_100 = round(2*pow(2, CR), 2)
             purity = sample_purity_dict[sample][3]
             corrected_cn = round(2 + (cn_100 - 2) * (1/purity), 1)
             region_size = end_pos - start_pos
-            sample2 = sample.split("-ready")[0]
             if in_cnv_kit :
                 cnv_relevant.write("GATK_CNV\t" + sample2 + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" +
                                        str(end_pos) + "\t" + str(region_size) + "\t" + str(nr_points_CR) + "\t" +
@@ -233,7 +235,8 @@ for line in cnv_relevant:
     sample = lline[1] + "-ready"
     #vcf = "Results/DNA/" + sample + "/vcf/" + sample + "-ensemble.final.vcf.rs"
     gene = lline[2]
-    if gene == "" :
+    call_type = lline[0]
+    if call_type == "GATK_CNV" :
         continue
     chrom = lline[3]
     #gene_region = lline[4]
