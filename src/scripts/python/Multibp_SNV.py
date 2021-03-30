@@ -157,5 +157,6 @@ for Multibp in Multibp_list:
             ref_AA = AA
         if alt_AA in AA_dict[AA]:
             alt_AA = AA
+    aa_nr = int(math.ceil(gene_pos / 3.0))
     out_vcf.write(chrom + "\t" + str(pos) + "\t.\t" + "".join(ref) + "\t" + "".join(alt) + "\t.\tPASS\t")
-    out_vcf.write("AA=" + ref_AA + str(gene_pos) + alt_AA + "\t" + Multibp[AF_min_i][8] + "\t" + Multibp[AF_min_i][9] + "\n")
+    out_vcf.write("AA=" + ref_AA + str(aa_nr) + alt_AA + "\t" + Multibp[AF_min_i][8] + "\t" + Multibp[AF_min_i][9] + "\n")
