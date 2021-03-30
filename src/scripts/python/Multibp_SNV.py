@@ -143,10 +143,10 @@ for Multibp in Multibp_list:
             ref_bp = check_output(command, shell=True).decode("utf-8").split("\n")[1]
             ref[i] = ref_bp
             alt[i] = ref_bp
-            if flip_bp :
+            if flip_bp:
                 AA_ref[i] = dna_opposite[ref_bp]
                 AA_alt[i] = dna_opposite[ref_bp]
-            else :
+            else:
                 AA_ref[i] = ref_bp
                 AA_alt[i] = ref_bp
         i += 1
