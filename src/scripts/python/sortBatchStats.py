@@ -37,10 +37,11 @@ sampleSheetSamples = [string for string in samples if string != ""]  # Remove em
 #          'Median insert size','Insert size s.d.','Average Quality','Fraction bases on target','Average CV']
 header = [
     'Sample',
-    'Total reads',
+    'M Aligned reads',
     'Reads aligned [%]',
     'Duplicates [%]',
     'Bases on target [%]',
+    'Usable bases [%]',
     'Target bases over 100X [%]',
     'Mean target coverage',
     'Median target coverage',
@@ -64,9 +65,9 @@ with open(outFile, 'w') as file:
     file.write("  },\n")
     file.write("  \"headers\": {\n")  # All header configs
     file.write('    \"Total reads\": {\n')
-    file.write("      \"title\": \"Aligned reads\",\n")
-    file.write("      \"description\": \"Number of reads in bam from Picard\",\n")
-    file.write("      \"format\": \"{:.0f}\"\n")
+    file.write("      \"title\": \"M aligned reads\",\n")
+    file.write("      \"description\": \"Number of million reads in bam from Picard\",\n")
+    file.write("      \"format\": \"{:.1f}\"\n")
     file.write('    },\n')
     file.write('    \"Reads aligned [%]\": {\n')
     file.write("      \"title\": \"Reads aligned [%]\",\n")
@@ -89,6 +90,14 @@ with open(outFile, 'w') as file:
     file.write("      \"description\": \"Bases on target [%] from Picard\",\n")
     file.write("      \"min\": 50,\n")
     file.write("      \"max\": 100,\n")
+    file.write("      \"scale\": \"RdYlGn\",\n")
+    file.write("      \"format\": \"{:.1f}\"\n")
+    file.write("    },\n")
+    file.write("      \"Usable bases [%]\": {\n")
+    file.write("      \"title\": \"Usable target [%]\",\n")
+    file.write("      \"description\": \"Bases aligned, on target, and dedup [%] from Picard\",\n")
+    file.write("      \"min\": 30,\n")
+    file.write("      \"max\": 80,\n")
     file.write("      \"scale\": \"RdYlGn\",\n")
     file.write("      \"format\": \"{:.1f}\"\n")
     file.write("    },\n")
