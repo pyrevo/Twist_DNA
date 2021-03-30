@@ -102,6 +102,8 @@ for Multibp in Multibp_list:
 
     ref = ["X", "X", "X"]
     alt = ["X", "X", "X"]
+    AA_ref = ["X", "X", "X"]
+    AA_alt = ["X", "X", "X"]
     AF_list = []
     for variant in Multibp:
         gene_change = variant[7].split("c.")[1].split("|")[0]
@@ -114,6 +116,8 @@ for Multibp in Multibp_list:
         else:
             ref[codon_pos] = dna_change[0]
             alt[codon_pos] = dna_change[1]
+        AA_ref[codon_pos] = dna_change[0]
+        AA_alt[codon_pos] = dna_change[1]
         AF = float(variant[7].split("AF=")[1].split(";")[0])
         AF_list.append(AF)
 
@@ -139,13 +143,19 @@ for Multibp in Multibp_list:
             ref_bp = check_output(command, shell=True).decode("utf-8").split("\n")[1]
             ref[i] = ref_bp
             alt[i] = ref_bp
+            if flip_bp :
+                AA_ref[i] = dna_opposite[ref_bp]
+                AA_alt[i] = dna_opposite[ref_bp]
+            else :
+                AA_ref[i] = ref_bp
+                AA_alt[i] = ref_bp
         i += 1
-    ref_AA = "".join(ref)
-    alt_AA = "".join(alt)
+    ref_AA = "".join(AA_ref)
+    alt_AA = "".join(AA_alt)
     for AA in AA_dict:
         if ref_AA in AA_dict[AA]:
             ref_AA = AA
         if alt_AA in AA_dict[AA]:
             alt_AA = AA
     out_vcf.write(chrom + "\t" + str(pos) + "\t.\t" + "".join(ref) + "\t" + "".join(alt) + "\t.\tPASS\t")
-    out_vcf.write("AA=" + ref_AA + ">" + alt_AA + "\t" + Multibp[AF_min_i][8] + "\t" + Multibp[AF_min_i][9] + "\n")
+    out_vcf.write("AA=" + ref_AA + str(gene_pos) + alt_AA + "\t" + Multibp[AF_min_i][8] + "\t" + Multibp[AF_min_i][9] + "\n")
