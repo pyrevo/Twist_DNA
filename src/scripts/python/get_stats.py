@@ -70,10 +70,11 @@ samDict = {item[0].strip(':'): item[1] for item in listOfList}
 #        metricsDict1['PCT_SELECTED_BASES'], str(Avg_500X_coverage)]
 header = [
     'Sample',
-    'Total reads',
+    'M Aligned reads',
     'Reads aligned [%]',
     'Duplicates [%]',
     'Bases on target [%]',
+    'Usable bases [%]',
     'Target bases over 100X [%]',
     'Mean target coverage',
     'Median target coverage',
@@ -86,10 +87,11 @@ header = [
 ]
 line = [
     sample,
-    metricsDict3['TOTAL_READS'],
+    float(metricsDict3['TOTAL_READS']) / 1000000,
     100 * float(metricsDict3['PCT_PF_READS_ALIGNED']),
     100 * float(metricsDict5['PERCENT_DUPLICATION']),
     100 * float(metricsDict1['PCT_SELECTED_BASES']),
+    100 * float(metricsDict1['PCT_USABLE_BASES_ON_TARGET']),
     100 * float(metricsDict1['PCT_TARGET_BASES_100X']),
     metricsDict1['MEAN_TARGET_COVERAGE'],
     metricsDict1['MEDIAN_TARGET_COVERAGE'],
