@@ -141,6 +141,7 @@ for Multibp in Multibp_list:
             fasta_pos = pos + i
             command = "samtools faidx " + in_fastq_ref + " " + chrom + ":" + str(fasta_pos) + "-" + str(fasta_pos)
             ref_bp = check_output(command, shell=True).decode("utf-8").split("\n")[1]
+            ref_bp = ref_bp.upper()
             ref[i] = ref_bp
             alt[i] = ref_bp
             if flip_bp:
