@@ -45,17 +45,21 @@ rule Call_cnv:
 
 rule Filter_cnv:
     input:
-        segments=["CNV/cnvkit_calls/" + sample_id + "-ready.cns" for sample_id in config["DNA_Samples"]],
+        cnvkit_segments=["CNV/cnvkit_calls/" + sample_id + "-ready.cns" for sample_id in config["DNA_Samples"]],
+        GATK_CNV_segments=[
+            "CNV/CNV_GATK/" + sample_id + "_clean.modelFinal.seg" for sample_id in config["DNA_Samples"]
+        ],
         purity="DATA/Pathological_purity_BMS_validation.txt",
         relevant_genes="DATA/TSO500_relevant_genes.txt",
-        ONCOCNV_events="CNV/ONCOCNV_calls/cnv_event.txt",
         bed_file="CNV/bed/cnvkit_manifest.target.bed",
     output:
-        relevant_cnvs="Results/DNA/CNV/relevant_cnv.txt",
-        raw_cnv="CNV/cnvkit_calls/cnv_raw_event.txt",
+        relevant_cnvs="Results/DNA/CNV/Reported_cnvs.txt",
+    params:
+        in_path="CNV/cnvkit_calls/",
+        out_path="Results/DNA/CNV/",
     log:
         "logs/CNV_cnvkit/Filter_cnv.log",
-    singularity:
-        config["singularity"].get("python", config["singularity"].get("default", ""))
+    # singularity:
+    #    config["singularity"].get("python", config["singularity"].get("default", ""))
     script:
         "../../../scripts/python/Filter_cnv.py"
