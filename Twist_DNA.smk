@@ -24,10 +24,9 @@ def get_input():
     input_list.append(["recall/" + s + ".ensemble.vcf.gz.tbi" for s in config["DNA_Samples"]])
     input_list.append(["recall/" + s + ".ensemble.vep.vcf.gz" for s in config["DNA_Samples"]])
     input_list.append(["recall/" + s + ".ensemble.vep.vcf.gz.tbi" for s in config["DNA_Samples"]])
-    #FFPE not working
     #input_list.append(["Results/DNA/" + s + "/vcf/" + s + ".ensemble.vep.exon.soft_filter.vcf.gz" for s in config["DNA_Samples"]])
-    #input_list.append(["Results/DNA/" + s + "/vcf/" + s + ".ensemble.vep.exon.soft_filter.ffpe.vcf.gz" for s in config["DNA_Samples"]])
-    #input_list.append(["Results/DNA/" + s + "/vcf/" + s + ".ensemble.vep.exon.soft_filter.multibp.vcf" for s in config["DNA_Samples"]])
+    input_list.append(["Results/DNA/" + s + "/vcf/" + s + ".ensemble.vep.exon.soft_filter.ffpe.vcf.gz" for s in config["DNA_Samples"]])
+    input_list.append(["Results/DNA/" + s + "/vcf/" + s + ".ensemble.vep.exon.soft_filter.multibp.vcf" for s in config["DNA_Samples"]])
 
     '''CNV'''
     #input_list.append(["CNV_calls/" + sample_id + "-ready.cnr" for sample_id in config["DNA_Samples"]])
