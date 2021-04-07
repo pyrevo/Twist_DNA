@@ -10,6 +10,8 @@ rule picardHsMetrics:
         reference=config["reference"]["ref"],
     output:
         "qc/{sample}/{sample}.HsMetrics.txt",
+    params:
+        extra="COVERAGE_CAP=2000",
     log:
         "logs/qc/picard/HsMetrics/{sample}.log",
     container:
