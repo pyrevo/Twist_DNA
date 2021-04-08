@@ -47,11 +47,66 @@ except:
 samples = utils.generate_sample_list_from_samplesheet(config['samplesheet'])
 
 if config.get('lanes', None) is not None:
-    fastq1_files += [_demultiplex_output + "/" + samples[sample]['projectpath'] + sample + "_S" + str(samples[sample]['counter']) + "_" + lane + "_R1_001.fastq.gz" for sample in samples for lane in config['lanes']]
-    fastq2_files += [_demultiplex_output + "/" + samples[sample]['projectpath'] + sample + "_S" + str(samples[sample]['counter']) + "_" + lane + "_R2_001.fastq.gz" for sample in samples for lane in config['lanes']]
+    fastq1_files = []
+    for sample in samples:
+        for lane in config['lanes']:
+            fastq1_files.append(
+                "".join(
+                    _demultiplex_output,
+                    "/",
+                    samples[sample]['projectpath'],
+                    sample,
+                    "_S",
+                    str(samples[sample]['counter']),
+                    "_",
+                    lane,
+                    "_R1_001.fastq.gz",
+                )
+            )
+    fastq2_files = []
+    for sample in samples:
+        for lane in config['lanes']:
+            fastq2_files.append(
+                "".join(
+                    _demultiplex_output,
+                    "/",
+                    samples[sample]['projectpath'],
+                    sample,
+                    "_S",
+                    str(samples[sample]['counter']),
+                    "_",
+                    lane,
+                    "_R2_001.fastq.gz",
+                )
+            )
 else:
-    fastq1_files += [_demultiplex_output + "/" + samples[sample]['projectpath'] + sample + "_S" + str(samples[sample]['counter']) + "_R1_001.fastq.gz" for sample in samples]
-    fastq2_files += [_demultiplex_output + "/" + samples[sample]['projectpath'] + sample + "_S" + str(samples[sample]['counter']) + "_R2_001.fastq.gz" for sample in samples]
+    fastq1_files = []
+    for sample in samples:
+        fastq1_files.append(
+            "".join(
+                _demultiplex_output,
+                "/",
+                samples[sample]['projectpath'],
+                sample,
+                "_S",
+                str(samples[sample]['counter']),
+                "_R1_001.fastq.gz",
+            )
+        )
+    fastq2_files = []
+    for sample in samples:
+        fastq2_files.append(
+            "".join(
+                _demultiplex_output,
+                "/",
+                samples[sample]['projectpath'],
+                sample,
+                "_S",
+                str(samples[sample]['counter']),
+                "_R2_001.fastq.gz",
+            )
+        )
+
 
 rule demultiplex:
     output:
