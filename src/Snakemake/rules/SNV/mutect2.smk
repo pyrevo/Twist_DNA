@@ -169,7 +169,7 @@ rule Merge_gvcf:
             "mutect2/temp/{{sample}}.{chr}.mutect2.gvcf.gz", chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
         ),
     output:
-        "mutect2/{sample}.mutect2.gvcf",
+        "mutect2/{sample}.mutect2.gvcf.gz",
     params:
         "-O z ",
     log:
