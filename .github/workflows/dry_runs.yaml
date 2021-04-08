@@ -20,7 +20,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   dry_run: # health check job for testing and code formatting check
-    name: snakemake dry run somatic and twist
+    name: snakemake dry run somatic, twist dna and demultiplex
     runs-on: ubuntu-latest # os for running the job
     strategy:
       fail-fast: false
@@ -65,6 +65,11 @@ jobs:
       - run: cp tests/workflow_dry_run/twist_dna/configs/Twist_DNA_fastp.yaml tests/workflow_dry_run/twist_dna/Twist_DNA.yaml
       - name: Dry run Twist workflow fastp
         run: snakemake -n -s Twist_DNA.smk --directory tests/workflow_dry_run/twist_dna/
+
       ## Test GMS somatic
       - name: Dry run gms somatic
         run: snakemake -n -s gms_somatic.smk --directory tests/workflow_dry_run/gms_somatic/
+
+      ## Test GMS somatic
+      - name: Dry run demultiplexing
+        run: snakemake -n -s demultiplex.smk --directory tests/workflow_dry_run/demultiplex/
