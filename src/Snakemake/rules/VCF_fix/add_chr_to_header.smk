@@ -7,9 +7,9 @@ __email__ = "patrik.smeds@scilifelab.uu.se"
 __license__ = "GPL3"
 
 """
- 
+
  Rule used to add a contigs to a vcf file. Uses fai file to create contig information.
- 
+
  """
 
 
@@ -29,8 +29,6 @@ rule add_header_to_vcf:
         config["singularity"].get("python", config["singularity"].get("default", ""))
     params:
         type="contig",
-        entries=utils.create_chr_entries_for_vff_header(
-            config['reference']['ref'] + ".fai", config['reference']['assembly']
-        ),
+        entries=utils.create_chr_entries_for_vff_header(config['reference']['ref'] + ".fai", config['reference']['assembly']),
     script:
         "../../../scripts/python/insert_entries_vcf_header.py"

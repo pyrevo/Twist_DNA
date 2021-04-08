@@ -78,9 +78,7 @@ rule copy_mv_TS0500:
         subprocess.call("mkdir DNA_TSO500/", shell=True)
         subprocess.call("mkdir DNA_TSO500/Fastq/", shell=True)
         for sample in params.samples:
-            subprocess.call(
-                "cp TSO500/Results/" + sample + "_BiomarkerReport.txt Results/DNA/" + sample + "/", shell=True
-            )
+            subprocess.call("cp TSO500/Results/" + sample + "_BiomarkerReport.txt Results/DNA/" + sample + "/", shell=True)
             subprocess.call("mkdir DNA_TSO500/Fastq/" + sample + "/", shell=True)
             subprocess.call(
                 "mv TSO500/Logs_Intermediates/FastqGeneration/" + sample + "/* DNA_TSO500/Fastq/" + sample + "/",
