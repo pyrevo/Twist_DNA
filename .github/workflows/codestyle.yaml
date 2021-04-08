@@ -43,7 +43,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install requirements # install application requirements
-        run: pip install -r requirements.txt
+        run: pip install -r requirements.codestyle.txt
 
       - name: Check python syntax scripts
         run: pycodestyle --max-line-length=130 --statistics src/scripts
