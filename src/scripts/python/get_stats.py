@@ -97,8 +97,8 @@ line = [
     metricsDict1['MEDIAN_TARGET_COVERAGE'],
     metricsDict2['MEDIAN_INSERT_SIZE'],
     metricsDict2['STANDARD_DEVIATION'],
-    100 * float(metricsDict1['AT_DROPOUT']),
-    100 * float(metricsDict1['GC_DROPOUT']),
+    metricsDict1['AT_DROPOUT'],
+    metricsDict1['GC_DROPOUT'],
     100 * float(metricsDict1['ZERO_CVG_TARGETS_PCT']),
     metricsDict1['FOLD_80_BASE_PENALTY'],
 ]
