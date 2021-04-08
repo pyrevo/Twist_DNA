@@ -30,13 +30,13 @@ def generate_sample_list_from_samplesheet(path):
             if line.startswith("[Data]"):
                 line = next(samplesheet)
                 columns = re.split(";|,", line.rstrip())
-                header_map = {name.lower(): index for name, index in zip(columns,range(0,len(columns)))}
+                header_map = {name.lower(): index for name, index in zip(columns, range(0, len(columns)))}
                 break
         sample_counter = 1
         for line in samplesheet:
             columns = re.split(",|;", line.rstrip())
             samples[columns[header_map['sample_id']]] = {"counter": sample_counter}
-            if header_map.get('project',None) is None or header_map['project'] == "":
+            if header_map.get('project', None) is None or header_map['project'] == "":
                 samples[columns[header_map['sample_id']]]["projectpath"] = ""
             else:
                 samples[columns[header_map['sample_id']]]["projectpath"] = columns[header_map['project']] + "/"
