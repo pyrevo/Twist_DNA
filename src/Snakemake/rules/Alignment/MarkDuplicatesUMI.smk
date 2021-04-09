@@ -58,4 +58,4 @@ rule UmiMarkDuplicates:
     container:
         config["singularity"].get("picard", config["singularity"].get("default", ""))
     shell:
-        "(picard MarkDuplicates DUPLEX_UMI=true MAX_EDIT_DISTANCE_TO_JOIN=1 BARCODE_TAG=RX INPUT={input.bam} OUTPUT={output.bam} METRICS_FILE={params.metric}) &> {log}"
+        "(picard MarkDuplicates DUPLEX_UMI=true BARCODE_TAG=RX INPUT={input.bam} OUTPUT={output.bam} METRICS_FILE={params.metric}) &> {log}"
