@@ -30,10 +30,9 @@ configfiles:
 DNA_Samples:
   sample1: "S1"
 
-Runfolder: runfolder/
-
-Sample_sheet: samplesheet.csv
-
+runfolder_path: ./
+samplesheet:  samplesheet.csv
+bcl2fastq_version: 2.17.1.14
 
 singularity:
     default: "docker://gmsuppsala/somatic:develop"

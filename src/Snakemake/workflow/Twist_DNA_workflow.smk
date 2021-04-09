@@ -1,5 +1,11 @@
 
 include: "../rules/Alignment/index_bam.smk"
+
+
+demultiplex_output = "fastq_temp"
+
+
+include: "../rules/Fastq/demultiplex.smk"
 include: "../rules/Fastq/fix_fastq_DNA.smk"
 
 
