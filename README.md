@@ -86,7 +86,7 @@ snakemake -p -j 64 --drmaa "-A ACCOUNT_ID -s -p PARTION_NAME -n {cluster.n} -t {
 ### demultiplxing
 #### Required files
 ##### demultiplexconfig.yaml
-The config file needs to be located in you working directory. Copy example from Config/Pipeline/demultiplexingconfig.yaml and modify the following variables:
+The config file needs to be located in you working directory, working directory is also where output will be written and doesn't necessarily need to be the runfolder. Copy example from Config/Pipeline/demultiplexingconfig.yaml and modify the following variables:
 * runfolder_path
 * samplesheet
 * notification_mail
