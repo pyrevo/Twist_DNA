@@ -34,15 +34,6 @@ runfolder_path: ./
 samplesheet:  samplesheet.csv
 bcl2fastq_version: 2.17.1.14
 
-notification_mail: mail@mail.se
-
-bcl2fastq_version: 2.17.1.14
-
-Runfolder: runfolder/
-
-Sample_sheet: samplesheet.csv
-
-
 singularity:
     default: "docker://gmsuppsala/somatic:develop"
     execute: "singularity exec -B /data -B /projects -B /scratch "
