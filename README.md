@@ -14,6 +14,7 @@ To be able to run Twist_DNA, the following softwares needs to be available on yo
 Extra packages that are recommended for development
 * snakefmt: 0.4.0
 * pycodestyle: 2.6.0
+* pytest
 
 ### Additional
 To make it easer to run the pipeline, with specific version of softwares, we recommend installing
@@ -80,4 +81,30 @@ sample1	L001	fastq/sample1_L001_R1.fastq.gz	fastq/sample1_L001_R2.fastq.gz
 #### Command
 ```bash
 snakemake -p -j 64 --drmaa "-A ACCOUNT_ID -s -p PARTION_NAME -n {cluster.n} -t {cluster.time}"  -s ./gms_somatic.smk --use-singularity --singularity-args "--bind /data --bind STORAGE_PATH " --cluster-config Config/Slurm/cluster.json
+```
+
+### demultiplxing
+#### Required files
+##### demultiplexconfig.yaml
+The config file needs to be located in you working directory. Copy example from Config/Pipeline/demultiplexingconfig.yaml and modify the following variables:
+* runfolder_path
+* samplesheet
+* notification_mail
+
+```
+
+runfolder_path: path/runfolder_name
+samplesheet:  path/SampleSheet.csv
+
+notification_mail: mail@mail.se
+
+```
+
+#### Command
+```bash
+# Example run using config files
+snakemake -s demultiplex.smk --directory tests/workflow_dry_run/demultiplex
+
+# Run and override config value samplesheet
+snakemake -n -s demultiplex.smk --directory tests/workflow_dry_run/demultiplex/ --config samplesheet=./runfolder_name/SampleSheet.csv
 ```
