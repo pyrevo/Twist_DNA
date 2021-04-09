@@ -70,7 +70,7 @@ else:
 
 
         include: "../rules/Alignment/bwa-mem.smk"
-        include: "../rules/Alignment/UMIMarkDuplicatesWithMateCigar.smk"
+        include: "../rules/Alignment/MarkDuplicatesUMI.smk"
 
 
 include: "../rules/Alignment/bam-split.smk"
