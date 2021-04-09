@@ -26,25 +26,7 @@ except:
     pass
 
 
-# rule UmiAwareMarkDuplicatesWithMateCigar:
-#     input:
-#         bam=_markduplicates_input,
-#         bai=_markduplicates_input + ".bai",
-#     output:
-#         bam=temp(_markduplicates_output),
-#     params:
-#         metric=temp("alignment/{sample}_DuplicationMetrics.{chr}.txt"),
-#         UMI_metric="alignment/{sample}_UmiMetrics.{chr}.txt",
-#     log:
-#         "logs/map/MarkDup/{sample}-ready.{chr}.log",
-#     threads: 2
-#     container:
-#         config["singularity"].get("picard", config["singularity"].get("default", ""))
-#     shell:
-#         "(picard UmiAwareMarkDuplicatesWithMateCigar DUPLEX_UMI=true MAX_EDIT_DISTANCE_TO_JOIN=1 BARCODE_TAG=RX INPUT={input.bam} OUTPUT={output.bam} METRICS_FILE={params.metric} UMI_METRICS={params.UMI_metric}) &> {log}"
-
-
-rule UmiMarkDuplicates:
+rule UmiAwareMarkDuplicatesWithMateCigar:
     input:
         bam=_markduplicates_input,
         bai=_markduplicates_input + ".bai",
@@ -52,10 +34,28 @@ rule UmiMarkDuplicates:
         bam=temp(_markduplicates_output),
     params:
         metric=temp("alignment/{sample}_DuplicationMetrics.{chr}.txt"),
+        UMI_metric="alignment/{sample}_UmiMetrics.{chr}.txt",
     log:
         "logs/map/MarkDup/{sample}-ready.{chr}.log",
     threads: 2
     container:
         config["singularity"].get("picard", config["singularity"].get("default", ""))
     shell:
-        "(picard MarkDuplicates DUPLEX_UMI=true BARCODE_TAG=RX INPUT={input.bam} OUTPUT={output.bam} METRICS_FILE={params.metric}) &> {log}"
+        "(picard UmiAwareMarkDuplicatesWithMateCigar DUPLEX_UMI=true MAX_EDIT_DISTANCE_TO_JOIN=1 BARCODE_TAG=RX INPUT={input.bam} OUTPUT={output.bam} METRICS_FILE={params.metric} UMI_METRICS={params.UMI_metric}) &> {log}"
+
+
+# rule UmiMarkDuplicates:
+#     input:
+#         bam=_markduplicates_input,
+#         bai=_markduplicates_input + ".bai",
+#     output:
+#         bam=temp(_markduplicates_output),
+#     params:
+#         metric=temp("alignment/{sample}_DuplicationMetrics.{chr}.txt"),
+#     log:
+#         "logs/map/MarkDup/{sample}-ready.{chr}.log",
+#     threads: 2
+#     container:
+#         config["singularity"].get("picard", config["singularity"].get("default", ""))
+#     shell:
+#         "(picard MarkDuplicates DUPLEX_UMI=true BARCODE_TAG=RX INPUT={input.bam} OUTPUT={output.bam} METRICS_FILE={params.metric}) &> {log}"
