@@ -55,7 +55,7 @@ try:
 except:
     pass
 
-_bwa_mem_output = "alignment/{sample}.sort.noUMI.bam"
+_bwa_mem_output = "alignment/{sample}.sort.bam"
 try:
     _bwa_mem_output = bwa_mem_output
 except:
@@ -92,7 +92,10 @@ rule umi_tag:
         bam = "alignment/{sample}.sort.bam",
     log:
         "logs/map/umi_tag/{sample}.log",
-    container:
-        config["singularity"]["umis"],
+    params:
+        umis_singularity=config["singularity"]["execute"] + config["singularity"]["umis"],
+        samtools_singularity=config["singularity"]["execute"] + config["singularity"].get(
+            "samtools", config["singularity"].get("default", "")
     shell:
-        "(umis bamtag {input.bam} > {output.bam}) &> {log}"
+        "({params.umis_singularity} umis bamtag {input.bam}"
+        " | {params.samtools_singularity} samtools view -b -o {output} - ) &> {log}"

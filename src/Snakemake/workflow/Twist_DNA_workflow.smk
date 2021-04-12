@@ -59,6 +59,7 @@ else:
 
     elif config["programs"]["markduplicate"] == "picard_UMI":
 
+        bwa_mem_output = "alignment/{sample}.sort.noUMI.bam"
         bam_split_input = "alignment/{sample}.sort.bam"
         markduplicates_input = "alignment/{sample}.{chr}.bam"
         markduplicates_output = "alignment/{sample}.dedup.{chr}.bam"
