@@ -62,24 +62,11 @@ except:
     pass
 
 
-rule umi_tag:
-    input:
-        bam = temp("alignment/{sample}.sort.noUMI.bam"),
-    output:
-        bam = "alignment/{sample}.sort.bam",
-    log:
-        "logs/map/umi_tag/{sample}.log",
-    container:
-        config["singularity"]["umis"],
-    shell:
-        "umis bamtag {input.bam} > {output.bam}"
-
-
 rule bwa_mem:
     input:
         reads=_bwa_mem_input,
     output:
-        bam=_bwa_mem_output,
+        bam=temp(_bwa_mem_output),
     log:
         "logs/map/bwa/{sample}.log",
     params:
@@ -95,3 +82,17 @@ rule bwa_mem:
         config["singularity"].get("bwa", config["singularity"].get("default", ""))
     wrapper:
         "0.70.0/bio/bwa/mem"
+
+
+rule umi_tag:
+    input:
+        bam = "alignment/{sample}.sort.noUMI.bam",
+        bai = "alignment/{sample}.sort.noUMI.bam.bai",
+    output:
+        bam = "alignment/{sample}.sort.bam",
+    log:
+        "logs/map/umi_tag/{sample}.log",
+    container:
+        config["singularity"]["umis"],
+    shell:
+        "(umis bamtag {input.bam} > {output.bam}) &> {log}"
