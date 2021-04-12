@@ -55,11 +55,22 @@ try:
 except:
     pass
 
-_bwa_mem_output = "alignment/{sample}.sort.bam"
+_bwa_mem_output = "alignment/{sample}.sort.noUMI.bam"
 try:
     _bwa_mem_output = bwa_mem_output
 except:
     pass
+
+
+rule add_umi:
+    input:
+        bam = temp("alignment/{sample}.sort.noUMI.bam"),
+    output:
+        bam = "alignment/{sample}.sort.bam",
+    container:
+        config["singularity"].["umis"],
+    shell:
+        "umis bamtag {input.bam} {output.bam}"
 
 
 rule bwa_mem:
