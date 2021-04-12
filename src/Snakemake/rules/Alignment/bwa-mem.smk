@@ -62,15 +62,17 @@ except:
     pass
 
 
-rule add_umi:
+rule umi_tag:
     input:
         bam = temp("alignment/{sample}.sort.noUMI.bam"),
     output:
         bam = "alignment/{sample}.sort.bam",
+    log:
+        "logs/map/umi_tag/{sample}.log",
     container:
-        config["singularity"].["umis"],
+        config["singularity"]["umis"],
     shell:
-        "umis bamtag {input.bam} {output.bam}"
+        "umis bamtag {input.bam} > {output.bam}"
 
 
 rule bwa_mem:
