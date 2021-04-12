@@ -96,6 +96,7 @@ rule umi_tag:
         umis_singularity=config["singularity"]["execute"] + config["singularity"]["umis"],
         samtools_singularity=config["singularity"]["execute"] + config["singularity"].get(
             "samtools", config["singularity"].get("default", "")
+        ),
     shell:
         "({params.umis_singularity} umis bamtag {input.bam}"
         " | {params.samtools_singularity} samtools view -b -o {output} - ) &> {log}"
