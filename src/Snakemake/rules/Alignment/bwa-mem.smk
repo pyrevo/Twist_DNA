@@ -92,11 +92,7 @@ rule umi_tag:
         bam = "alignment/{sample}.sort.bam",
     log:
         "logs/map/umi_tag/{sample}.log",
-    params:
-        umis_singularity=config["singularity"]["execute"] + config["singularity"]["umis"],
-        samtools_singularity=config["singularity"]["execute"] + config["singularity"].get(
-            "samtools", config["singularity"].get("default", "")
-        ),
-    shell:
-        "({params.umis_singularity} umis bamtag {input.bam}"
-        " | {params.samtools_singularity} samtools view -b -o {output} - ) &> {log}"
+    container:
+        config["singularity"].get("python", config["singularity"].get("default", ""))
+    script:
+        "../../../scripts/python/umi_annotate.py -i {input.bam} -o {output.bam}"
