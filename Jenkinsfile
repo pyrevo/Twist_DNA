@@ -14,11 +14,12 @@ pipeline {
         sh '''
               source venv/bin/activate
               pytest src/lib/python/test_utils.py
-              echo "Test"
+              echo "Test smee test :)"
            '''
          sh '''
               source venv/bin/activate
-              snakemake -n -s demultiplex.smk --directory tests/workflow_dry_run/demultiplex/              
+              echo "Dry-run "
+              snakemake -n -s demultiplex.smk --directory tests/workflow_dry_run/demultiplex/
             '''
 
       }
