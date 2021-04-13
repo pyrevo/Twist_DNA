@@ -119,7 +119,7 @@ rule mutect2_gvcf:
         vcf=temp("mutect2/temp/{sample}.{chr}.mutect2.gvcf.gz"),
         vcf_tbi=temp("mutect2/temp/{sample}.{chr}.mutect2.gvcf.gz.tbi"),
     params:
-        extra="--intervals mutect2/bedfile.{chr}.bed -ERC GVCF ",
+        extra="--intervals mutect2/bedfile.{chr}.bed -ERC BP_RESOLUTION ",
     threads: 1
     log:
         "logs/variantCalling/mutect2_gvcf_{sample}.{chr}.log",
