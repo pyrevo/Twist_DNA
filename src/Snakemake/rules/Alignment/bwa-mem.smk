@@ -86,10 +86,10 @@ rule bwa_mem:
 
 rule umi_tag:
     input:
-        bam = "alignment/{sample}.sort.noUMI.bam",
-        bai = "alignment/{sample}.sort.noUMI.bam.bai",
+        bam="alignment/{sample}.sort.noUMI.bam",
+        bai="alignment/{sample}.sort.noUMI.bam.bai",
     output:
-        bam = "alignment/{sample}.sort.bam",
+        bam="alignment/{sample}.sort.bam",
     log:
         "logs/map/umi_tag/{sample}.log",
     container:

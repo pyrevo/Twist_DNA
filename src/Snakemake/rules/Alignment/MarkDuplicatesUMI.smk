@@ -44,6 +44,7 @@ except:
 #         "(picard UmiAwareMarkDuplicatesWithMateCigar DUPLEX_UMI=true MAX_EDIT_DISTANCE_TO_JOIN=1 BARCODE_TAG=RX INPUT={input.bam} OUTPUT={output.bam} METRICS_FILE={params.metric} UMI_METRICS={params.UMI_metric}) &> {log}"
 #
 
+
 rule UmiMarkDuplicates:
     input:
         bam=_markduplicates_input,
@@ -59,4 +60,4 @@ rule UmiMarkDuplicates:
         config["singularity"].get("picard", config["singularity"].get("default", ""))
     shell:
         "(picard MarkDuplicates DUPLEX_UMI=true BARCODE_TAG=RX INPUT={input.bam} OUTPUT={output.bam} METRICS_FILE={params.metric}) &> {log}"
-        #"(picard MarkDuplicates BARCODE_TAG=RX INPUT={input.bam} OUTPUT={output.bam} METRICS_FILE={params.metric}) &> {log}"
+        # "(picard MarkDuplicates BARCODE_TAG=RX INPUT={input.bam} OUTPUT={output.bam} METRICS_FILE={params.metric}) &> {log}"

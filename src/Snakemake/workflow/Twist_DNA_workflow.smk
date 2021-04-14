@@ -52,7 +52,6 @@ else:
         freebayes_input = "alignment/{sample}.dedup.{chr}.bam"
         vardict_input = "alignment/{sample}.dedup.{chr}.bam"
 
-
         include: "../rules/Alignment/bwa-mem.smk"
         include: "../rules/Alignment/MarkDuplicates.smk"
 
@@ -68,7 +67,6 @@ else:
         mutect_input = "alignment/{sample}.dedup.{chr}.bam"
         freebayes_input = "alignment/{sample}.dedup.{chr}.bam"
         vardict_input = "alignment/{sample}.dedup.{chr}.bam"
-
 
         include: "../rules/Alignment/bwa-mem.smk"
         include: "../rules/Alignment/MarkDuplicatesUMI.smk"
