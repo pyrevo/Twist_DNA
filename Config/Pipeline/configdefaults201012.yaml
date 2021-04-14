@@ -2,7 +2,7 @@
 programs:
     Duplicates: "markduplicates" #fgbio / markduplicates
     Trimming: "Fastp" #Cutadapt / Fastp / None
-    markduplicate: "picard_UMI" #GPU / picard /picard_UMI
+    markduplicate: "picard" #GPU / picard /picard_UMI
 
 reference: #change to hg38
     ref: "/data/ref_genomes/hg19/bwa/BWA_0.7.10_refseq/hg19.with.mt.fasta"
