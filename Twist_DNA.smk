@@ -40,8 +40,7 @@ def get_input():
     input_list.append(["Results/DNA/" + s + "/MSI/" + s + ".msi" for s in config["DNA_Samples"]])
 
     '''Fusion/SV'''
-    #Gridss not working
-    #input_list.append(["Results/DNA/" + s + "/gridss/" + s + ".vcf.gz" for s in config["DNA_Samples"]])
+    input_list.append(["Results/DNA/" + s + "/geneFuse/fusions_" + s + ".txt" for s in config["DNA_Samples"]])
 
     '''QC'''
     input_list.append(["Results/DNA/" + s + "/QC/Low_coverage_positions.txt" for s in config["DNA_Samples"]])

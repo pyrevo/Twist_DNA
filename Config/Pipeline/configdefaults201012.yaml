@@ -23,6 +23,9 @@ bed:
     intervals: "DATA/pool1_pool2_nochr_3c.sort.merged.hg19.210311.annotated.interval_list"
     GATK_CNV: "DATA/pool1_pool2_nochr_3c.sort.merged.hg19.210311.annotated.preprocessed.interval_list"
 
+geneFuse:
+    genes: "DATA/druggable.hg19.csv"
+
 java:
     SOBDetector: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/SOBDetector_v1.0.1.jar"
 

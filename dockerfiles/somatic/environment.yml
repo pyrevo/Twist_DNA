@@ -27,3 +27,4 @@ dependencies:
   - vt=2015.11.10
   - bcbio-variation-recall=0.2.6
 #  - ensembl-vep=103.1
+  - genefuse=0.6.1
