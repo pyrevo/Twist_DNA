@@ -44,7 +44,7 @@ else:
         include: "../rules/Alignment/GPU_alignment.smk"
 
 
-    else:
+    elif config["programs"]["markduplicate"] == "picard":
 
         bam_split_input = "alignment/{sample}.sort.bam"
         markduplicates_input = "alignment/{sample}.{chr}.bam"
@@ -57,6 +57,22 @@ else:
 
         include: "../rules/Alignment/bwa-mem.smk"
         include: "../rules/Alignment/MarkDuplicates.smk"
+
+
+    elif config["programs"]["markduplicate"] == "picard_UMI":
+
+        bwa_mem_output = "alignment/{sample}.sort.noUMI.bam"
+        bam_split_input = "alignment/{sample}.sort.bam"
+        markduplicates_input = "alignment/{sample}.{chr}.bam"
+        markduplicates_output = "alignment/{sample}.dedup.{chr}.bam"
+        bam_merge_input = "alignment/{sample}.dedup.__CHR__.bam"
+        bam_merge_output = "Bam/DNA/{sample}-ready.bam"
+        mutect_input = "alignment/{sample}.dedup.{chr}.bam"
+        freebayes_input = "alignment/{sample}.dedup.{chr}.bam"
+        vardict_input = "alignment/{sample}.dedup.{chr}.bam"
+
+        include: "../rules/Alignment/bwa-mem.smk"
+        include: "../rules/Alignment/MarkDuplicatesUMI.smk"
 
 
 include: "../rules/Alignment/bam-split.smk"
