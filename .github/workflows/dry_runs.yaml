@@ -75,4 +75,4 @@ jobs:
         run: snakemake -n -s demultiplex.smk --directory tests/workflow_dry_run/demultiplex/
 
       - name: run pytest
-        run: pytest src/lib/python/test_utils.py 
+        run: pytest tests/lib/python/test_utils.py
