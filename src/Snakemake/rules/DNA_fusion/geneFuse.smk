@@ -4,8 +4,8 @@ rule geneFuse:
         fastq1="fastq/DNA/{sample}_R1.fastq.gz",
         fastq2="fastq/DNA/{sample}_R2.fastq.gz",
     output:
-        html="Results/DNA/{sample}/geneFuse_report_{sample}.html",
-        fusions="Results/DNA/{sample}/fusions_{sample}.txt",
+        html="Results/DNA/{sample}/geneFuse/geneFuse_report_{sample}.html",
+        fusions="Results/DNA/{sample}/geneFuse/fusions_{sample}.txt",
     params:
         genes=config["geneFuse"]["genes"],
         ref=config["reference"]["ref"],
