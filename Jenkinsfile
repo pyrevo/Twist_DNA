@@ -1,15 +1,13 @@
 pipeline {
   agent { dockerfile {
       filename 'tests/dockerfiles/twist_dna.dockerfile'
-      dir .
-      label "test-env"
+      dir './'
     }
   }
-
   stages {
-    stage('test') {
+    stage('Dry run tests') {
       steps {
-        snakemake --version
+        sh 'snakemake --version && echo "TEST 3"'
       }
     }
   }
