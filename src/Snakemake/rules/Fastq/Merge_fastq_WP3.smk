@@ -14,18 +14,14 @@ rule merge_Fastq_sh:
         i = 0
         for sample in params.DNA_samples:
             bs = open("fastq_temp/" + sample + "_R1.merge_fastq.sh", "w")
-            bs.write(
-                "zcat fastq_temp/" + sample + "_S*_L00*_R1_001.fastq.gz | pigz > fastq/" + sample + "_R1.fastq.gz\n"
-            )
+            bs.write("zcat fastq_temp/" + sample + "_S*_L00*_R1_001.fastq.gz | pigz > fastq/" + sample + "_R1.fastq.gz\n")
             bs.close()
             subprocess.call("chmod 774 fastq_temp/" + sample + "_R1.merge_fastq.sh", shell=True)
             i += 1
         i = 0
         for sample in params.DNA_samples:
             bs = open("fastq_temp/" + sample + "_R2.merge_fastq.sh", "w")
-            bs.write(
-                "zcat fastq_temp/" + sample + "_S*_L00*_R2_001.fastq.gz | pigz > fastq/" + sample + "_R2.fastq.gz\n"
-            )
+            bs.write("zcat fastq_temp/" + sample + "_S*_L00*_R2_001.fastq.gz | pigz > fastq/" + sample + "_R2.fastq.gz\n")
             bs.close()
             subprocess.call("chmod 774 fastq_temp/" + sample + "_R2.merge_fastq.sh", shell=True)
             i += 1
