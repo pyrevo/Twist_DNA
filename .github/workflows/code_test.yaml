@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Pipeline dry-runs
+name: pytest
 
 # Controls when the action will run.
 on:
@@ -20,7 +20,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   dry_run: # health check job for testing and code formatting check
-    name: snakemake dry run somatic, twist dna and demultiplex. pytest on lib
+    name: pytest
     runs-on: ubuntu-latest # os for running the job
     strategy:
       fail-fast: false
