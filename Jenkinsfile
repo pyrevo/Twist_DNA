@@ -8,8 +8,6 @@ pipeline {
   stages {
     stage('Dry run tests') {
       steps {
-        sh 'pwd'
-        sh 'ls -l .'
         sh 'cp -r /data_twist_dna_fgbio . && snakemake -n -s /Twist_DNA/Twist_DNA.smk --directory ./data_twist_dna_fgbio'
         sh 'cp -r /data_twist_dna_markdup . && snakemake -n -s Twist_DNA.smk --directory ./data_twist_dna_markdup'
         sh 'cp -r /data_twist_dna_gpu . && snakemake -n -s Twist_DNA.smk --directory ./data_twist_dna_gpu'
