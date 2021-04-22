@@ -6,7 +6,7 @@ programs:
     markduplicate: "GPU" #GPU / picard /picard_UMI
 
 reference: #change to hg38
-    ref: "../../data/ref_genomes/ref.fasta"
+    ref: "/data/ref_genomes/ref.fasta"
     assembly: "hgXX"
 
 PoN:
@@ -25,7 +25,7 @@ java:
 
 configfiles:
     multiqc: "Config/Pipeline/multiqc_config.yaml"
-    vep: "../../data/ref_genomes/VEP/"
+    vep: "/data/ref_genomes/VEP/"
 
 DNA_Samples:
   sample1: "S1"

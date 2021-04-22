@@ -1,27 +1,20 @@
 pipeline {
-  agent any
+  agent { dockerfile {
+      filename 'tests/dockerfiles/twist_dna.dockerfile'
+      dir './'
 
-  stages {
-    stage('build') {
-      steps {
-        sh '''virtualenv -p python3.8 venv
-              source venv/bin/activate
-              pip3.8 install -r requirements.txt'''
-      }
     }
-    stage('test') {
+  }
+  stages {
+    stage('Dry run tests') {
       steps {
-        sh '''
-              source venv/bin/activate
-              pytest src/lib/python/test_utils.py
-              echo "Test smee test :)"
-           '''
-         sh '''
-              source venv/bin/activate
-              echo "Dry-run "
-              snakemake -n -s demultiplex.smk --directory tests/workflow_dry_run/demultiplex/
-            '''
-
+        sh 'cp -r /data_twist_dna_fgbio . && snakemake -n -s /Twist_DNA/Twist_DNA.smk --directory ./data_twist_dna_fgbio'
+        sh 'cp -r /data_twist_dna_markdup . && snakemake -n -s Twist_DNA.smk --directory ./data_twist_dna_markdup'
+        sh 'cp -r /data_twist_dna_gpu . && snakemake -n -s Twist_DNA.smk --directory ./data_twist_dna_gpu'
+        sh 'cp -r /data_twist_dna_cutadapt . && snakemake -n -s Twist_DNA.smk --directory ./data_twist_dna_cutadapt'
+        sh 'cp -r /data_twist_dna_fastp . && snakemake -n -s Twist_DNA.smk --directory ./data_twist_dna_fastp'
+        sh 'cp -r /data_gms_somatic . && snakemake -n -s gms_somatic.smk --directory ./data_gms_somatic/'
+        sh 'cp -r /data_demultiplex . && snakemake -n -s demultiplex.smk --directory ./data_demultiplex/'
       }
     }
   }
