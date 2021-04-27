@@ -3,7 +3,7 @@ FROM centos:8
 RUN yum update -y && \
     yum install -y epel-release && \
     yum update -y && \
-    yum install -y singularity-runtime singularity  && \
+    yum install -y singularity-runtime singularity mailx  && \
     yum install -y python38-devel python38-pip
 
 RUN mkdir /Twist_DNA
@@ -11,6 +11,8 @@ RUN mkdir /Twist_DNA
 WORKDIR /Twist_DNA
 
 ADD ./ .
+
+USER root
 
 RUN ln -s /beegfs-storage/data /data
 

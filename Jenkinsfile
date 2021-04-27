@@ -2,7 +2,7 @@ pipeline {
   agent { dockerfile {
       filename 'tests/dockerfiles/twist_dna_working.dockerfile'
       dir './'
-      args '--privileged -v $HOME/.m2:/home/jenkins/.m2 -v /beegfs-storage:/beegfs-storage:ro'
+      args '-u 0 --privileged -v $HOME/.m2:/home/jenkins/.m2 -v /beegfs-storage:/beegfs-storage:ro'
 
     }
   }
@@ -20,7 +20,7 @@ pipeline {
     }
     stage('Small dataset') {
       steps {
-        sh 'cp -r /data_gms_somatic . && snakemake -j 1 -s /Twist_DNA/gms_somatic.smk --directory ./data_gms_somatic/ --use-singularity --singularity-args "--bind /data --bind /beegfs-storage --bind /Twist_DNA"'
+        sh 'cd /data_gms_somatic && snakemake -j 1 -s /Twist_DNA/gms_somatic.smk --directory /data_gms_somatic --use-singularity --singularity-args "--bind /beegfs-storage --bind /data --bind /Twist_DNA --bind /data_gms_somatic"'
 
       }
     }

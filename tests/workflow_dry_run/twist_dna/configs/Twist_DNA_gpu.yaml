@@ -6,8 +6,8 @@ programs:
     markduplicate: "GPU" #GPU / picard /picard_UMI
 
 reference: #change to hg38
-    ref: "/data/ref_genomes/ref.fasta"
-    assembly: "hgXX"
+    ref: "/beegfs-storage/hg19/bwa/BWA_0.7.10_refseq/hg19.with.mt.fasta"
+    assembly: "hg19"
 
 PoN:
     cnvkit: "DATA/cnvkit_Twist_PoN.cnn"
