@@ -1,5 +1,6 @@
 # snakemake -p -j 64 --drmaa "-A wp1 -p core -n {cluster.n} -t {cluster.time}"  -s ./src/Snakemake/rules/CNV/GATK_CNV_PoN.smk --use-singularity --singularity-args "--bind /data --bind /projects --bind /scratch " --cluster-config Config/Slurm/cluster.json
 
+sample_list = [s.Index  for s in samples.itertuples()]
 
 configfile: "Twist_DNA.yaml"
 
@@ -7,7 +8,7 @@ configfile: "Twist_DNA.yaml"
 rule all:
     input:
         "Normals/GATK4/readCountPoN.hdf5",
-        expand("Normals/GATK4/{normal}.counts.hdf5", normal=config["DNA_Samples"]),
+        expand("Normals/GATK4/{normal}.counts.hdf5", normal=sample_list),
 
 
 ## Create interval list and preprocess interval list, only needed when updating bedfile
@@ -65,7 +66,7 @@ rule collectReadCounts:
 
 rule createReadCountPanelOfNormals:
     input:
-        expand("Normals/GATK4/{normal}.counts.hdf5", normal=config["DNA_Samples"]),
+        expand("Normals/GATK4/{normal}.counts.hdf5", normal=sample_list),
     output:
         "Normals/GATK4/readCountPoN.hdf5",
     params:
