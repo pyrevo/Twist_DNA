@@ -10,6 +10,7 @@ samples = pd.read_table(config["samples"], index_col="sample")
 wildcard_constraints:
     unit="[A-Za-z0-9]+",
     sample="[^.]+",
+    chr="chr[0-9XY]+",
 
 rule all:
     input:
