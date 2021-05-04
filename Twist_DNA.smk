@@ -15,10 +15,10 @@ def get_input():
     input_list.append(["Bam/DNA/" + s + "-ready.bam.bai" for s in config["DNA_Samples"]])
 
     '''Callers'''
-    input_list.append(["mutect2/" + s + ".mutect2.normalized.vcf.gz.tbi" for s in config["DNA_Samples"]])
+    #input_list.append(["mutect2/" + s + ".mutect2.normalized.vcf.gz.tbi" for s in config["DNA_Samples"]])
     input_list.append(["mutect2/" + s + ".mutect2.gvcf.gz" for s in config["DNA_Samples"]])
-    input_list.append(["freebayes/" + s + ".freebayes.normalized.vcf.gz.tbi" for s in config["DNA_Samples"]])
-    input_list.append(["varscan/" + s + ".varscan.normalized.vcf.gz.tbi" for s in config["DNA_Samples"]])
+    #input_list.append(["freebayes/" + s + ".freebayes.normalized.vcf.gz.tbi" for s in config["DNA_Samples"]])
+    #input_list.append(["varscan/" + s + ".varscan.normalized.vcf.gz.tbi" for s in config["DNA_Samples"]])
     input_list.append(["vardict/" + s + ".vardict.normalized.vcf.gz.tbi" for s in config["DNA_Samples"]])
     input_list.append(["recall/" + s + ".ensemble.vcf.gz" for s in config["DNA_Samples"]])
     input_list.append(["recall/" + s + ".ensemble.vcf.gz.tbi" for s in config["DNA_Samples"]])

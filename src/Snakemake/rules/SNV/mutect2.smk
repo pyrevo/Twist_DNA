@@ -85,27 +85,27 @@ rule split_bedfile:
         "(awk '{{if(/^{wildcards.chr}\t/) print($0)}}' {input}  > {output}) &> {log}"
 
 
-rule mutect2:
-    input:
-        map=_mutect_input,
-        bai=_mutect_input + ".bai",
-        fasta=config["reference"]["ref"],
-        bed="mutect2/bedfile.{chr}.bed",
-    output:
-        bam=temp("mutect2/bam/{sample}.{chr}.indel.bam"),
-        bai=temp("mutect2/bam/{sample}.{chr}.indel.bai"),
-        stats=temp("mutect2/temp/{sample}.{chr}.mutect2.unfilt.vcf.gz.stats"),
-        vcf=temp("mutect2/temp/{sample}.{chr}.mutect2.unfilt.vcf.gz"),
-        vcf_tbi=temp("mutect2/temp/{sample}.{chr}.mutect2.unfilt.vcf.gz.tbi"),
-    params:
-        extra="--intervals mutect2/bedfile.{chr}.bed ",
-    threads: 1
-    log:
-        "logs/variantCalling/mutect2_{sample}.{chr}.log",
-    singularity:
-        config["singularity"].get("mutect2", config["singularity"].get("default", ""))
-    wrapper:
-        "0.72.0/bio/gatk/mutect"
+# rule mutect2:
+#     input:
+#         map=_mutect_input,
+#         bai=_mutect_input + ".bai",
+#         fasta=config["reference"]["ref"],
+#         bed="mutect2/bedfile.{chr}.bed",
+#     output:
+#         bam=temp("mutect2/bam/{sample}.{chr}.indel.bam"),
+#         bai=temp("mutect2/bam/{sample}.{chr}.indel.bai"),
+#         stats=temp("mutect2/temp/{sample}.{chr}.mutect2.unfilt.vcf.gz.stats"),
+#         vcf=temp("mutect2/temp/{sample}.{chr}.mutect2.unfilt.vcf.gz"),
+#         vcf_tbi=temp("mutect2/temp/{sample}.{chr}.mutect2.unfilt.vcf.gz.tbi"),
+#     params:
+#         extra="--intervals mutect2/bedfile.{chr}.bed ",
+#     threads: 1
+#     log:
+#         "logs/variantCalling/mutect2_{sample}.{chr}.log",
+#     singularity:
+#         config["singularity"].get("mutect2", config["singularity"].get("default", ""))
+#     wrapper:
+#         "0.72.0/bio/gatk/mutect"
 
 
 rule mutect2_gvcf:
@@ -118,6 +118,8 @@ rule mutect2_gvcf:
         stats=temp("mutect2/temp/{sample}.{chr}.mutect2.gvcf.gz.stats"),
         vcf=temp("mutect2/temp/{sample}.{chr}.mutect2.gvcf.gz"),
         vcf_tbi=temp("mutect2/temp/{sample}.{chr}.mutect2.gvcf.gz.tbi"),
+        bam=temp("mutect2/bam/{sample}.{chr}.indel.bam"),
+        bai=temp("mutect2/bam/{sample}.{chr}.indel.bai"),
     params:
         extra="--intervals mutect2/bedfile.{chr}.bed -ERC BP_RESOLUTION ",
     threads: 1
@@ -129,39 +131,39 @@ rule mutect2_gvcf:
         "0.72.0/bio/gatk/mutect"
 
 
-rule filterMutect2:
-    input:
-        vcf="mutect2/temp/{sample}.{chr}.mutect2.unfilt.vcf.gz",
-        vcf_tbi="mutect2/temp/{sample}.{chr}.mutect2.unfilt.vcf.gz.tbi",
-        stats="mutect2/temp/{sample}.{chr}.mutect2.unfilt.vcf.gz.stats",
-        fasta=config["reference"]["ref"],
-    output:
-        vcf=temp("mutect2/temp/{sample}.{chr}.mutect2.vcf.gz"),
-        vcf_tbi=temp("mutect2/temp/{sample}.{chr}.mutect2.vcf.gz.tbi"),
-    params:
-        extra=config.get("mutect_vcf_filter", ""),
-    log:
-        "logs/variantCalling/mutect2/filter_{sample}.{chr}.log",
-    singularity:
-        config["singularity"].get("mutect2", config["singularity"].get("default", ""))
-    shell:
-        "(gatk --java-options '-Xmx4g' FilterMutectCalls {params.extra} -R {input.fasta} -V {input.vcf} -O {output.vcf}) &> {log}"
+# rule filterMutect2:
+#     input:
+#         vcf="mutect2/temp/{sample}.{chr}.mutect2.unfilt.vcf.gz",
+#         vcf_tbi="mutect2/temp/{sample}.{chr}.mutect2.unfilt.vcf.gz.tbi",
+#         stats="mutect2/temp/{sample}.{chr}.mutect2.unfilt.vcf.gz.stats",
+#         fasta=config["reference"]["ref"],
+#     output:
+#         vcf=temp("mutect2/temp/{sample}.{chr}.mutect2.vcf.gz"),
+#         vcf_tbi=temp("mutect2/temp/{sample}.{chr}.mutect2.vcf.gz.tbi"),
+#     params:
+#         extra=config.get("mutect_vcf_filter", ""),
+#     log:
+#         "logs/variantCalling/mutect2/filter_{sample}.{chr}.log",
+#     singularity:
+#         config["singularity"].get("mutect2", config["singularity"].get("default", ""))
+#     shell:
+#         "(gatk --java-options '-Xmx4g' FilterMutectCalls {params.extra} -R {input.fasta} -V {input.vcf} -O {output.vcf}) &> {log}"
 
 
-rule Merge_vcf:
-    input:
-        calls=expand(
-            "mutect2/temp/{{sample}}.{chr}.mutect2.vcf.gz",
-            chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
-        ),
-    output:
-        temp("mutect2/temp/{sample}.mutect2.SB.vcf"),
-    log:
-        "logs/variantCalling/mutect2/merge_vcf/{sample}.log",
-    singularity:
-        config["singularity"].get("bcftools", config["singularity"].get("default", ""))
-    wrapper:
-        "0.70.0/bio/bcftools/concat"
+# rule Merge_vcf:
+#     input:
+#         calls=expand(
+#             "mutect2/temp/{{sample}}.{chr}.mutect2.vcf.gz",
+#             chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
+#         ),
+#     output:
+#         temp("mutect2/temp/{sample}.mutect2.SB.vcf"),
+#     log:
+#         "logs/variantCalling/mutect2/merge_vcf/{sample}.log",
+#     singularity:
+#         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
+#     wrapper:
+#         "0.70.0/bio/bcftools/concat"
 
 
 rule Merge_gvcf:
@@ -182,29 +184,29 @@ rule Merge_gvcf:
         "0.70.0/bio/bcftools/concat"
 
 
-rule fixSB:
-    input:
-        "mutect2/temp/{sample}.mutect2.SB.vcf",
-    output:
-        temp(touch("mutect2/temp/{sample}.SB.done")),
-    log:
-        "logs/variantCalling/mutect2/{sample}.fixSB.log",
-    shell:
-        "(sed -i 's/=SB/=SB_mutect2/g' {input}  && sed -i 's/:SB/:SB_mutect2/g' {input}) &> {log}"
-
-
-rule mutect2HardFilter:
-    input:
-        vcf="mutect2/temp/{sample}.mutect2.SB.vcf",
-        wait="mutect2/temp/{sample}.SB.done",
-    output:
-        _mutect_output_vcf,
-    log:
-        "logs/variantCalling/mutect2/{sample}.hardFilt.log",
-    singularity:
-        config["singularity"].get("python", config["singularity"].get("default", ""))
-    script:
-        "../../../scripts/python/hardFilter_PASS_mutect2.py"
+# rule fixSB:
+#     input:
+#         "mutect2/temp/{sample}.mutect2.SB.vcf",
+#     output:
+#         temp(touch("mutect2/temp/{sample}.SB.done")),
+#     log:
+#         "logs/variantCalling/mutect2/{sample}.fixSB.log",
+#     shell:
+#         "(sed -i 's/=SB/=SB_mutect2/g' {input}  && sed -i 's/:SB/:SB_mutect2/g' {input}) &> {log}"
+#
+#
+# rule mutect2HardFilter:
+#     input:
+#         vcf="mutect2/temp/{sample}.mutect2.SB.vcf",
+#         wait="mutect2/temp/{sample}.SB.done",
+#     output:
+#         _mutect_output_vcf,
+#     log:
+#         "logs/variantCalling/mutect2/{sample}.hardFilt.log",
+#     singularity:
+#         config["singularity"].get("python", config["singularity"].get("default", ""))
+#     script:
+#         "../../../scripts/python/hardFilter_PASS_mutect2.py"
 
 
 rule merge_mutect_bam:

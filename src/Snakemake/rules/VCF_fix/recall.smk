@@ -6,7 +6,8 @@ localrules:
     createMultiVcf,
 
 
-methods = ["mutect2", "vardict", "varscan", "freebayes"]
+#methods = ["mutect2", "vardict", "varscan", "freebayes"]
+methods = ["vardict"]
 
 
 rule recall:

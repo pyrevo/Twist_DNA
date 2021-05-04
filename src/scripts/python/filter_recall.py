@@ -14,5 +14,5 @@ for record in vcf_in.fetch():
             "mutect2" in record.info["CALLERS"] or "vardict" in record.info["CALLERS"]
         ):
             vcf_out.write(record)
-    elif len(record.info["CALLERS"]) >= 2:
+    elif len(record.info["CALLERS"]) >= 1:
         vcf_out.write(record)

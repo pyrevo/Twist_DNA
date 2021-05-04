@@ -77,10 +77,10 @@ else:
 
 include: "../rules/Alignment/bam-split.smk"
 include: "../rules/Alignment/bam-merge.smk"
-include: "../rules/SNV/freebayes.smk"
+# include: "../rules/SNV/freebayes.smk"
 include: "../rules/SNV/mutect2.smk"
 include: "../rules/SNV/vardict_T.smk"
-include: "../rules/SNV/varscan.smk"
+# include: "../rules/SNV/varscan.smk"
 include: "../rules/VCF_fix/fix_AF_all_callers.smk"
 include: "../rules/VCF_fix/normalize.smk"
 include: "../rules/VCF_fix/recall.smk"
