@@ -28,6 +28,7 @@ rule fastqcR1:
         zip="qc/{sample}/{sample}_R1_fastqc.zip",  # the suffix _fastqc.zip is necessary for multiqc to find the file. If not using multiqc, you are free to choose an arbitrary filename
     params:
         outdir="qc/{sample}/",
+        tmp="qc/",
     log:
         "logs/qc/fastqc/{sample}_R1.log",
     threads: 10
@@ -36,7 +37,7 @@ rule fastqcR1:
     # wrapper:
     #    "0.38.0/bio/fastqc"
     shell:
-        "(fastqc --quiet -t {threads} --outdir {params.outdir} {input}) &> {log}"
+        "(fastqc --quiet -t {threads} -d {params.tmp} --outdir {params.outdir} {input}) &> {log}"
 
 
 rule fastqcR2:
@@ -47,6 +48,7 @@ rule fastqcR2:
         zip="qc/{sample}/{sample}_R2_fastqc.zip",  # the suffix _fastqc.zip is necessary for multiqc to find the file. If not using multiqc, you are free to choose an arbitrary filename
     params:
         outdir="qc/{sample}/",
+        tmp="qc/",
     log:
         "logs/qc/fastqc/{sample}_R2.log",
     threads: 10
@@ -55,4 +57,4 @@ rule fastqcR2:
     # wrapper:
     #    "0.38.0/bio/fastqc"
     shell:
-        "(fastqc --quiet -t {threads} --outdir {params.outdir} {input}) &> {log}"
+        "(fastqc --quiet -t {threads} -d {params.tmp} --outdir {params.outdir} {input}) &> {log}"
