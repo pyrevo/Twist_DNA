@@ -39,7 +39,7 @@ try:
 except:
     pass
 
-_bam_split_output = "alignment/{sample}.{chr,[^.]+}.bam"
+_bam_split_output = "alignment/{sample}.{chr}.bam"
 try:
     _bam_split_output = bam_split_output
 except:

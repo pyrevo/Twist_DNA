@@ -1,46 +1,47 @@
-# snakemake -p -j 64 --drmaa "-A wp1 -p core -n {cluster.n} -t {cluster.time}"  -s ./src/Snakemake/rules/CNV/GATK_CNV_PoN.smk --use-singularity --singularity-args "--bind /data --bind /projects --bind /scratch " --cluster-config Config/Slurm/cluster.json
 
+interval_list="bedFiles/design.interval_list"
+try:
+    interval_list=config["bed"]["intervals"]
+except:
+    pass
 
-configfile: "Twist_DNA.yaml"
+preprocessIntervals="bedFiles/design.preprocessed.interval_list"
+try:
+    preprocessIntervals=config["bed"]["preprocessed_intervals"]
+except:
+    pass
 
-
-rule all:
+rule bedToIntervalList:
     input:
-        "Normals/GATK4/readCountPoN.hdf5",
-        expand("Normals/GATK4/{normal}.counts.hdf5", normal=config["DNA_Samples"]),
-
-
-## Create interval list and preprocess interval list, only needed when updating bedfile
-# rule bedToIntervalList:
-#     input:
-#         bed=config["bed"]["bedfile"],  ## Annotated clostest bedfile? Really needed?
-#         refDict=config["reference"]["ref"],  ##Have to be a .dict in same folder as .fasta
-#     output:
-#         "bedFiles/TM_TE-annotated_closest-noduplicates.interval_list",  #Should be based on bedfile...
-#     log:
-#         "logs/Normals/TM_TE-annotated_closest-noduplicates.log",
-#     singularity:
-#         config["singularity"]["gatk4"]
-#     shell:
-#         "(gatk BedToIntervalList  -I {input.bed} -O {output} -SD {input.refDict} ) &> {log} "
+        bed=config["bed"]["bedfile"],  ## Annotated clostest bedfile? Really needed?
+        refDict=config["reference"]["ref"],  ##Have to be a .dict in same folder as .fasta
+    output:
+        interval_list,  #Should be based on bedfile...
+    log:
+        "logs/gatk/bedToIntervalList.log",
+    singularity:
+        config["singularity"]["gatk4"]
+    shell:
+        "(gatk BedToIntervalList  -I {input.bed} -O {output} -SD {input.refDict} ) &> {log} "
 
 
 rule preprocessIntervals:
     input:
         ref=config["reference"]["ref"],
-        intervalList=config["bed"]["intervals"],  #targets_C.interval_list interval list picard style
+        intervalList=interval_list,  #targets_C.interval_list interval list picard style
     output:
-        "bedFiles/pool1_pool2_nochr_3c.annotated.preprocessed.interval_list",
+        preprocessIntervals,
     params:
-        binLength=0,  #WGS 1000
-        mergingRule="OVERLAPPING_ONLY",
+        binLength=config['gatk4']['binLength'],  #WGS 1000
+        extra=" ".join(config.get("gatk4",{}).get("preprocessIntervals", [])),
+        #mergingRule="OVERLAPPING_ONLY",
     log:
         "logs/Normals/GATK/preprocessIntervals.log",
     singularity:
         config["singularity"]["gatk4"]
     shell:
         "(gatk --java-options '-Xmx4g' PreprocessIntervals -L {input.intervalList} -R {input.ref} "
-        "--bin-length {params.binLength} --interval-merging-rule {params.mergingRule} "
+        "--bin-length {params.binLength} {params.extra} "
         "-O {output}) &> {log}"
 
 
@@ -49,33 +50,34 @@ rule collectReadCounts:
     input:
         #bam=lambda wildcards: config["normal"][wildcards.normal],
         bam="Bam/DNA/{normal}-ready.bam",
-        interval="bedFiles/pool1_pool2_nochr_3c.annotated.preprocessed.interval_list",
+        bai="Bam/DNA/{normal}-ready.bam.bai",
+        interval=preprocessIntervals,
     output:
         "Normals/GATK4/{normal}.counts.hdf5",  #Should have date in it?
     params:
-        mergingRule="OVERLAPPING_ONLY",
+        extra=" ".join(config.get("gatk4",{}).get("collectReadCounts", [])),
     log:
         "logs/Normals/GATK/{normal}.collectReadCounts.log",
     singularity:
         config["singularity"]["gatk4"]
     shell:
         "(gatk --java-options '-Xmx4g' CollectReadCounts -I {input.bam} -L {input.interval} "
-        "--interval-merging-rule {params.mergingRule} -O {output}) &> {log}"
+        "{params.extra} -O {output}) &> {log}"
 
 
 rule createReadCountPanelOfNormals:
     input:
-        expand("Normals/GATK4/{normal}.counts.hdf5", normal=config["DNA_Samples"]),
+        expand("Normals/GATK4/{normal}.counts.hdf5", normal=[s.Index for s in samples.itertuples()]),
     output:
-        "Normals/GATK4/readCountPoN.hdf5",
+        "DATA/gatk4.{design,[^.]+}.readCountPoN.hdf5",
     params:
-        minIntervalMedianPerc=5.0,
+        extra=" ".join(config.get("gatk4",{}).get("createReadCountPanelOfNormals", [])),
         input=lambda wildcards, input: " -I ".join(input),
     log:
-        "logs/Normals/GATK/readCountPoN.log",
+        "logs/Normals/GATK/{design}.readCountPoN.log",
     singularity:
         config["singularity"]["gatk4"]
     shell:
         "(gatk --java-options '-Xmx4g' CreateReadCountPanelOfNormals -I {params.input} "
-        "--minimum-interval-median-percentile {params.minIntervalMedianPerc} "
+        "{params.extra} "
         "-O {output}) &> {log}"
