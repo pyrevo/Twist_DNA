@@ -1,15 +1,25 @@
+# vim: syntax=python tabstop=4 expandtab
+# coding: utf-8
 
-interval_list="bedFiles/design.interval_list"
+
+__author__ = "Jonas Almlöf, Patrik Smeds"
+__copyright__ = "Copyright 2021, Patrik Smeds, Jonas Almlöf"
+__email__ = "jonas.almlöf@scilifelab.uu.se, patrik.smeds@scilifelab.uu.se"
+__license__ = "GPL3"
+
+
+interval_list = "bedFiles/design.interval_list"
 try:
-    interval_list=config["bed"]["intervals"]
+    interval_list = config["bed"]["intervals"]
 except:
     pass
 
-preprocessIntervals="bedFiles/design.preprocessed.interval_list"
+preprocessIntervals = "bedFiles/design.preprocessed.interval_list"
 try:
-    preprocessIntervals=config["bed"]["preprocessed_intervals"]
+    preprocessIntervals = config["bed"]["preprocessed_intervals"]
 except:
     pass
+
 
 rule bedToIntervalList:
     input:
@@ -33,8 +43,7 @@ rule preprocessIntervals:
         preprocessIntervals,
     params:
         binLength=config['gatk4']['binLength'],  #WGS 1000
-        extra=" ".join(config.get("gatk4",{}).get("preprocessIntervals", [])),
-        #mergingRule="OVERLAPPING_ONLY",
+        extra=" ".join(config.get("gatk4", {}).get("preprocessIntervals", [])),
     log:
         "logs/Normals/GATK/preprocessIntervals.log",
     singularity:
@@ -55,7 +64,7 @@ rule collectReadCounts:
     output:
         "Normals/GATK4/{normal}.counts.hdf5",  #Should have date in it?
     params:
-        extra=" ".join(config.get("gatk4",{}).get("collectReadCounts", [])),
+        extra=" ".join(config.get("gatk4", {}).get("collectReadCounts", [])),
     log:
         "logs/Normals/GATK/{normal}.collectReadCounts.log",
     singularity:
@@ -71,7 +80,7 @@ rule createReadCountPanelOfNormals:
     output:
         "DATA/gatk4.{design,[^.]+}.readCountPoN.hdf5",
     params:
-        extra=" ".join(config.get("gatk4",{}).get("createReadCountPanelOfNormals", [])),
+        extra=" ".join(config.get("gatk4", {}).get("createReadCountPanelOfNormals", [])),
         input=lambda wildcards, input: " -I ".join(input),
     log:
         "logs/Normals/GATK/{design}.readCountPoN.log",
