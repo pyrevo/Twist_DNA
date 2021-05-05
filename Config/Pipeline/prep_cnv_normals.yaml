@@ -1,0 +1,48 @@
+
+programs:
+    Duplicates: "markduplicates" #fgbio / markduplicates
+    Trimming: "Fastp" #Cutadapt / Fastp / None
+    markduplicate: "picard" #GPU / picard /picard_UMI
+
+reference: #change to hg38
+    ref: "/data/ref_genomes/hg19/bwa/BWA_0.7.10_refseq/hg19.with.mt.fasta"
+    assembly: hg19
+
+samples: "samples.tsv"
+
+DNA_Samples:
+  ALL558A73: "50M"
+  ALL558A74: "50M"
+  ALL558A75: "50M"
+  ALL558A76: "50M"
+
+cnvkit:
+    mappable: "Twist_DNA/DATA/access-5k-mappable.hg19.bed"
+
+gatk4:
+    binLength: 0
+    createReadCountPanelOfNormals:
+       - "--minimum-interval-median-percentile 5.0"
+    preprocessIntervals:
+       - "--interval-merging-rule OVERLAPPING_ONLY"
+    collectReadCounts:
+       - "--interval-merging-rule OVERLAPPING_ONLY"
+
+PoN:
+    cnvkit: "DATA/cnvkit_Twist_PoN.cnn"
+    GATK: "DATA/GATK_Twist_PoN.hdf5"
+
+
+bed:
+    bedfile: "Twist_DNA/DATA/pool1_pool2_nochr_3c.annotated_testing.bed" #Change to HG38 coordiantes
+#    intervals: "DATA/pool1_pool2_nochr_3c.sort.merged.hg19.210311.annotated.interval_list"
+    #GATK_CNV: "DATA/pool1_pool2_nochr_3c.sort.merged.hg19.210311.annotated.preprocessed.interval_list"
+
+singularity:
+    default: "docker://gmsuppsala/somatic:develop"
+    execute: "singularity exec -B /data -B /projects -B /scratch "
+    umis: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/umis_1.0.7.simg"
+    gatk4: "/projects/wp2/nobackup/Twist_Myeloid/Containers/gatk-4.1.7.0.broad.simg"
+    #    gatk4_cnv: "/projects/wp2/nobackup/Twist_Myeloid/Containers/gatk-4.1.7.0.broad.simg"
+
+

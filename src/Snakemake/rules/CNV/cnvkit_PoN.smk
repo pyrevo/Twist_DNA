@@ -1,10 +1,11 @@
+# vim: syntax=python tabstop=4 expandtab
+# coding: utf-8
 
-configfile: "Twist_DNA.yaml"
 
-
-rule all:
-    input:
-        PoN="DATA/cnvkit_Twist_PoN.cnn",
+__author__ = "Jonas Almlöf, Patrik Smeds"
+__copyright__ = "Copyright 2021, Patrik Smeds, Jonas Almlöf"
+__email__ = "jonas.almlöf@scilifelab.uu.se, patrik.smeds@scilifelab.uu.se"
+__license__ = "GPL3"
 
 
 rule Create_targets:
@@ -15,7 +16,7 @@ rule Create_targets:
     log:
         "logs/CNV_cnvkit/Create_targets.log",
     singularity:
-        config["singularity"]["cnvkit"]
+        config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
     shell:
         "(cnvkit.py target --split {input.bed} -o {output.bed}) &> {log}"
 
@@ -28,24 +29,23 @@ rule Create_anti_targets:
     log:
         "logs/CNV_cnvkit/Create_anti_targets.log",
     singularity:
-        config["singularity"]["cnvkit"]
+        config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
     shell:
         "(cnvkit.py antitarget {input.bed} -o {output.bed}) &> {log}"
 
 
 rule Build_normal_reference:
     input:
-        #bams=expand("{normal_sample}", normal_sample=config["DNA_Samples"]),
-        bams=["Bam/DNA/" + s + "-ready.bam" for s in config["DNA_Samples"]],
+        bams=["Bam/DNA/" + s.Index + "-ready.bam" for s in samples.itertuples()],
         bed1="CNV/bed/cnvkit_manifest.target.bed",
         bed2="CNV/bed/cnvkit_manifest.antitarget.bed",
         ref=config["reference"]["ref"],
-        mappability="DATA/access-5k-mappable.hg19.bed",
+        mappability=config["cnvkit"]["mappable"],
     output:
-        PoN="DATA/cnvkit_Twist_PoN.cnn",
+        PoN="DATA/cnvkit.{design,[^.]+}.PoN.cnn",
     threads: 4
     singularity:
-        config["singularity"]["cnvkit"]
+        config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
     shell:
         "cnvkit.py batch "
         "-n {input.bams} "

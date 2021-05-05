@@ -60,4 +60,3 @@ rule UmiMarkDuplicates:
         config["singularity"].get("picard", config["singularity"].get("default", ""))
     shell:
         "(picard MarkDuplicates DUPLEX_UMI=true BARCODE_TAG=RX INPUT={input.bam} OUTPUT={output.bam} METRICS_FILE={params.metric}) &> {log}"
-        # "(picard MarkDuplicates BARCODE_TAG=RX INPUT={input.bam} OUTPUT={output.bam} METRICS_FILE={params.metric}) &> {log}"
