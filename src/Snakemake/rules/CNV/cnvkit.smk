@@ -34,13 +34,14 @@ rule Call_cnv:
         segments=["CNV/cnvkit_calls/" + sample_id + "-ready.cns" for sample_id in config["DNA_Samples"]],
     params:
         outdir="CNV/cnvkit_calls/",
+        extra=config.get("cnvkit",{}).get("extra",""),
     log:
         "logs/CNV_cnvkit/Call_cnv.log",
     threads: 8
     singularity:
         config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
     shell:
-        "(cnvkit.py batch {input.bams} -r {input.PoN} -p {threads} -d {params.outdir}) &> {log}"
+        "(cnvkit.py batch {input.bams} {params.extra} -r {input.PoN} -p {threads} -d {params.outdir}) &> {log}"
 
 
 rule Filter_cnv:

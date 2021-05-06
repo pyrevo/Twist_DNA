@@ -43,11 +43,14 @@ rule Build_normal_reference:
         mappability=config["cnvkit"]["mappable"],
     output:
         PoN="DATA/cnvkit.{design,[^.]+}.PoN.cnn",
+    params:
+        extra=config.get("cnvkit",{}).get("extra",""
     threads: 4
     singularity:
         config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
     shell:
         "cnvkit.py batch "
+        " {params.extra} "
         "-n {input.bams} "
         "-m hybrid "
         "--output-reference {output.PoN} "
