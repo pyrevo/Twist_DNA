@@ -48,7 +48,7 @@ configfiles:
 #DNA_Samples:
 #  sample1: "S1"
 
-samples: "sample.tsv"
+samples: "samples.tsv"
 
 units: "units.tsv"
 
