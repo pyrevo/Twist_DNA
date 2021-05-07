@@ -1,7 +1,7 @@
 ---
 
 programs:
-    Duplicates: "fgbio" #fgbio / markduplicates
+    Duplicates: "markduplicates" #fgbio / markduplicates
     Trimming: "Cutadapt" #Cutadapt / Fastp / None
     markduplicate: "picard" #GPU / picard /picard_UMI
 
