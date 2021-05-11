@@ -3,12 +3,13 @@ import subprocess
 import sys
 
 bed = open(snakemake.input.bed)
+vcf = open(snakemake.input.vcf)
 bam_file = snakemake.input.bam
 outfile = open(snakemake.output.coverage, "w")
 outfile2 = open(snakemake.output.coverage2, "w")
 
 header = "#Chr\tStart_hg19\tEnd_hg19\tGene\tCDS_mut_syntax\tAA_mut_syntax\tReport"
-header += "\tcomment\tExon\tAccession_number\tCoverage\tPosition\n"
+header += "\tcomment\tExon\tAccession_number\tCoverage\tPosition\tDP\tRef_DP\tAlt_DP\tAF\n"
 
 outfile.write(header)
 outfile2.write(header)
@@ -17,6 +18,7 @@ outfile2.write(header)
 '''Find positions to report and gene regions to analyse'''
 inv_pos = {}
 gene_regions = []
+gene_region_dict = {}
 header = True
 prev_gene = ""
 prev_chrom = ""
@@ -64,6 +66,45 @@ for gene_region in gene_regions:
     if gene_region not in gene_regions_temp:
         gene_regions_temp.append(gene_region)
 gene_regions = gene_regions_temp
+
+
+'''find all calls in the vcf overlapping hotspots'''
+vcf_dict = {}
+header = True
+for line in vcf :
+    if header :
+        if line[:6] == "#CHROM" :
+            header = False
+        continue
+    lline = line.strip().split("\t")
+    chrom = lline[0]
+    pos = lline[1]
+    key = chrom + "_" + pos
+    INFO = lline[7]
+    FORMAT = lline[8].split(":")
+    DATA = lline[9].split(":")
+    AD_index = 0
+    DP_index = 0
+    i = 0
+    for f in FORMAT :
+        if f == "AD" :
+            AD_index = i
+        if f == "DP" :
+            DP_index = i
+        i += 1
+    AD = DATA[AD_index].split(",")
+    Ref_DP = AD[0]
+    Alt_DP = AD[1]
+    DP = DATA[DP_index]
+    AF_list = INFO.split("AF=")
+    AF = 0.0
+    if len(AF_list) > 2 :
+        AF = float(AF_list[2].split(";")[0])
+    else :
+        AF = float(AF_list[1].split(";")[0])
+    if key in inv_pos :
+        vcf_dict[key] = [DP, Ref_DP, Alt_DP, AF]
+
 
 '''Report all interesting positions (All but region) with coverage < 50'''
 depth_dict = {}
