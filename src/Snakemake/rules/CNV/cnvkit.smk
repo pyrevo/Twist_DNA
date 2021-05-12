@@ -34,7 +34,7 @@ rule Call_cnv:
         segments=["CNV/cnvkit_calls/" + sample_id + "-ready.cns" for sample_id in config["DNA_Samples"]],
     params:
         outdir="CNV/cnvkit_calls/",
-        extra=config.get("cnvkit",{}).get("extra",""),
+        extra=config.get("cnvkit", {}).get("extra", ""),
     log:
         "logs/CNV_cnvkit/Call_cnv.log",
     threads: 8
