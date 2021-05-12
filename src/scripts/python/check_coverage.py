@@ -113,7 +113,7 @@ for line in vcf :
         if info[:3] == "AF=" :
             AF_index = i
         i += 1
-    AF = INFO[AF_index]
+    AF = INFO[AF_index][3:]
     if key in inv_pos :
         vcf_dict[key] = [DP, Ref_DP, Alt_DP, AF]
 
