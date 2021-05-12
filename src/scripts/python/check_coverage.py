@@ -83,24 +83,35 @@ for line in vcf :
     INFO = lline[7]
     FORMAT = lline[8].split(":")
     DATA = lline[9].split(":")
+    if INFO[:3] == "AA=" :
+        continue
     AD_index = 0
     DP_index = 0
+    RD_index = 0
     i = 0
     for f in FORMAT :
         if f == "AD" :
             AD_index = i
         if f == "DP" :
             DP_index = i
+        if f == "RD" :
+            RD_index = i
         i += 1
     AD = DATA[AD_index].split(",")
-    Ref_DP = AD[0]
-    Alt_DP = AD[1]
+    Ref_DP = 0
+    Alt_DP = 0
+    if len(AD) == 2 :
+        Ref_DP = AD[0]
+        Alt_DP = AD[1]
+    else :
+        Ref_DP = DATA[RD_index]
+        Alt_DP = DATA[AD_index]
     DP = DATA[DP_index]
     AF_list = INFO.split("AF=")
     AF = 0.0
     if len(AF_list) > 2 :
         AF = float(AF_list[2].split(";")[0])
-    else :
+    else len(AF_list) == 2 :
         AF = float(AF_list[1].split(";")[0])
     if key in inv_pos :
         vcf_dict[key] = [DP, Ref_DP, Alt_DP, AF]
@@ -126,7 +137,11 @@ for region in gene_regions:
                 outfile.write(str(coverage) + "\t" + pos + "\n")
             for info in inv_pos[key]:
                 outfile2.write(info + "\t")
-            outfile2.write(str(coverage) + "\t" + pos + "\n")
+            outfile2.write(str(coverage) + "\t" + pos)
+            if key in vcf_dict :
+                for info in vcf_dict[key] :
+                    outfile2.write("\t" + info)
+            outfile2.write("\n")
     depth_file.close()
 outfile.close()
 outfile2.close()
