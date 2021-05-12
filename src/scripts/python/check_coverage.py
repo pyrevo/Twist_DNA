@@ -80,7 +80,7 @@ for line in vcf :
     chrom = lline[0][3:]
     pos = lline[1]
     key = chrom + "_" + pos
-    INFO = lline[7]
+    INFO = lline[7].split(";")
     FORMAT = lline[8].split(":")
     DATA = lline[9].split(":")
     if INFO[:3] == "AA=" :
@@ -107,12 +107,13 @@ for line in vcf :
         Ref_DP = DATA[RD_index]
         Alt_DP = DATA[AD_index]
     DP = DATA[DP_index]
-    AF_list = INFO.split("AF=")
-    AF = 0.0
-    if len(AF_list) > 2 :
-        AF = AF_list[2].split(";")[0]
-    elif len(AF_list) == 2 :
-        AF = AF_list[1].split(";")[0]
+    AF_index = 0
+    i = 0
+    for info in INFO:
+        if info[:3] == "AF=" :
+            AF_index = i
+        i += 1
+    AF = INFO[AF_index]
     if key in inv_pos :
         vcf_dict[key] = [DP, Ref_DP, Alt_DP, AF]
 
