@@ -77,7 +77,7 @@ for line in vcf :
             header = False
         continue
     lline = line.strip().split("\t")
-    chrom = lline[0]
+    chrom = lline[0][3:]
     pos = lline[1]
     key = chrom + "_" + pos
     INFO = lline[7]
@@ -110,9 +110,9 @@ for line in vcf :
     AF_list = INFO.split("AF=")
     AF = 0.0
     if len(AF_list) > 2 :
-        AF = float(AF_list[2].split(";")[0])
-    else len(AF_list) == 2 :
-        AF = float(AF_list[1].split(";")[0])
+        AF = AF_list[2].split(";")[0]
+    elif len(AF_list) == 2 :
+        AF = AF_list[1].split(";")[0]
     if key in inv_pos :
         vcf_dict[key] = [DP, Ref_DP, Alt_DP, AF]
 
@@ -140,7 +140,7 @@ for region in gene_regions:
             outfile2.write(str(coverage) + "\t" + pos)
             if key in vcf_dict :
                 for info in vcf_dict[key] :
-                    outfile2.write("\t" + info)
+                    outfile2.write("\t" + str(info))
             outfile2.write("\n")
     depth_file.close()
 outfile.close()
