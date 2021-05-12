@@ -10,8 +10,12 @@ rule bwa_mem_fgbio1:
         bwa_singularity=config["singularity"]["execute"] + config["singularity"].get(
             "bwa", config["singularity"].get("default", "")
         ),
-        bamsormadup_singularity=config["singularity"]["execute"] + config["singularity"].get("bamsormadup",config["singularity"].get("default", "")),
-        umis_singularity=config["singularity"]["execute"] + config["singularity"].get("umis", config["singularity"].get("default", "")),
+        bamsormadup_singularity=config["singularity"]["execute"] + config["singularity"].get(
+            "bamsormadup", config["singularity"].get("default", "")
+        ),
+        umis_singularity=config["singularity"]["execute"] + config["singularity"].get(
+            "umis", config["singularity"].get("default", "")
+        ),
         samtools_singularity=config["singularity"]["execute"] + config["singularity"].get(
             "samtools", config["singularity"].get("default", "")
         ),
@@ -49,8 +53,12 @@ rule fgbio:
         qc="qc/{sample}/{sample}_fgbio.txt",
     params:
         bam_tmp="alignment/{sample}-cumi-1-bamtofastq-tmp",
-        fgbio_singularity=config["singularity"]["execute"] + config["singularity"].get("fgbio" ,config["singularity"].get("default", "")),
-        bamtofastq_singularity=config["singularity"]["execute"] + config["singularity"].get("bamtofastq",config["singularity"].get("default", ""))
+        fgbio_singularity=config["singularity"]["execute"] + config["singularity"].get(
+            "fgbio", config["singularity"].get("default", "")
+        ),
+        bamtofastq_singularity=config["singularity"]["execute"] + config["singularity"].get(
+            "bamtofastq", config["singularity"].get("default", "")
+        ),
     log:
         "logs/fgbio/{sample}.log",
     shell:
