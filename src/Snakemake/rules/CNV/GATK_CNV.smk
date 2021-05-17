@@ -101,7 +101,7 @@ rule plotModeledSegments:
         denoisedCopyRatio="CNV/CNV_GATK/{sample}_clean.denoisedCR.tsv",
         allelicCounts="CNV/CNV_GATK/{sample}_clean.hets.tsv",
         segments="CNV/CNV_GATK/{sample}_clean.modelFinal.seg",
-        refDict=config["reference"]["ref"][:-5] + "dict",
+        refDict=config["reference"]["dict"],
     output:
         png="Results/DNA/CNV/{sample}_GATK_clean.calledCNVs.modeled.png",
     params:
