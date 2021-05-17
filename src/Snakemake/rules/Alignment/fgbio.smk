@@ -112,7 +112,8 @@ rule GroupReadsByUmi:
         bam=temp("alignment/{sample}.prep_fgbio.sort.groupreadsbyumi.bam"),
         qc="qc/{sample}/{sample}_fgbio.txt",
     params:
-        fgbio_singularity=config["singularity"]["execute"] + config["singularity"]["fgbio"],
+        fgbio_singularity=config["singularity"]["execute"] + config["singularity"].get(
+            "fgbio", config["singularity"].get("default", "")
     log:
         "logs/fgbio/{sample}.groupreadsbyumi.log",
     shell:
