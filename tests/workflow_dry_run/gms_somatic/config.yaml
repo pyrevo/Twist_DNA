@@ -8,6 +8,7 @@ notification_mail: "test@mail.se"
 
 reference: #change to hg38
     ref: "/beegfs-storage/hg19/bwa/BWA_0.7.10_refseq/hg19.with.mt.fasta"
+    dict: "/data/ref_genomes/hg19/bwa/BWA_0.7.10_refseq/hg19.with.mt.dict"
     assembly: "hg19"
 
 
