@@ -14,9 +14,6 @@ reference: #change to hg38
 
 singularity:
     default: "docker://gmsuppsala/somatic:develop"
-    #bwa: "bwa0.7.17-samtools-1.9.simg"
-    #fastp: "fastq.simg"
-    #samtools: "bwa0.7.17-samtools-1.9.simg"
 
 mutect_vcf_filter: "--max-alt-allele-count 3 --max-events-in-region 8"
 
