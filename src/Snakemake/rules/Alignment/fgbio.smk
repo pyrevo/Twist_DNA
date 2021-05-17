@@ -114,6 +114,7 @@ rule GroupReadsByUmi:
     params:
         fgbio_singularity=config["singularity"]["execute"] + config["singularity"].get(
             "fgbio", config["singularity"].get("default", "")
+        ),
     log:
         "logs/fgbio/{sample}.groupreadsbyumi.log",
     shell:
