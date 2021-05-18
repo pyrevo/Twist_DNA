@@ -9,7 +9,7 @@ outfile = open(snakemake.output.coverage, "w")
 outfile2 = open(snakemake.output.coverage2, "w")
 
 header = "#Chr\tStart_hg19\tEnd_hg19\tGene\tCDS_mut_syntax\tAA_mut_syntax\tReport"
-header += "\tcomment\tExon\tAccession_number\tCoverage\tPosition\tDP\tRef_DP\tAlt_DP\tAF\n"
+header += "\tcomment\tExon\tAccession_number\tCoverage\tPosition\tDP\tRef_DP\tAlt_DP\tAF\tAA_change\tCDS_change\n"
 
 outfile.write(header)
 outfile2.write(header)
@@ -114,8 +114,21 @@ for line in vcf:
             AF_index = i
         i += 1
     AF = INFO[AF_index][3:]
+    VEP = INFO[-1]
+    AA_change = VEP.split(":p.")
+    if len(AA_change) == 2:
+        AA_change = AA_change[1].split("|")[0]
+        if AA_change[-3:] == "%3D":
+            AA_change = AA_change[:-3]
+    else:
+        AA_change = ""
+    CDS_change = VEP.split(":c.")
+    if len(CDS_change) == 2:
+        CDS_change = CDS_change[1].split("|")[0]
+    else:
+        CDS_change = ""
     if key in inv_pos:
-        vcf_dict[key] = [DP, Ref_DP, Alt_DP, AF]
+        vcf_dict[key] = [DP, Ref_DP, Alt_DP, AF, AA_change, CDS_change]
 
 
 '''Report all interesting positions (All but region) with coverage < 50'''
