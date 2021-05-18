@@ -116,16 +116,16 @@ for line in vcf:
     AF = INFO[AF_index][3:]
     VEP = INFO[-1]
     AA_change = VEP.split(":p.")
-    if len(AA_change) == 2 :
+    if len(AA_change) == 2:
         AA_change = AA_change[1].split("|")[0]
-        if AA_change[-3:] == "%3D" :
+        if AA_change[-3:] == "%3D":
             AA_change = AA_change[:-3]
-    else :
+    else:
         AA_change = ""
     CDS_change = VEP.split(":c.")
-    if len(CDS_change) == 2 :
+    if len(CDS_change) == 2:
         CDS_change = CDS_change[1].split("|")[0]
-    else :
+    else:
         CDS_change = ""
     if key in inv_pos:
         vcf_dict[key] = [DP, Ref_DP, Alt_DP, AF, AA_change, CDS_change]
