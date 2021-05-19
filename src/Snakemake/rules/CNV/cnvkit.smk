@@ -46,12 +46,12 @@ rule Call_cnv:
 
 rule Call_LoH:
     input:
-        segment="CNV/cnvkit_calls/{sample}-ready.cns,
+        segment="CNV/cnvkit_calls/{sample}-ready.cns",
         vcf="Results/DNA/{sample}/vcf/{sample}.ensemble.vep.exon.soft_filter.multibp.vcf",
     output:
-        segment="CNV/cnvkit_calls/{sample}-LoH.cns,
+        segment="CNV/cnvkit_calls/{sample}-LoH.cns",
     params:
-        purity=lambda wildcards: samples.loc[wildcards.sample].TC
+        purity=lambda wildcards: samples.loc[wildcards.sample].TC,
     log:
         "logs/CNV_cnvkit/Call_LoH_{sample}.log",
     container:
