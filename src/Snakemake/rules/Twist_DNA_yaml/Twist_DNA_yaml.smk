@@ -71,9 +71,9 @@ rule Create_Twist_DNA_yaml:
             outfile_samples.write("\n" + sample[0] + "\t" + str(sample[2]) + "\tNextSeq")
             outfile_units.write(
                 "\n"
-                + "fastq/DNA/"
                 + sample[0]
                 + "\tL000\t"
+                + "fastq/DNA/"
                 + sample[0]
                 + "_S"
                 + str(sample[1])
