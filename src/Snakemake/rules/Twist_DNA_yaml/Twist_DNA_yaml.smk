@@ -75,14 +75,10 @@ rule Create_Twist_DNA_yaml:
                 + "\tL000\t"
                 + "fastq/DNA/"
                 + sample[0]
-                + "_S"
-                + str(sample[1])
-                + "_R1_001.fastq.gz\t"
+                + "_R1.fastq.gz\t"
                 + "fastq/DNA/"
                 + sample[0]
-                + "_S"
-                + str(sample[1])
-                + "_R2_001.fastq.gz"
+                + "_R2.fastq.gz"
             )
             #outfile2.write(sample[0] + "-ready\t" + sample[2] + "\n")
 
