@@ -11,7 +11,7 @@ wildcard_constraints:
     sample="[^._]+",
     chr="chr[0-9XYM]+",
 
-sample_list = [s.Index  for s in samples.itertuples()]
+sample_list = [s.Index for s in samples.itertuples()]
 
 def get_input():
     input_list = []
@@ -40,6 +40,7 @@ def get_input():
     #input_list.append(["CNV_calls/" + sample_id + "-ready.cnr" for sample_id in sample_list])
     #input_list.append(["CNV_calls/" + sample_id + "-ready.cns" for sample_id in sample_list])
     input_list.append("Results/DNA/CNV/Reported_cnvs.txt")
+    input_list.append("CNV/cnvkit_calls/" + s + "-LoH.cns" for s in sample_list])
     #input_list.append("CNV_calls/cnv_event.txt")
     #input_list.append(["Results/DNA/" + s + "/CNV/" + s + "-ready.png" for s in sample_list])
     input_list.append(["Results/DNA/CNV/" + s + "_GATK_clean.calledCNVs.modeled.png" for s in sample_list])

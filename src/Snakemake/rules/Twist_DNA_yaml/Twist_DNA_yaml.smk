@@ -7,7 +7,7 @@ localrules:
 rule all:
     input:
         Twist_DNA_yaml="Twist_DNA.yaml",
-        TC="DATA/Pathological_purity_BMS_validation.txt",
+        #TC="DATA/Pathological_purity_BMS_validation.txt",
 
 
 rule Create_Twist_DNA_yaml:
@@ -18,7 +18,7 @@ rule Create_Twist_DNA_yaml:
         Twist_DNA_yaml="Twist_DNA.yaml",
         samples_tsv="samples.tsv",
         units_tsv="units.tsv",
-        TC="DATA/Pathological_purity_BMS_validation.txt",
+        #TC="DATA/Pathological_purity_BMS_validation.txt",
     run:
         import glob
         import os
@@ -81,10 +81,10 @@ rule Create_Twist_DNA_yaml:
                 + str(sample[1])
                 + "_R2_001.fastq.gz"
             )
-            outfile2.write(sample[0] + "-ready\t" + sample[2] + "\n")
+            #outfile2.write(sample[0] + "-ready\t" + sample[2] + "\n")
 
         outfile.write("\n" + output.samples_tsv)
         outfile.write("\n#" + output.units_tsv)
 
         outfile.close()
-        outfile2.close()
+        #outfile2.close()

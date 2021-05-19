@@ -47,14 +47,17 @@ rule Call_cnv:
 rule Call_LoH:
     input:
         segment="CNV/cnvkit_calls/{sample}-ready.cns,
-        vcf="Results/DNA/{sample}/vcf/PVAL-65.ensemble.vep.exon.soft_filter.multibp.vcf",
+        vcf="Results/DNA/{sample}/vcf/{sample}.ensemble.vep.exon.soft_filter.multibp.vcf",
     output:
         segment="CNV/cnvkit_calls/{sample}-LoH.cns,
     params:
         purity="0.8"
-
-
-    cnvkit.py call Sample.cns -v Sample.vcf -o Sample.call.cns -v Sample.vcf --purity XX
+    log:
+        "logs/CNV_cnvkit/Call_LoH_{sample}.log",
+    container:
+        config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
+    shell:
+        "(cnvkit.py call {input.segment} -v {input.vcf} -o {output.segment} --purity {params.purity}) &> {log}"
 
 
 rule Filter_cnv:
