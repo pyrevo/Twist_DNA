@@ -1,44 +1,45 @@
+---
 
 programs:
     Duplicates: "markduplicates" #fgbio / markduplicates
-    Trimming: "Fastp" #Cutadapt / Fastp / None
-    markduplicate: "picard" #GPU / picard /picard_UMI
-
-callers:
-  list:
-    - "mutect2"
-    - "vardict"
-    - "varscan"
-    - "freebayes"
-  sort_order: "mutect2,vardict,varscan,freebayes"
+    Trimming: "Cutadapt" #Cutadapt / Fastp / None
+    markduplicate: "picard_UMI" #GPU / picard /picard_UMI
 
 reference: #change to hg38
-    ref: "/data/ref_genomes/hg19/bwa/BWA_0.7.10_refseq/hg19.with.mt.fasta"
-    dict: "/data/ref_genomes/hg19/bwa/BWA_0.7.10_refseq/hg19.with.mt.dict"
-    assembly: hg19
+    ref: "../../data/ref_genomes/ref.fasta"
+    assembly: "hg19"
 
 PoN:
     cnvkit: "DATA/cnvkit_Twist_PoN.cnn"
-    #ONCOCNV: "DATA/ONCOCNV_Twist_PoN.txt"
-    #ONCOCNV2: "DATA/ONCOCNV_Twist_PoN.Processed.txt"
+    ONCOCNV: "DATA/ONCOCNV_Twist_PoN.txt"
+    ONCOCNV2: "DATA/ONCOCNV_Twist_PoN.Processed.txt"
     GATK: "DATA/GATK_Twist_PoN.hdf5"
 
-configfiles:
-    multiqc: "Config/Pipeline/multiqc_config.yaml"
-    vep: "/data/ref_genomes/VEP/"
-
 bed:
-    bedfile: "DATA/pool1_pool2_nochr_3c.sort.merged.padded20.hg19.210311.met.annotated.bed" #Change to HG38 coordiantes
-    intervals: "DATA/pool1_pool2_nochr_3c.sort.merged.padded20.hg19.210311.met.annotated.interval_list"
-    GATK_CNV: "DATA/pool1_pool2_nochr_3c.sort.merged.hg19.210311.annotated.preprocessed.interval_list"
-
-hotspot_combined: "DATA/Hotspots_combined.csv"
+    bedfile: "files/manifest.bed" #Change to twist DNA with HG38 coordiantes
+    intervals: "files/manifest.interval_list"
+    GATK_CNV: "files/manifest.preprocessed.interval_list"
 
 geneFuse:
     genes: "DATA/druggable.hg19.csv"
 
 java:
     SOBDetector: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/SOBDetector_v1.0.1.jar"
+
+configfiles:
+    multiqc: "Config/Pipeline/multiqc_config.yaml"
+    vep: "../../data/ref_genomes/VEP/"
+
+#DNA_Samples:
+#  sample1: "S1"
+
+samples: "sample.tsv"
+
+units: "units.tsv"
+
+runfolder_path: ./
+samplesheet:  samplesheet.csv
+bcl2fastq_version: 2.17.1.14
 
 singularity:
     default: "docker://gmsuppsala/somatic:develop"
@@ -63,7 +64,7 @@ singularity:
     #ensemble: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/bcbio-variation-recall-0.2.6-0_bcftools-1.9.simg"
     #vardict: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/vardict_java_1.5.1.simg"
     varscan: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/varscan_2.4.3-0.simg"
-    msisensor2: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/msisensor2_large.simg"
+    msisensor2: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/msisensor2_large.simg" #https://hub.docker.com/r/hsun9/msisensor2
     #cutadapt: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/cutadaptv2.5-0.simg"
     #fastp: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/fastp.simg"
     GPU: "/opt/parabricks/parabricks-release-v3.2.0.sif"
@@ -71,7 +72,3 @@ singularity:
     #gridss: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/gridss_2.10.2.simg"
     #cnvkit: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/cnvkit_0.9.7--py_1.sif"
     #ONCOCNV: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/ONCOCNV.simg"
-
-
-cartool:
-    cov: "100 200 1000"
