@@ -51,7 +51,7 @@ rule Call_LoH:
     output:
         segment="CNV/cnvkit_calls/{sample}-LoH.cns,
     params:
-        purity="0.8"
+        purity=lambda wildcards: samples.loc[wildcards.sample].TC
     log:
         "logs/CNV_cnvkit/Call_LoH_{sample}.log",
     container:

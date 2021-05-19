@@ -84,8 +84,8 @@ rule Create_Twist_DNA_yaml:
             )
             #outfile2.write(sample[0] + "-ready\t" + sample[2] + "\n")
 
-        outfile.write("\n" + output.samples_tsv)
-        outfile.write("\n#" + output.units_tsv)
+        outfile.write("\nsamples: " + output.samples_tsv)
+        outfile.write("\nunits: " + output.units_tsv)
 
         outfile.close()
         #outfile2.close()
