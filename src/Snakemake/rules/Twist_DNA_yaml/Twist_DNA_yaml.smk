@@ -64,6 +64,7 @@ rule Create_Twist_DNA_yaml:
         outfile.write("DNA_Samples:\n")
 
         outfile_samples.write("samples\tTC\tplatform")
+        outfile_units.write("samples\tunit\tfq1\tfq2")
 
         for sample in DNA_sample_list:
             outfile.write("  " + sample[0] + ": \"S" + str(sample[1]) + "\"\n")
