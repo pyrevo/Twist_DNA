@@ -23,9 +23,9 @@ rule varscan:
         # Exchange alleles frequences from ex 10% to 0.10
         # Exchange alleles frequences from 100% to 1.00
         # " sed 's/FREQ/AF/' " #Exchange FORMAT/FREQ to FORMAT/AF
-        "({params.samtools_singularity} samtools mpileup -f {input.ref} {params.mpileup} -l {input.bed} {input.bam} |"
-        " grep -v -P '\t0\t\t$' |"
-        " {params.varscan_singularity} java -jar /usr/local/share/varscan-2.4.3-0/VarScan.jar mpileup2cns {params.varscan} |"
+        "({params.samtools_singularity} samtools mpileup -f {input.ref} {params.mpileup} -l {input.bed} {input.bam} | "
+        " grep -v -P '\t0\t\t$' | "
+        " {params.varscan_singularity} varscan mpileup2cns {params.varscan} | "
         " awk -F$'\t' -v OFS='\t' '{{if ($0 !~ /^#/) gsub(/[KMRYSWBVHDXkmryswbvhdx]/, \"N\", $4) }} {{print}}' | "
         " awk -F$'\t' -v OFS='\t' '{{if ($0 !~ /^#/) gsub(/[KMRYSWBVHDXkmryswbvhdx]/, \"N\", $5) }} {{print}}' | "
         " sed 's/:\([0-9]\+\)\.\([0-9]\+\)%:/:0.\\1\\2:/' | "

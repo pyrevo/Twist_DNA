@@ -10,7 +10,8 @@ callers:
     - "mutect2"
     - "vardict"
     - "freebayes"
-  sort_order: "mutect2,vardict,freebayes"
+    - "varscan"
+  sort_order: "mutect2,vardict,varscan,freebayes"
 
 cnvkit:
   extra: "--segment-method none"
