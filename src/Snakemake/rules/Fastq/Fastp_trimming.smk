@@ -61,11 +61,17 @@ _fastp_trimming_trimming_benchmark = "benchmarks/trimming/fastp/{sample}.tsv"
 
 if "units" in config:
     import src.lib.python.utils as utils
+    if config.get("move_umi",True):
+        _fastp_trimming_input_list = [
+            _fastp_trimming_input + "/{sample}_{unit}_R1.fastq.gz",
+            _fastp_trimming_input + "/{sample}_{unit}_R2.fastq.gz",
+        ]
+    else:
+        _fastp_trimming_input_list = lambda wildcards: [
+            utils.get_fastq_file(units, wildcards.sample, wildcards.unit, "fq1"),
+            utils.get_fastq_file(units, wildcards.sample, wildcards.unit, "fq2"),
+        ]
 
-    _fastp_trimming_input_list = [
-        _fastp_trimming_input + "/{sample}_{unit}_R1.fastq.gz",
-        _fastp_trimming_input + "/{sample}_{unit}_R2.fastq.gz",
-    ]
     _fastp_trimming_output_list = [
         _fastp_trimming_output + "/{sample}_{unit}_R1.fastq.gz",
         _fastp_trimming_output + "/{sample}_{unit}_R2.fastq.gz",

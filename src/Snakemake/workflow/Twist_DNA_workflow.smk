@@ -10,7 +10,9 @@ demultiplex_output = "fastq_temp"
 
 
 include: "../rules/Fastq/demultiplex.smk"
-include: "../rules/Fastq/fix_fastq_DNA.smk"
+
+if config.get("move_umi",True):
+    include: "../rules/Fastq/fix_fastq_DNA.smk"
 
 
 if config["programs"]["Trimming"] == "Cutadapt":
