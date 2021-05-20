@@ -3,15 +3,15 @@ if "units" in config:
     units.index = units.index.set_levels([i.astype(str) for i in units.index.levels])  # enforce str in index
 
 
-include: "../rules/Alignment/index_bam.smk"
-
-
 demultiplex_output = "fastq_temp"
 
 
+include: "../rules/Alignment/index_bam.smk"
 include: "../rules/Fastq/demultiplex.smk"
 
-if config.get("move_umi",True):
+
+if config.get("move_umi", True):
+
     include: "../rules/Fastq/fix_fastq_DNA.smk"
 
 
