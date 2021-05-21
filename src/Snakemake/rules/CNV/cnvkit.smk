@@ -132,7 +132,9 @@ rule create_gene_region_plots:
 rule generate_cnv_plots:
     input:
         "CNV/bed/cnvkit_manifest.target.bed",
-        lambda wildcards: expand("Results/DNA/CNV/{file}", file=aggregate_input_gene(wildcards, "CNV/bed/cnvkit_manifest.target.bed")),
+        lambda wildcards: expand(
+            "Results/DNA/CNV/{file}", file=aggregate_input_gene(wildcards, "CNV/bed/cnvkit_manifest.target.bed")
+        ),
     output:
         temp("Results/DNA/CNV/cnv_plots.txt"),
     shell:
@@ -202,6 +204,5 @@ def aggregate_input_gene(wildcards, bedfile):
 
             gene_region_list.append(sample + "_" + gene + "_" + chrom + ":" + gene_region1 + ".png")
             gene_list.append(sample + "_" + gene + "_" + chrom + ".png")
-    #print(str(gene_region_list + gene_list))
-    #return Set(gene_region_list + gene_list)
+    # return Set(gene_region_list + gene_list)
     return gene_list
