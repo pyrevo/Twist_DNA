@@ -37,6 +37,9 @@ hotspot_combined: "DATA/Hotspots_combined.csv"
 geneFuse:
     genes: "DATA/druggable.hg19.csv"
 
+TMB:
+    Artifacts: "DATA/TMB_artifact_positions.txt"
+
 java:
     SOBDetector: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/SOBDetector_v1.0.1.jar"
 
