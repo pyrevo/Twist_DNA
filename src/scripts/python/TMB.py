@@ -85,13 +85,11 @@ for line in vcf:
         i += 1
     DATA = lline[9].split(":")
     AD = DATA[AD_index].split(",")
-    if len(AD) == 2 :
+    if len(AD) == 2:
         VD = int(AD[1])
     else:
         VD = int(DATA[VD_index])
     DP = int(DATA[DP_index])
-
-
 
     # Artifact observations
     Observations = 0
