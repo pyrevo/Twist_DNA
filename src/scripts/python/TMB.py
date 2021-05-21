@@ -1,13 +1,14 @@
 
 vcf = open(snakemake.input.vcf)
 artifacts = open(snakemake.input.artifacts)
-output_tmb = open(snakemake.input.tmb, "w")
+output_tmb = open(snakemake.putput.tmb, "w")
 
 
 FFPE_SNV_artifacts = {}
 header = True
 for line in artifacts:
     if header:
+        header = False
         continue
     lline = line.strip().split("\t")
     chrom = lline[0]
@@ -16,7 +17,7 @@ for line in artifacts:
     type = lline[2]
     if type != "SNV":
         continue
-    observations = lline[3]
+    observations = int(lline[3])
     FFPE_SNV_artifacts[key] = observations
 
 
@@ -37,12 +38,25 @@ for line in vcf:
     prev_pos = pos
     prev_chrom = chrom
     key = chrom + "_" + pos
-    pos_info[key] = []
     ref = lline[3]
     alt = lline[4]
     filter = lline[6]
     INFO = lline[7]
     if INFO[:3] == "AA=":
+        continue
+    INFO_list = INFO.split(";")
+    AF_index = 0
+    Caller_index = 0
+    i = 0
+    for info in INFO_list:
+        if info[:3] == "AF=":
+            AF_index = i
+        if info[:8] == "CALLERS=":
+            Caller_index = i
+        i += 1
+    AF = float(INFO_list[AF_index][3:])
+    Callers = INFO_list[Caller_index]
+    if Callers.find("vardict") == -1:
         continue
     Variant_type = INFO.split("|")[1].split("&")
     db1000G = INFO.split("|")[41]
@@ -71,22 +85,13 @@ for line in vcf:
         i += 1
     DATA = lline[9].split(":")
     AD = DATA[AD_index].split(",")
+    if len(AD) == 2 :
+        VD = int(AD[1])
+    else:
+        VD = int(DATA[VD_index])
     DP = int(DATA[DP_index])
-    VD = int(DATA[VD_index])
-    INFO_list = INFO.split(";")
-    AF_index = 0
-    Caller_index = 0
-    i = 0
-    for info in INFO_list:
-        if info[:3] == "AF=":
-            AF_index = i
-        if info[:8] == "CALLERS=":
-            Caller_index = i
-        i += 1
-    AF = float(INFO_list[AF_index][3:])
-    Callers = INFO_list[Caller_index]
-    if Callers.find("vardict") == -1:
-        continue
+
+
 
     # Artifact observations
     Observations = 0
