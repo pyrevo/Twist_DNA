@@ -202,5 +202,6 @@ def aggregate_input_gene(wildcards, bedfile):
 
             gene_region_list.append(sample + "_" + gene + "_" + chrom + ":" + gene_region1 + ".png")
             gene_list.append(sample + "_" + gene + "_" + chrom + ".png")
-    print(str(gene_region_list + gene_list))
-    return Set(gene_region_list + gene_list)
+    #print(str(gene_region_list + gene_list))
+    #return Set(gene_region_list + gene_list)
+    return gene_list
