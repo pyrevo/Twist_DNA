@@ -34,6 +34,7 @@ bed:
     bedfile: "/Twist_DNA/DATA/pool1_pool2_nochr_3c.annotated_testing.bed" #Change to twist DNA with HG38 coordiantes
     intervals: "/Twist_DNA/DATA/pool1_pool2_nochr_3c.annotated_testing.interval_list"
     GATK_CNV: "/Twist_DNA/DATA/pool1_pool2_nochr_3c.annotated_testing.preprocessed.interval_list"
+    GATK_CNV_SNPs: "/Twist_DNA/DATA/gnomad_SNP_0.001_target.annotated.interval_list"
 
 hotspot_combined: "/Twist_DNA/DATA/Hotspots_combined.csv"
 

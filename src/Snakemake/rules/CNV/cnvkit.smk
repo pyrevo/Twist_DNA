@@ -44,6 +44,22 @@ rule Call_cnv:
         "(cnvkit.py batch {input.bams} {params.extra} -r {input.PoN} -p {threads} -d {params.outdir}) &> {log}"
 
 
+rule Call_LoH:
+    input:
+        segment="CNV/cnvkit_calls/{sample}-ready.cns",
+        vcf="Results/DNA/{sample}/vcf/{sample}.ensemble.vep.exon.soft_filter.multibp.vcf",
+    output:
+        segment="CNV/cnvkit_calls/{sample}-LoH.cns",
+    params:
+        purity=lambda wildcards: samples.loc[wildcards.sample].TC,
+    log:
+        "logs/CNV_cnvkit/Call_LoH_{sample}.log",
+    container:
+        config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
+    shell:
+        "(cnvkit.py call {input.segment} -v {input.vcf} -o {output.segment} --purity {params.purity}) &> {log}"
+
+
 rule Filter_cnv:
     input:
         cnvkit_segments=["CNV/cnvkit_calls/" + sample_id.Index + "-ready.cns" for sample_id in samples.itertuples()],

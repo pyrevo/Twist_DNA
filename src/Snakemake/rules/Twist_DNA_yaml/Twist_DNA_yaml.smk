@@ -7,7 +7,7 @@ localrules:
 rule all:
     input:
         Twist_DNA_yaml="Twist_DNA.yaml",
-        TC="DATA/Pathological_purity_BMS_validation.txt",
+        # TC="DATA/Pathological_purity_BMS_validation.txt",
 
 
 rule Create_Twist_DNA_yaml:
@@ -18,7 +18,7 @@ rule Create_Twist_DNA_yaml:
         Twist_DNA_yaml="Twist_DNA.yaml",
         samples_tsv="samples.tsv",
         units_tsv="units.tsv",
-        TC="DATA/Pathological_purity_BMS_validation.txt",
+        # TC="DATA/Pathological_purity_BMS_validation.txt",
     run:
         import glob
         import os
@@ -63,7 +63,8 @@ rule Create_Twist_DNA_yaml:
         outfile.write("bcl2fastq_version: 2.17.1.14\n\n")
         outfile.write("DNA_Samples:\n")
 
-        outfile_samples.write("samples\tTC\tplatform")
+        outfile_samples.write("sample\tTC\tplatform")
+        outfile_units.write("sample\tunit\tfq1\tfq2")
 
         for sample in DNA_sample_list:
             outfile.write("  " + sample[0] + ": \"S" + str(sample[1]) + "\"\n")
@@ -72,19 +73,15 @@ rule Create_Twist_DNA_yaml:
                 "\n"
                 + sample[0]
                 + "\tL000\t"
+                + "fastq/DNA/"
                 + sample[0]
-                + "_S"
-                + str(sample[1])
-                + "_R1_001.fastq.gz\t"
+                + "_R1.fastq.gz\t"
+                + "fastq/DNA/"
                 + sample[0]
-                + "_S"
-                + str(sample[1])
-                + "_R2_001.fastq.gz"
+                + "_R2.fastq.gz"
             )
-            outfile2.write(sample[0] + "-ready\t" + sample[2] + "\n")
 
-        outfile.write("\n" + output.samples_tsv)
-        outfile.write("\n#" + output.units_tsv)
+        outfile.write("\nsamples: " + output.samples_tsv)
+        outfile.write("\n#units: " + output.units_tsv)
 
         outfile.close()
-        outfile2.close()
