@@ -5,11 +5,8 @@ output_tmb = open(snakemake.putput.tmb, "w")
 
 
 FFPE_SNV_artifacts = {}
-header = True
+next(artifacts)
 for line in artifacts:
-    if header:
-        header = False
-        continue
     lline = line.strip().split("\t")
     chrom = lline[0]
     pos = lline[1]
