@@ -1,5 +1,7 @@
 ---
 
+move_umi: False
+
 programs:
     Duplicates: "markduplicates" #fgbio / markduplicates
     Trimming: "Cutadapt" #Cutadapt / Fastp / None

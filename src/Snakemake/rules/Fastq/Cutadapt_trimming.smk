@@ -55,8 +55,12 @@ _cutadapt_trimming_output_qc = _cutadapt_trimming_output + "/{sample}.qc.txt"
 _cutadapt_trimming_log = "logs/trimming/cutadapt/{sample}.log"
 
 if "units" in config:
-    _cutadapt_trimming_input_r1 = _cutadapt_trimming_input + "/{sample}_{unit}_R1.fastq.gz"
-    _cutadapt_trimming_input_r2 = _cutadapt_trimming_input + "/{sample}_{unit}_R2.fastq.gz"
+    if config.get("move_umi", True):
+        _cutadapt_trimming_input_r1 = _cutadapt_trimming_input + "/{sample}_{unit}_R1.fastq.gz"
+        _cutadapt_trimming_input_r2 = _cutadapt_trimming_input + "/{sample}_{unit}_R2.fastq.gz"
+    else:
+        _cutadapt_trimming_input_r1 = lambda wildcards: utils.get_fastq_file(units, wildcards.sample, wildcards.unit, "fq1")
+        _cutadapt_trimming_input_r2 = lambda wildcards: utils.get_fastq_file(units, wildcards.sample, wildcards.unit, "fq2")
     _cutadapt_trimming_output_r1 = _cutadapt_trimming_output + "/{sample}_{unit}_R1.fastq.gz"
     _cutadapt_trimming_output_r2 = _cutadapt_trimming_output + "/{sample}_{unit}_R2.fastq.gz"
     _cutadapt_trimming_output_qc = _cutadapt_trimming_output + "/{sample}_{unit}.qc.txt"
