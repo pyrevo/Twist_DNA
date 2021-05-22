@@ -40,6 +40,9 @@ hotspot_combined: "/Twist_DNA/DATA/Hotspots_combined.csv"
 geneFuse:
     genes: "/Twist_DNA/DATA/druggable.hg19.csv"
 
+TMB:
+    Artifacts: "/Twist_DNA/DATA/Vardict_artifact_positions.txt"
+
 java:
     SOBDetector: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/SOBDetector_v1.0.1.jar"
 
