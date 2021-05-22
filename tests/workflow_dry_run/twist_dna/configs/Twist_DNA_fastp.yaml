@@ -23,7 +23,7 @@ reference: #change to hg38
     assembly: "hg19"
 
 PoN:
-    cnvkit: "/Twist_DNA/DATA/cnvkit.Twist_test.PoN.cnn"
+    cnvkit: "/Twist_DNA/DATA/cnvkit_Twist_PoN.cnn"
     ONCOCNV: "/Twist_DNA/DATA/ONCOCNV_Twist_PoN.txt"
     ONCOCNV2: "/Twist_DNA/DATA/ONCOCNV_Twist_PoN.Processed.txt"
     GATK: "/Twist_DNA/DATA/gatk4.Twist_test.readCountPoN.hdf5"
@@ -32,6 +32,7 @@ bed:
     bedfile: "/Twist_DNA/DATA/pool1_pool2_nochr_3c.annotated_testing.bed" #Change to twist DNA with HG38 coordiantes
     intervals: "/Twist_DNA/DATA/pool1_pool2_nochr_3c.annotated_testing.interval_list"
     GATK_CNV: "/Twist_DNA/DATA/pool1_pool2_nochr_3c.annotated_testing.preprocessed.interval_list"
+    GATK_CNV_SNPs: "/Twist_DNA/DATA/gnomad_SNP_0.001_target.annotated.interval_list"
 
 hotspot_combined: "/Twist_DNA/DATA/Hotspots_combined.csv"
 
@@ -61,7 +62,7 @@ bcl2fastq_version: 2.17.1.14
 
 singularity:
       default: "docker://gmsuppsala/somatic:develop"
-      execute: "singularity exec -B /data -B /projects -B /scratch -B /data_twist_dna_fastp "
+      execute: "singularity exec -B /data -B /projects -B /scratch -B /data_twist_dna_fastp -B /Twist_DNA "
       gatk4_cnv: "docker://broadinstitute/gatk:4.1.9.0"
       msisensor2: "docker://rjmashl/msisensor2_mgi:0.1" #https://hub.docker.com/r/hsun9/msisensor2
       vep: "docker://ensemblorg/ensembl-vep:release_99.0"
