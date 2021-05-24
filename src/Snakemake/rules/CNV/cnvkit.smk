@@ -104,16 +104,15 @@ rule create_gene_plots:
         relevant_genes=config["cnvkit"]["relevant_genes"],
         cnv_kit_bed="CNV/bed/cnvkit_manifest.target.bed",
     output:
-        png="Results/DNA/CNV/{sample}_{gene}_{chrom}:{gene_region1}.png",
+        png="Results/DNA/CNV/{sample}_{gene}_{chrom}.png",
     params:
-        extra="--y-min -2 --y-max 2",
         gene=lambda wildcards: extract_gene_string(
             wildcards.gene, wildcards.gene_region, config["cnvkit"]["relevant_genes"], "CNV/bed/cnvkit_manifest.target.bed"
         ),
         title=lambda wildcards: wildcards.sample + " " + wildcards.chrom + " " + wildcards.gene,
         chr=lambda wildcards: wildcards.chrom,
     log:
-        "logs/CNV_cnvkit/{sample}_{gene}_{chrom}:{gene_region1}_scatter_cnv.gene.log",
+        "logs/CNV_cnvkit/{sample}_{gene}_{chrom}_scatter_cnv.gene.log",
     threads: 8
     singularity:
         config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
@@ -130,7 +129,6 @@ rule create_gene_region_plots:
     output:
         png="Results/DNA/CNV/{sample}_{gene}_{chrom}:{gene_region1}.png",
     params:
-        extra="",
         gene=lambda wildcards: extract_gene_string(
             wildcards.gene, wildcards.gene_region, config["cnvkit"]["relevant_genes"], "CNV/bed/cnvkit_manifest.target.bed"
         ),
