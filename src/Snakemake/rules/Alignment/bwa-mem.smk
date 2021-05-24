@@ -54,7 +54,7 @@ def get_bam_files(wildcards):
     if "units" in config:
         return ["alignment/" + wildcards.sample + "_" + unit + ".sort.bam" for unit in utils.get_units(units, wildcards.sample)]
     else:
-        ["alignment/{sample}.sort.bam"]
+        return ["alignment/{sample}.sort.bam"]
 
 
 _bwa_mem_input = ["fastq/DNA/{sample}_R1.fastq.gz", "fastq/DNA/{sample}_R2.fastq.gz"]

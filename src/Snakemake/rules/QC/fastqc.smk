@@ -23,15 +23,15 @@
 import src.lib.python.utils as utils
 
 
-_fastqc_input = "fastq/DNA/"
+_fastqc_input = "fastq/DNA"
 try:
     _fastqc_input = fastqc_input
 except:
     pass
 
 
-_fastqc_input_r1 = _fastqc_input + "{sample}_R1.fastq.gz"
-_fastqc_input_r2 = _fastqc_input + "{sample}_R2.fastq.gz"
+_fastqc_input_r1 = _fastqc_input + "/{sample}_R1.fastq.gz"
+_fastqc_input_r2 = _fastqc_input + "/{sample}_R2.fastq.gz"
 
 if "units" in config:
     import src.lib.python.utils as utils

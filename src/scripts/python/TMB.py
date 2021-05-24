@@ -55,18 +55,19 @@ for line in vcf:
     Callers = INFO_list[Caller_index]
     if Callers.find("vardict") == -1:
         continue
-    Variant_type = INFO.split("|")[1].split("&")
-    db1000G = INFO.split("|")[41]
+    VEP_INFO = INFO.split("CSQ=")[1]
+    Variant_type = VEP_INFO.split("|")[1].split("&")
+    db1000G = VEP_INFO.split("|")[41]
     if db1000G == "":
         db1000G = 0
     else:
         db1000G = float(db1000G)
-    GnomAD = INFO.split("|")[47]
+    GnomAD = VEP_INFO.split("|")[47]
     if GnomAD == "":
         GnomAD = 0
     else:
         GnomAD = float(GnomAD)
-    db = INFO.split("|")[17]
+    db = VEP_INFO.split("|")[17]
     FORMAT = lline[8].split(":")
     AD_index = 0
     DP_index = 0
