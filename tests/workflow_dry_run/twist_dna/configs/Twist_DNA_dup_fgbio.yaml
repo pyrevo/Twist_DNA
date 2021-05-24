@@ -50,7 +50,7 @@ reference: #change to hg38
 
 
 PoN:
-    cnvkit: "/Twist_DNA/DATA/cnvkit_Twist_PoN.cnn"
+    cnvkit: "/Twist_DNA/DATA/cnvkit.Twist_test.PoN.cnn"
     ONCOCNV: "/Twist_DNA/DATA/ONCOCNV_Twist_PoN.txt"
     ONCOCNV2: "/Twist_DNA/DATA/ONCOCNV_Twist_PoN.Processed.txt"
     GATK: "/Twist_DNA/DATA/gatk4.Twist_test.readCountPoN.hdf5"
