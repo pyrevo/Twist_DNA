@@ -85,7 +85,7 @@ rule create_cnv_kit_plots:
         cns="CNV/cnvkit_calls/{sample}-ready.cns",
         cnr="CNV/cnvkit_calls/{sample}-ready.cnr",
     output:
-        png="Results/DNA/CNV/{sample}.png",
+        png="Results/DNA/CNV/{sample}.cnvkit.png",
     params:
         extra="--y-min -2 --y-max 2",
     log:
@@ -104,7 +104,7 @@ rule create_gene_plots:
         relevant_genes=config["cnvkit"]["relevant_genes"],
         cnv_kit_bed="CNV/bed/cnvkit_manifest.target.bed",
     output:
-        png="Results/DNA/CNV/{sample}_{gene}_{chrom}.png",
+        png="Results/DNA/CNV/{sample}_{gene}_{chrom}.cnvkit.png",
     params:
         gene=lambda wildcards: extract_gene_string(
             wildcards.gene, wildcards.gene_region, config["cnvkit"]["relevant_genes"], "CNV/bed/cnvkit_manifest.target.bed"
@@ -127,7 +127,7 @@ rule create_gene_region_plots:
         relevant_genes=config["cnvkit"]["relevant_genes"],
         cnv_kit_bed="CNV/bed/cnvkit_manifest.target.bed",
     output:
-        png="Results/DNA/CNV/{sample}_{gene}_{chrom}:{gene_region1}.png",
+        png="Results/DNA/CNV/{sample}_{gene}_{chrom}:{gene_region1}.cnvkit.png",
     params:
         gene=lambda wildcards: extract_gene_string(
             wildcards.gene, wildcards.gene_region, config["cnvkit"]["relevant_genes"], "CNV/bed/cnvkit_manifest.target.bed"
@@ -216,6 +216,6 @@ def aggregate_input_gene(wildcards, bedfile):
             start_pos = int(gene_region1.split("-")[0])
             end_pos = int(gene_region1.split("-")[1])
 
-            gene_region_list.append(sample + "_" + gene + "_" + chrom + ":" + gene_region1 + ".png")
-            gene_list.append(sample + "_" + gene + "_" + chrom + ".png")
+            gene_region_list.append(sample + "_" + gene + "_" + chrom + ":" + gene_region1 + ".cnvkit.png")
+            gene_list.append(sample + "_" + gene + "_" + chrom + ".cnvkit.png")
     return gene_region_list + gene_list
