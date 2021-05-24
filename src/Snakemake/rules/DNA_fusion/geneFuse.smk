@@ -9,7 +9,7 @@ __license__ = "GPL3"
 import src.lib.python.utils as utils
 
 
-_genefuse_input = "fastq/DNA/"
+_genefuse_input = "fastq/DNA"
 try:
     _genefuse_input = genefuse_input
 except:
