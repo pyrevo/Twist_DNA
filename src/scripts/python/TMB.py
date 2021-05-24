@@ -1,7 +1,7 @@
 
 vcf = open(snakemake.input.vcf)
 artifacts = open(snakemake.input.artifacts)
-output_tmb = open(snakemake.putput.tmb, "w")
+output_tmb = open(snakemake.output.tmb, "w")
 
 
 FFPE_SNV_artifacts = {}
