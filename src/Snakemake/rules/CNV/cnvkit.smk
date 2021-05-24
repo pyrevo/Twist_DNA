@@ -104,15 +104,15 @@ rule create_gene_plots:
         relevant_genes=config["cnvkit"]["relevant_genes"],
         cnv_kit_bed="CNV/bed/cnvkit_manifest.target.bed",
     output:
-        png="Results/DNA/CNV/{sample}_{gene}_{chrom}.cnvkit.png",
+        png="Results/DNA/CNV/{sample}_{gene,[^_.]+}_{chr}.cnvkit.png",
     params:
         gene=lambda wildcards: extract_gene_string(
             wildcards.gene, wildcards.gene_region, config["cnvkit"]["relevant_genes"], "CNV/bed/cnvkit_manifest.target.bed"
         ),
-        title=lambda wildcards: wildcards.sample + " " + wildcards.chrom + " " + wildcards.gene,
-        chr=lambda wildcards: wildcards.chrom,
+        title=lambda wildcards: wildcards.sample + " " + wildcards.chr + " " + wildcards.gene,
+        chr=lambda wildcards: wildcards.chr,
     log:
-        "logs/CNV_cnvkit/{sample}_{gene}_{chrom}_scatter_cnv.gene.log",
+        "logs/CNV_cnvkit/{sample}_{gene}_{chr}_scatter_cnv.gene.log",
     threads: 8
     singularity:
         config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
@@ -127,15 +127,15 @@ rule create_gene_region_plots:
         relevant_genes=config["cnvkit"]["relevant_genes"],
         cnv_kit_bed="CNV/bed/cnvkit_manifest.target.bed",
     output:
-        png="Results/DNA/CNV/{sample}_{gene}_{chrom}:{gene_region1}.cnvkit.png",
+        png="Results/DNA/CNV/{sample}_{gene,[^_.]}_{chr}:{gene_region1,[^.]}.cnvkit.png",
     params:
         gene=lambda wildcards: extract_gene_string(
             wildcards.gene, wildcards.gene_region, config["cnvkit"]["relevant_genes"], "CNV/bed/cnvkit_manifest.target.bed"
         ),
-        title=lambda wildcards: wildcards.sample + " " + wildcards.chrom + " " + wildcards.gene_region1 + " " + wildcards.gene,
-        chr=lambda wildcards: wildcards.chrom + ":" + wildcards.gene_region1,
+        title=lambda wildcards: wildcards.sample + " " + wildcards.chr + " " + wildcards.gene_region1 + " " + wildcards.gene,
+        chr=lambda wildcards: wildcards.chr + ":" + wildcards.gene_region1,
     log:
-        "logs/CNV_cnvkit/{sample}_{gene}_{chrom}:{gene_region1}_scatter_cnv.gene.region.log",
+        "logs/CNV_cnvkit/{sample}_{gene}_{chr}:{gene_region1}_scatter_cnv.gene.region.log",
     threads: 8
     singularity:
         config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
