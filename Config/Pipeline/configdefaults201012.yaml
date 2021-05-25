@@ -1,4 +1,6 @@
 
+move_umi: True
+
 programs:
     Duplicates: "markduplicates" #fgbio / markduplicates
     Trimming: "Fastp" #Cutadapt / Fastp / None
@@ -12,10 +14,40 @@ callers:
     - "freebayes"
   sort_order: "mutect2,vardict,varscan,freebayes"
 
+cnvkit:
+  #extra: "--segment-method none"
+  relevant_genes: "DATA/TSO500_relevant_genes.txt"
+
 reference: #change to hg38
     ref: "/data/ref_genomes/hg19/bwa/BWA_0.7.10_refseq/hg19.with.mt.fasta"
     dict: "/data/ref_genomes/hg19/bwa/BWA_0.7.10_refseq/hg19.with.mt.dict"
     assembly: hg19
+    chrom_len:
+       chr1: 249250621
+       chr2: 243199373
+       chr3: 198022430
+       chr4: 191154276
+       chr5: 180915260
+       chr6: 171115067
+       chr7: 159138663
+       chr8: 146364022
+       chr9: 141213431
+       chr10: 135534747
+       chr11: 135006516
+       chr12: 133851895
+       chr13: 115169878
+       chr14: 107349540
+       chr15: 102531392
+       chr16: 90354753
+       chr17: 81195210
+       chr18: 78077248
+       chr19: 59128983
+       chr20: 63025520
+       chr21: 48129895
+       chr22: 51304566
+       chrX: 155270560
+       chrY: 59373566
+
 
 PoN:
     cnvkit: "DATA/cnvkit_Twist_PoN.cnn"
@@ -49,36 +81,10 @@ java:
 
 singularity:
     default: "docker://gmsuppsala/somatic:develop"
-    execute: "singularity exec -B /data -B /projects -B /scratch "
-    #multiqc: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/multiqc-1.9.simg"
-    #samtools_fgbio: "/projects/wp2/nobackup/Twist_Myeloid/Containers/bwa0.7.17-samtools-1.9.simg"
-    #picard: "/projects/wp2/nobackup/Twist_Myeloid/Containers/bwa0.7.17-samtools-1.9.simg"
-    #bwa_fgbio: "/projects/wp2/nobackup/Twist_Myeloid/Containers/bwa0.7.17-samtools-1.9.simg"
-    cartool: "/projects/wp2/nobackup/Twist_Myeloid/Containers/CARTools-200206.simg"
-    fastqc: "/projects/wp2/nobackup/Twist_Myeloid/Containers/fastqc0.11.8.simg"
-    fgbio: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/bedtools2.29.2_samtools1.9.0_fgbio1.3.0.simg"
-    umis: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/umis_1.0.7.simg"
-    bamsormadup: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/biobambam2.0.50_bedtofastq.simg"
-    bamtofastq: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/biobambam2.0.50_bedtofastq.simg"
-    #python: "/projects/wp2/nobackup/Twist_Myeloid/Containers/python3.6.0-pysam-xlsxwriter.simg"
-    #bcftools: "/projects/wp2/nobackup/Twist_Myeloid/Containers/bcftools-1.9--8.simg"
-    #freebayes: "/projects/wp2/nobackup/Twist_Myeloid/Containers/freebayes-1.3.1-0.simg"
-    #mutect2: "/projects/wp2/nobackup/Twist_Myeloid/Containers/gatk-4.1.7.0.broad.simg"
-    #gatk4: "/projects/wp2/nobackup/Twist_Myeloid/Containers/gatk-4.1.7.0.broad.simg"
-    gatk4_cnv: "/projects/wp2/nobackup/Twist_Myeloid/Containers/gatk-4.1.7.0.broad.simg"
-    #vt: "/projects/wp2/nobackup/Twist_Myeloid/Containers/vt-0.57721-2.simg"
-    #ensemble: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/bcbio-variation-recall-0.2.6-0_bcftools-1.9.simg"
-    #vardict: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/vardict_java_1.5.1.simg"
-    varscan: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/varscan_2.4.3-0.simg"
-    msisensor2: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/msisensor2_large.simg"
-    #cutadapt: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/cutadaptv2.5-0.simg"
-    #fastp: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/fastp.simg"
-    GPU: "/opt/parabricks/parabricks-release-v3.2.0.sif"
-    vep: "/projects/wp2/nobackup/Twist_Myeloid/Containers/ensembl-vep-99.0.simg"
-    #gridss: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/gridss_2.10.2.simg"
-    #cnvkit: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/cnvkit_0.9.7--py_1.sif"
-    #ONCOCNV: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/ONCOCNV.simg"
-
+    execute: "singularity exec -B /data -B /projects -B /scratch -B /data_twist_dna_cutadapt "
+    gatk4_cnv: "docker://broadinstitute/gatk:4.1.9.0"
+    msisensor2: "docker://rjmashl/msisensor2_mgi:0.1" #https://hub.docker.com/r/hsun9/msisensor2
+    vep: "docker://ensemblorg/ensembl-vep:release_99.0"
 
 cartool:
     cov: "100 200 1000"
