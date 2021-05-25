@@ -23,21 +23,21 @@
 import src.lib.python.utils as utils
 
 
-_fastqc_input = "fastq/DNA/"
+_fastqc_input = "fastq/DNA"
 try:
     _fastqc_input = fastqc_input
 except:
     pass
 
 
-_fastqc_input_r1 = _fastqc_input + "{sample}_R1.fastq.gz"
-_fastqc_input_r2 = _fastqc_input + "{sample}_R2.fastq.gz"
+_fastqc_input_r1 = _fastqc_input + "/{sample}_R1.fastq.gz"
+_fastqc_input_r2 = _fastqc_input + "/{sample}_R2.fastq.gz"
 
 if "units" in config:
     import src.lib.python.utils as utils
 
-    _fastqc_input_r1 = lambda wildcards: "fastq/DNA/" + wildcards.sample + "_R1.fastq.gz"
-    _fastqc_input_r2 = lambda wildcards: "fastq/DNA/" + wildcards.sample + "_R2.fastq.gz"
+    _fastqc_input_r1 = lambda wildcards: "fastq/DNA/temp/" + wildcards.sample + "_R1.fastq.gz"
+    _fastqc_input_r2 = lambda wildcards: "fastq/DNA/temp/" + wildcards.sample + "_R2.fastq.gz"
 
 
 rule fastqc_prep_fastq:
@@ -47,7 +47,7 @@ rule fastqc_prep_fastq:
             for unit in utils.get_units(units, wildcards.sample)
         ],
     output:
-        temp("fastq/DNA/{sample}_{read,[R12]+}.fastq.gz"),
+        temp("fastq/DNA/temp/{sample}_{read,[R12]+}.fastq.gz"),
     params:
         num_units=lambda wildcards: utils.get_num_units(units, wildcards.sample),
     shell:

@@ -94,7 +94,7 @@ rule create_cnv_kit_plots:
     singularity:
         config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
     shell:
-        "(cnvkit.py scatter {input.cnr} -s {input.cns} -o {ouput.png} {params.extra}) &> {log}"
+        "(cnvkit.py scatter {input.cnr} -s {input.cns} -o {output.png} {params.extra}) &> {log}"
 
 
 rule create_gene_plots:
@@ -106,9 +106,7 @@ rule create_gene_plots:
     output:
         png="Results/DNA/CNV/{sample}_{gene,[^_.]+}_{chr}.cnvkit.png",
     params:
-        gene=lambda wildcards: extract_gene_string(
-            wildcards.gene, wildcards.gene_region, config["cnvkit"]["relevant_genes"], "CNV/bed/cnvkit_manifest.target.bed"
-        ),
+        gene=lambda wildcards: wildcards.gene,
         title=lambda wildcards: wildcards.sample + " " + wildcards.chr + " " + wildcards.gene,
         chr=lambda wildcards: wildcards.chr,
     log:
@@ -117,7 +115,7 @@ rule create_gene_plots:
     singularity:
         config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
     shell:
-        "(cnvkit.py scatter {input.cnr} -s {input.cns} -o {ouput.png} -c {params.chr} --title {params.title}) &> {log}"
+        "(cnvkit.py scatter {input.cnr} -s {input.cns} -o {output.png} -c {params.chr} --title \"{params.title}\") &> {log}"
 
 
 rule create_gene_region_plots:
@@ -127,20 +125,20 @@ rule create_gene_region_plots:
         relevant_genes=config["cnvkit"]["relevant_genes"],
         cnv_kit_bed="CNV/bed/cnvkit_manifest.target.bed",
     output:
-        png="Results/DNA/CNV/{sample}_{gene,[^_.]}_{chr}:{gene_region1,[^.]}.cnvkit.png",
+        png="Results/DNA/CNV/{sample}_{gene,[^_.]+}_{chr}:{gene_region,[0-9-]+}.cnvkit.png",
     params:
         gene=lambda wildcards: extract_gene_string(
             wildcards.gene, wildcards.gene_region, config["cnvkit"]["relevant_genes"], "CNV/bed/cnvkit_manifest.target.bed"
         ),
-        title=lambda wildcards: wildcards.sample + " " + wildcards.chr + " " + wildcards.gene_region1 + " " + wildcards.gene,
-        chr=lambda wildcards: wildcards.chr + ":" + wildcards.gene_region1,
+        title=lambda wildcards: wildcards.sample + " " + wildcards.chr + " " + wildcards.gene_region + " " + wildcards.gene,
+        chr=lambda wildcards: wildcards.chr + ":" + wildcards.gene_region,
     log:
-        "logs/CNV_cnvkit/{sample}_{gene}_{chr}:{gene_region1}_scatter_cnv.gene.region.log",
+        "logs/CNV_cnvkit/{sample}_{gene}_{chr}:{gene_region}_scatter_cnv.gene.region.log",
     threads: 8
     singularity:
         config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
     shell:
-        "(cnvkit.py scatter {input.cnr} -s {input.cns} -o {ouput.png} -c {params.chr} -g {params.gene} --title {params.title}) &> {log}"
+        "(cnvkit.py scatter {input.cnr} -s {input.cns} -o {output.png} -c {params.chr} -g {params.gene} --title \"{params.title}\") &> {log}"
 
 
 rule generate_cnv_plots:
@@ -160,7 +158,7 @@ rule generate_cnv_plots:
 def extract_gene_string(gene, gene_region, cnv_relevant, bedfile):
     start_pos = int(gene_region.split("-")[0])
     end_pos = int(gene_region.split("-")[1])
-    with open(befile) as bed:
+    with open(bedfile) as bed:
         gene_string = ""
         gene_name_dict = {}
         for region in bed:
