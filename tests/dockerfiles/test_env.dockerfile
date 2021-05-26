@@ -6,7 +6,7 @@ RUN yum update -y && \
     yum install -y singularity-runtime singularity mailx  && \
     yum install -y python38-devel python38-pip
 
-ADD ./requirements.txt .
+ADD requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 
 RUN mkdir /singularity

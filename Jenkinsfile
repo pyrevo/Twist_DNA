@@ -47,7 +47,7 @@ pipeline {
         }
     }
     stage('Build - test container') {
-        when { expression { isPullRequest == false }}
+        when { expression { isPullRequest == true }}
         environment {
             CGU_CREDS = credentials('cgu-registry')
             CGU_REGISTRY_URL = credentials('cgu_registry_url')
@@ -56,7 +56,7 @@ pipeline {
         steps{
             sh '''
                 tmpName="image-$RANDOM";
-                docker build tests/dockerfiles/ --file tests/dockerfiles/test_env.dockerfile --tag $tmpName;
+                docker build . --file tests/dockerfiles/test_env.dockerfile --tag $tmpName;
                 VERSION=${BRANCH_NAME};
                 IMAGE_NAME="test_env_somatic"
                 echo "${CGU_CREDS_PSW}" | docker login ${CGU_REGISTRY_URL} -u ${CGU_CREDS_USR} --password-stdin;
