@@ -11,7 +11,13 @@ pipeline {
       }
     }
     stage('Build - dependent software container') {
-        when { expression { isPullRequest == false }}
+        when {
+            expression { isPullRequest == false }
+            anyOf {
+                   branch 'master'
+                    branch 'develop'
+            }
+        }
         environment {
             DOCKERHUB_CREDS = credentials('dokcerhhub')
             DOCKER_REGISTRY_URL = credentials('dockerhub_registry_url')
@@ -36,18 +42,28 @@ pipeline {
                     docker tag $tmpName $IMAGE_ID:$VERSION;
                     docker push $IMAGE_ID:$VERSION;
                     docker logout;
+                    docker rmi -f $IMAGE_ID:$VERSION;
 
                     echo "${CGU_CREDS_PSW}" | docker login ${CGU_REGISTRY_URL} -u ${CGU_CREDS_USR} --password-stdin
                     IMAGE_ID="docker-registry.cgu10.igp.uu.se/gmsuppsala/$IMAGE_NAME";
                     docker tag $tmpName $IMAGE_ID:$VERSION;
                     docker push $IMAGE_ID:$VERSION;
                     docker logout;
+                    docker rmi -f $IMAGE_ID:$VERSION;
+                    docker rmi -f $tmpName;
+                    docker image prune -f;
                 done;
                '''
         }
     }
     stage('Build - test container') {
-        when { expression { isPullRequest == true }}
+        //when {
+        //    expression { isPullRequest == false }
+        //    anyOf {
+        //            branch 'master'
+        //            branch 'develop'
+        //    }
+        //}
         environment {
             CGU_CREDS = credentials('cgu-registry')
             CGU_REGISTRY_URL = credentials('cgu_registry_url')
@@ -56,7 +72,7 @@ pipeline {
         steps{
             sh '''
                 tmpName="image-$RANDOM";
-                docker build . --file tests/dockerfiles/test_env.dockerfile --tag $tmpName;
+                docker build . --file tests/dockerfiles/test_env.dockerfile --tag $tmpName  --no-cache;
                 VERSION=${BRANCH_NAME};
                 IMAGE_NAME="test_env_somatic"
                 echo "${CGU_CREDS_PSW}" | docker login ${CGU_REGISTRY_URL} -u ${CGU_CREDS_USR} --password-stdin;
@@ -64,6 +80,9 @@ pipeline {
                 docker tag $tmpName $IMAGE_ID:$VERSION;
                 docker push $IMAGE_ID:$VERSION;
                 docker logout;
+                docker rmi -f $tmpName;
+                docker rmi -f $IMAGE_ID:$VERSION;
+                docker image prune -f;
                '''
         }
     }
@@ -85,14 +104,45 @@ pipeline {
             sh 'cp -r /data_twist_dna_fastp . && snakemake -n -s Twist_DNA.smk --directory /data_twist_dna_fastp'
             sh 'cp -r /data_gms_somatic . && snakemake -n -s gms_somatic.smk --directory /data_gms_somatic/'
             sh 'cp -r /data_demultiplex . && snakemake -n -s demultiplex.smk --directory /data_demultiplex/'
-            sh 'ls -la /singularity'
         }
-        //when {
-        //    anyOf {
-        //        branch 'master'
-        //        branch 'develop'
-        //    }
-        //}
+     }
+     stage('Small dataset 1') {
+        agent {
+            dockerfile {
+                 filename 'tests/dockerfiles/twist_dna_working.dockerfile'
+                 dir './'
+                 args '-u 0 --privileged -v $HOME/.m2:/home/jenkins/.m2 -v /beegfs-storage:/beegfs-storage:ro'
+                 registryUrl 'https://docker-registry.cgu10.igp.uu.se'
+                 registryCredentialsId 'cgu-registry'
+            }
+        }
+        steps {
+            sh 'snakemake -j 4 -s /Twist_DNA/gms_somatic.smk --directory /data_gms_somatic --use-singularity --singularity-prefix /Twist_DNA --singularity-args  "--bind /beegfs-storage  --bind /projects --bind /data --bind /Twist_DNA --bind /data_gms_somatic"'
+            sh 'snakemake -j 4 -s /Twist_DNA/Twist_DNA.smk --directory /data_twist_dna_markdup --use-singularity --singularity-prefix /Twist_DNA --singularity-args  "--bind /beegfs-storage  --bind /projects --bind /data --bind /Twist_DNA --bind /data_twist_dna_markdup"'
+        }
+    }
+    stage('Small dataset 2') {
+       when {
+           expression { isPullRequest == false }
+           anyOf {
+                   branch 'master'
+                   branch 'develop'
+           }
+       }
+       agent {
+           dockerfile {
+                filename 'tests/dockerfiles/twist_dna_working.dockerfile'
+                dir './'
+                args '-u 0 --privileged -v $HOME/.m2:/home/jenkins/.m2 -v /beegfs-storage:/beegfs-storage:ro'
+                registryUrl 'https://docker-registry.cgu10.igp.uu.se'
+                registryCredentialsId 'cgu-registry'
+           }
+       }
+       steps {
+           sh 'snakemake -j 4 -s /Twist_DNA/Twist_DNA.smk --directory /data_twist_dna_fgbio --use-singularity --singularity-prefix /Twist_DNA --singularity-args  "--bind /beegfs-storage  --bind /projects --bind /data --bind /Twist_DNA --bind /data_twist_dna_fgbio"'
+           sh 'snakemake -j 4 -s /Twist_DNA/Twist_DNA.smk --directory /data_twist_dna_cutadapt --use-singularity --singularity-prefix /Twist_DNA --singularity-args  "--bind /beegfs-storage  --bind /projects --bind /data --bind /Twist_DNA --bind /data_twist_dna_cutadapt"'
+           sh 'snakemake -j 4 -s /Twist_DNA/Twist_DNA.smk --directory /data_twist_dna_fastp --use-singularity --singularity-prefix /Twist_DNA --singularity-args  "--bind /beegfs-storage  --bind /projects --bind /data --bind /Twist_DNA --bind /data_twist_dna_fastp"'
+       }
      }
   }
 }
