@@ -1,10 +1,15 @@
-FROM centos:8
+FROM jenkins/inbound-agent
+ARG DEBIAN_FRONTEND=noninteractive
 
-RUN yum update -y && \
-    yum install -y epel-release && \
-    yum update -y && \
-    yum install -y singularity-runtime singularity mailx  && \
-    yum install -y python38-devel python38-pip
+USER root
+
+RUN wget -O- http://neuro.debian.net/lists/xenial.us-ca.full | tee /etc/apt/sources.list.d/neurodebian.sources.list
+RUN apt-key adv --recv-keys --keyserver hkp://pool.sks-keyservers.net:80 0xA5D32F012649A5A9
+RUN apt-get -qy update
+
+
+RUN apt-get install -qy singularity-container python3 python3-dev python3-pip mailutils
+
 
 ADD requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
