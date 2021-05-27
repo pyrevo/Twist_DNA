@@ -42,28 +42,24 @@ pipeline {
                     docker tag $tmpName $IMAGE_ID:$VERSION;
                     docker push $IMAGE_ID:$VERSION;
                     docker logout;
-                    docker rmi -f $IMAGE_ID:$VERSION;
-
+                    
                     echo "${CGU_CREDS_PSW}" | docker login ${CGU_REGISTRY_URL} -u ${CGU_CREDS_USR} --password-stdin
                     IMAGE_ID="docker-registry.cgu10.igp.uu.se/gmsuppsala/$IMAGE_NAME";
                     docker tag $tmpName $IMAGE_ID:$VERSION;
                     docker push $IMAGE_ID:$VERSION;
                     docker logout;
-                    docker rmi -f $IMAGE_ID:$VERSION;
-                    docker rmi -f $tmpName;
-                    docker image prune -f;
                 done;
                '''
         }
     }
     stage('Build - test container') {
-        //when {
-        //    expression { isPullRequest == false }
-        //    anyOf {
-        //            branch 'master'
-        //            branch 'develop'
-        //    }
-        //}
+        when {
+            expression { isPullRequest == false }
+            anyOf {
+                    branch 'master'
+                    branch 'develop'
+            }
+        }
         environment {
             CGU_CREDS = credentials('cgu-registry')
             CGU_REGISTRY_URL = credentials('cgu_registry_url')
@@ -80,9 +76,6 @@ pipeline {
                 docker tag $tmpName $IMAGE_ID:$VERSION;
                 docker push $IMAGE_ID:$VERSION;
                 docker logout;
-                docker rmi -f $tmpName;
-                docker rmi -f $IMAGE_ID:$VERSION;
-                docker image prune -f;
                '''
         }
     }

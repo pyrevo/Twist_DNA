@@ -1,4 +1,4 @@
-FROM docker-registry.cgu10.igp.uu.se/gmsuppsala/test_env_somatic:PR-150
+FROM docker-registry.cgu10.igp.uu.se/gmsuppsala/test_env_somatic:develop
 
 RUN mkdir /Twist_DNA
 RUN mkdir /scratch
