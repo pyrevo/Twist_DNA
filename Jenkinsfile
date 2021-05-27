@@ -26,8 +26,9 @@ pipeline {
             REPOSITORY = credentials('REPOSITORY')
         }
         steps{
+            sh 'git  --no-pager diff --name-only -r ${GIT_PREVIOUS_COMMIT} ${GIT_COMMIT}'
             sh '''
-                for versionFilePath in $(git --no-pager diff --name-only origin/${CHANGE_TARGET} | grep VERSION);
+                for versionFilePath in $( git  --no-pager diff --name-only -r ${GIT_PREVIOUS_COMMIT} ${GIT_COMMIT} | grep VERSION);
                 do
                     folder=${versionFilePath%"/VERSION"};
                     IMAGE_NAME=${folder##*/};
@@ -42,7 +43,7 @@ pipeline {
                     docker tag $tmpName $IMAGE_ID:$VERSION;
                     docker push $IMAGE_ID:$VERSION;
                     docker logout;
-                    
+
                     echo "${CGU_CREDS_PSW}" | docker login ${CGU_REGISTRY_URL} -u ${CGU_CREDS_USR} --password-stdin
                     IMAGE_ID="docker-registry.cgu10.igp.uu.se/gmsuppsala/$IMAGE_NAME";
                     docker tag $tmpName $IMAGE_ID:$VERSION;
