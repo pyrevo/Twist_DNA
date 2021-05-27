@@ -80,6 +80,7 @@ checkpoint Filter_cnv:
         bed_file="CNV/bed/cnvkit_manifest.target.bed",
     output:
         relevant_cnvs="Results/DNA/CNV/Reported_cnvs.txt",
+        relevant_cnvs_clinical="Results/DNA/CNV/Reported_cnvs_clinical.txt",
     params:
         purity=[sample.Index + ";" + str(sample.TC) for sample in samples.itertuples()],
         in_path="CNV/cnvkit_calls/",

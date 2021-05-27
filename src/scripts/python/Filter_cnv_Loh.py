@@ -14,12 +14,14 @@ cnvkit_files = snakemake.input.cnvkit_segments
 GATK_CNV_files = snakemake.input.GATK_CNV_segments
 cnv_bed_file = open(snakemake.input.bed_file)
 cnv_relevant = open(snakemake.output.relevant_cnvs, "w")
+cnv_relevant_clinical = open(snakemake.output.relevant_cnvs_clinical, "w")
 in_path = snakemake.params.in_path
 out_path = snakemake.params.out_path
 
 #cnv_relevant.write("caller\tsample\tgene\tchrom\tregion\tregion_size\tnr_exons/nr_points\tCopy_ratio\tCN_100%_TC\t")
 #cnv_relevant.write("\tpurity\tCN_adjusted\n")
-cnv_relevant.write("Method\tsample\tgenes\tchrom\tstart_pos\tend_pos\tCN\tBAF\tregion_size\tnr_exons\tnr_obs_cov\tnr_obs_baf\n")
+cnv_relevant_clinical.write("Method\tsample\tgenes\tchrom\tstart_pos\tend_pos\tCN\tBAF\tregion_size\tnr_exons\tnr_obs_cov\tnr_obs_baf\tpurity\n")
+cnv_relevant.write("Method\tsample\tgenes\tchrom\tstart_pos\tend_pos\tCN\tBAF\tregion_size\tnr_exons\tnr_obs_cov\tnr_obs_baf\tpurity\n")
 
 chrom_len = {"chr1": 249250621, "chr2": 243199373, "chr3": 198022430, "chr4": 191154276, "chr5": 180915260, "chr6": 171115067,
              "chr7": 159138663, "chr8": 146364022, "chr9": 141213431, "chr10": 135534747, "chr11": 135006516, "chr12": 133851895,
@@ -51,16 +53,16 @@ for row in cnv_purity:
     purity = float(column[1])
     if purity == 0:
         purity = 1.0
-    sample_purity_dict[column[0] + "-ready"] = [0, 0, 0, purity]
+    #sample_purity_dict[column[0] + "-ready"] = [0, 0, 0, purity]
+    sample_purity_dict[column[0]] = [0, 0, 0, purity]
 
 
-cnv_relevant_list = []
 '''Extract events from CNVkit'''
+CNVkit_regions = []
 for cnv_file_name in cnvkit_files:
     seg = open(cnv_file_name)
     sample = cnv_file_name.split("/")[-1].split(".")[0]
-    sample2 = sample.split("-ready")[0]
-    CNVkit_regions = []
+    sample2 = sample.split("-LoH")[0]
     next(seg)
     for line in seg :
         lline = line.strip().split("\t")
@@ -73,18 +75,22 @@ for cnv_file_name in cnvkit_files:
         else :
             CNVkit_MAF = float(CNVkit_MAF)
         length = int(lline[2]) - int(lline[1]) + 1
-        purity = sample_purity_dict[sample][3]
-        if (CNVkit_CR < -0.35 or CNVkit_CR > 1.0) and abs(CNVkit_MAF - 0.5) > 0.15 and length > 100000:
+        purity = sample_purity_dict[sample2][3]
+        CN_CNVkit = round(2*pow(2, GATK_CR), 2)
+        '''change gains vs losses'''
+        if CN_CNVkit < 1.2 and abs(CNVkit_MAF - 0.5) > 0.15 and length > 100000:
             #print(lline[:3] + lline[4:6] + lline[8:9])
-            CNVkit_regions.append(["CNVkit", sample2, lline[0], lline[1], lline[2], CNVkit_CR, CNVkit_MAF, purity, length, lline[4])
+            CNVkit_regions.append(["CNVkit", sample2, lline[0], lline[1], lline[2], CNVkit_CR, CNVkit_MAF, purity, length, CN_CNVkit, lline[4]])
+        elif CN_CNVkit > 4.0 and length > 10000:
+            CNVkit_regions.append(["CNVkit", sample2, lline[0], lline[1], lline[2], CNVkit_CR, CNVkit_MAF, purity, length, CN_CNVkit, lline[4]])
     seg.close()
 
 '''Extract events from GATK'''
+GATK_regions = []
 for cnv_file_name in GATK_CNV_files:
     seg = open(cnv_file_name)
     sample = cnv_file_name.split("/")[-1].split(".")[0]
-    sample2 = sample.split("-ready")[0]
-    GATK_regions = []
+    sample2 = sample.split("_clean")[0]
     header = True
     for line in seg :
         if header :
@@ -101,23 +107,25 @@ for cnv_file_name in GATK_CNV_files:
         length = int(lline[2]) - int(lline[1]) + 1
         Points_CR = int(lline[3])
         Points_MAF = int(lline[4])
-        CN_GATK_100 = round(2*pow(2, CR), 2)
-        purity = sample_purity_dict[sample][3]
-        corrected_CN = round(2 + (CN_GATK_100 - 2) * (1/purity), 1)
-        if (GATK_CR < -0.35 or GATK_CR > 1.0) and abs(GATK_MAF - 0.5) > 0.15 and length > 100000 and Points_CR > 20 and Points_MAF > 20 :
+        CN_GATK_100 = round(2*pow(2, GATK_CR), 2)
+        purity = sample_purity_dict[sample2][3]
+        GATK_corrected_CN = round(2 + (CN_GATK_100 - 2) * (1/purity), 1)
+        if GATK_corrected_CN < 1.2 and abs(GATK_MAF - 0.5) > 0.15 and length > 100000 and Points_CR > 20 and Points_MAF > 20 :
             #print(lline[:6] + lline[8:9])
-            GATK_regions.append(["GATK_CNV", sample2, lline[0], lline[1], lline[2], GATK_CR, GATK_MAF, purity, length, lline[4], lline[5]))
+            GATK_regions.append(["GATK_CNV", sample2, lline[0], lline[1], lline[2], GATK_CR, GATK_MAF, purity, length, GATK_corrected_CN, lline[4], lline[5]])
+        elif GATK_corrected_CN > 4.0 and length > 10000:
+            GATK_regions.append(["GATK_CNV", sample2, lline[0], lline[1], lline[2], GATK_CR, GATK_MAF, purity, length, GATK_corrected_CN, lline[4], lline[5]])
     seg.close()
 
 Both_regions = []
 for region1 in GATK_regions:
     found = False
     for region2 in CNVkit_regions:
-        if region1[0] == region2[0]:
-            if ((int(region1[1]) >= int(region2[1]) and int(region1[1]) <= int(region2[2])) or
-                (int(region1[2]) >= int(region2[1]) and int(region1[2]) <= int(region2[2])) or
-                (int(region1[1]) <= int(region2[1]) and int(region1[2]) >= int(region2[2]))):
-                if (float(region1[6]) < 0 and float(region2[4]) < 0) or (float(region1[6]) > 0 and float(region2[4]) > 0):
+        if region1[1] == region2[1] and region1[2] == region2[2]:
+            if ((int(region1[3]) >= int(region2[3]) and int(region1[3]) <= int(region2[4])) or
+                (int(region1[4]) >= int(region2[3]) and int(region1[4]) <= int(region2[4])) or
+                (int(region1[3]) <= int(region2[3]) and int(region1[4]) >= int(region2[4]))):
+                if (region1[5] < 0 and region2[5] < 0) or (region1[5] > 0 and region2[5]) > 0):
                     Both_regions.append(region2)
                     found = True
     if found :
@@ -142,8 +150,17 @@ for region in Both_regions:
     nr_obs_cov = ""
     nr_obs_baf = ""
     if method == "GATK_CNV" :
-        nr_obs_cov = region[9]
-        nr_obs_baf = region[10]
+        nr_obs_cov = region[10]
+        nr_obs_baf = region[11]
+    #cnv_relevant.write("Method\tsample\tgenes\tchrom\tstart_pos\tend_pos\tCN\tBAF\tregion_size\tnr_exons\tnr_obs_cov\tnr_obs_baf\tpurity\n")
     cnv_relevant.write(method + "\t" + region[1] + "\t" + genes + "\t" + region[2] + "\t" + region[3] + "\t" +
-                       region[4] + "\t" + region[5] + "\t" + str(region[8]) + "\t" + str(nr_exons) + "\t" + nr_obs_cov + "\t"
-                       nr_obs_baf + "\n")
+                       region[4] + "\t" + str(region[5]) + "\t" + str(region[6]) + "\t" + str(region[8]) + "\t" +
+                       str(nr_exons) + "\t" + nr_obs_cov + "\t" + nr_obs_baf + "\t" + region[7] + "\n")
+    found_gene = False
+    for gene in genes.split(",") :
+        if gene in relevant_genes :
+            found_gene = True
+    if (found_gene and region[9] > 0) or (region[9] < 0 and region[2] == "chr1") :
+        cnv_relevant_clinical.write(method + "\t" + region[1] + "\t" + genes + "\t" + region[2] + "\t" + region[3] + "\t" +
+                           region[4] + "\t" + str(region[9]) + "\t" + str(region[6]) + "\t" + str(region[8]) + "\t" +
+                           str(nr_exons) + "\t" + nr_obs_cov + "\t" + nr_obs_baf + "\t" + region[7] + "\n")
