@@ -11,13 +11,13 @@ pipeline {
       }
     }
     stage('Build - dependent software container') {
-        //when {
-        //    expression { isPullRequest == false }
-        //    anyOf {
-        //           branch 'master'
-        //            branch 'develop'
-        //    }
-        //}
+        when {
+            expression { isPullRequest == false }
+            anyOf {
+                   branch 'master'
+                    branch 'develop'
+            }
+        }
         environment {
             DOCKERHUB_CREDS = credentials('dokcerhhub')
             DOCKER_REGISTRY_URL = credentials('dockerhub_registry_url')
@@ -26,7 +26,6 @@ pipeline {
             REPOSITORY = credentials('REPOSITORY')
         }
         steps{
-            sh 'git  --no-pager diff --name-only -r ${GIT_PREVIOUS_COMMIT} ${GIT_COMMIT}'
             sh '''
                 for versionFilePath in $( git  --no-pager diff --name-only -r ${GIT_PREVIOUS_COMMIT} ${GIT_COMMIT} | grep VERSION);
                 do
