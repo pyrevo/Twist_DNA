@@ -8,6 +8,7 @@ pipeline {
         script {
           isPullRequest = env.CHANGE_ID != null
         }
+        sh 'printenv'
       }
     }
     stage('Build - dependent software container') {
@@ -42,7 +43,7 @@ pipeline {
                     docker tag $tmpName $IMAGE_ID:$VERSION;
                     docker push $IMAGE_ID:$VERSION;
                     docker logout;
-                    
+
                     echo "${CGU_CREDS_PSW}" | docker login ${CGU_REGISTRY_URL} -u ${CGU_CREDS_USR} --password-stdin
                     IMAGE_ID="docker-registry.cgu10.igp.uu.se/gmsuppsala/$IMAGE_NAME";
                     docker tag $tmpName $IMAGE_ID:$VERSION;
