@@ -26,7 +26,7 @@ FROM debian:buster-slim AS runtime
 
 ################## METADATA ######################
 
-LABEL VERSION=0.0.28
+LABEL VERSION=0.0.29
 LABEL bamtools=2.5.1
 LABEL bcbio-variation-recall=0.2.6
 LABEL bcftools=1.11
