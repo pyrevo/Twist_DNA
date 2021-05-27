@@ -11,13 +11,13 @@ pipeline {
       }
     }
     stage('Build - dependent software container') {
-        when {
-            expression { isPullRequest == false }
-            anyOf {
-                   branch 'master'
-                    branch 'develop'
-            }
-        }
+        //when {
+        //    expression { isPullRequest == false }
+        //    anyOf {
+        //           branch 'master'
+        //            branch 'develop'
+        //    }
+        //}
         environment {
             DOCKERHUB_CREDS = credentials('dokcerhhub')
             DOCKER_REGISTRY_URL = credentials('dockerhub_registry_url')
