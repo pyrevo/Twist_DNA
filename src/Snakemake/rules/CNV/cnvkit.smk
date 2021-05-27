@@ -198,7 +198,7 @@ def extract_gene_string(gene, gene_region, cnv_relevant, bedfile):
 def aggregate_input_gene(wildcards, bedfile):
     gene_list = []
     gene_region_list = []
-    with checkpoints.Filter_cnv.get().output[0].open() as cnv_relevant:
+    with checkpoints.Filter_cnv.get().output[1].open() as cnv_relevant:
         gene_regions = {}
         with open(bedfile) as cnv_bed_file:
             for line in cnv_bed_file:

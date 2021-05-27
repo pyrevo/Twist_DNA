@@ -76,7 +76,7 @@ for cnv_file_name in cnvkit_files:
             CNVkit_MAF = float(CNVkit_MAF)
         length = int(lline[2]) - int(lline[1]) + 1
         purity = sample_purity_dict[sample2][3]
-        CN_CNVkit = round(2*pow(2, GATK_CR), 2)
+        CN_CNVkit = round(2*pow(2, CNVkit_CR), 2)
         '''change gains vs losses'''
         if CN_CNVkit < 1.2 and abs(CNVkit_MAF - 0.5) > 0.15 and length > 100000:
             #print(lline[:3] + lline[4:6] + lline[8:9])
@@ -125,7 +125,7 @@ for region1 in GATK_regions:
             if ((int(region1[3]) >= int(region2[3]) and int(region1[3]) <= int(region2[4])) or
                 (int(region1[4]) >= int(region2[3]) and int(region1[4]) <= int(region2[4])) or
                 (int(region1[3]) <= int(region2[3]) and int(region1[4]) >= int(region2[4]))):
-                if (region1[5] < 0 and region2[5] < 0) or (region1[5] > 0 and region2[5]) > 0):
+                if (region1[5] < 0 and region2[5] < 0) or (region1[5] > 0 and region2[5] > 0):
                     Both_regions.append(region2)
                     found = True
     if found :
@@ -137,7 +137,7 @@ for region in Both_regions:
     nr_exons = ""
     gene_dict = {}
     if method == "CNVkit" :
-        exons = region[9]
+        exons = region[10]
         nr_exons = len(exons.split(","))
         for exon in exons.split(",") :
             gene = exon.split("_")[0]
@@ -155,12 +155,14 @@ for region in Both_regions:
     #cnv_relevant.write("Method\tsample\tgenes\tchrom\tstart_pos\tend_pos\tCN\tBAF\tregion_size\tnr_exons\tnr_obs_cov\tnr_obs_baf\tpurity\n")
     cnv_relevant.write(method + "\t" + region[1] + "\t" + genes + "\t" + region[2] + "\t" + region[3] + "\t" +
                        region[4] + "\t" + str(region[5]) + "\t" + str(region[6]) + "\t" + str(region[8]) + "\t" +
-                       str(nr_exons) + "\t" + nr_obs_cov + "\t" + nr_obs_baf + "\t" + region[7] + "\n")
+                       str(nr_exons) + "\t" + nr_obs_cov + "\t" + nr_obs_baf + "\t" + str(region[7]) + "\n")
     found_gene = False
+    clinical_gene = ""
     for gene in genes.split(",") :
         if gene in relevant_genes :
             found_gene = True
+            clinical_gene = gene
     if (found_gene and region[9] > 0) or (region[9] < 0 and region[2] == "chr1") :
-        cnv_relevant_clinical.write(method + "\t" + region[1] + "\t" + genes + "\t" + region[2] + "\t" + region[3] + "\t" +
+        cnv_relevant_clinical.write(method + "\t" + region[1] + "\t" + clinical_gene + "\t" + region[2] + "\t" + region[3] + "\t" +
                            region[4] + "\t" + str(region[9]) + "\t" + str(region[6]) + "\t" + str(region[8]) + "\t" +
-                           str(nr_exons) + "\t" + nr_obs_cov + "\t" + nr_obs_baf + "\t" + region[7] + "\n")
+                           str(nr_exons) + "\t" + nr_obs_cov + "\t" + nr_obs_baf + "\t" + str(region[7]) + "\n")
