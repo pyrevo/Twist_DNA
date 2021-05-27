@@ -1,12 +1,4 @@
-FROM centos:8
-
-RUN yum update -y && \
-    yum install -y epel-release && \
-    yum update -y && \
-    yum install -y singularity-runtime singularity mailx  && \
-    yum install -y python38-devel python38-pip
-
-
+FROM docker-registry.cgu10.igp.uu.se/gmsuppsala/test_env_somatic:develop
 
 RUN mkdir /Twist_DNA
 RUN mkdir /scratch

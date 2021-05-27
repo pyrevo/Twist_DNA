@@ -87,9 +87,9 @@ samplesheet:  samplesheet.csv
 bcl2fastq_version: 2.17.1.14
 
 singularity:
-    default: "docker://gmsuppsala/somatic:develop"
+    default: /singularity/somatic_develop.sif #"docker://gmsuppsala/somatic:develop"
+    gatk4_cnv: /singularity/gatk_4.1.9.0.sif #"docker://broadinstitute/gatk:4.1.9.0"
+    msisensor2: /singularity/msisensor2_mgi_0.1.sif #"docker://rjmashl/msisensor2_mgi:0.1" #https://hub.docker.com/r/hsun9/msisensor2
+    vep: /singularity/ensembl-vep_release_99.0.sif #"docker://ensemblorg/ensembl-vep:release_99.0"
     execute: "singularity exec -B /data -B /projects -B /scratch -B /data_twist_dna_gpu -B /Twist_DNA "
-    gatk4_cnv: "docker://broadinstitute/gatk:4.1.9.0"
-    msisensor2: "docker://rjmashl/msisensor2_mgi:0.1" #https://hub.docker.com/r/hsun9/msisensor2
-    vep: "docker://ensemblorg/ensembl-vep:release_99.0"
     GPU: "/opt/parabricks/parabricks-release-v3.2.0.sif"
