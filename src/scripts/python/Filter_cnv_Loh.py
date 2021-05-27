@@ -77,12 +77,11 @@ for cnv_file_name in cnvkit_files:
         length = int(lline[2]) - int(lline[1]) + 1
         purity = sample_purity_dict[sample2][3]
         CN_CNVkit = round(2*pow(2, CNVkit_CR), 2)
-        '''change gains vs losses'''
         if CN_CNVkit < 1.2 and abs(CNVkit_MAF - 0.5) > 0.15 and length > 100000:
             #print(lline[:3] + lline[4:6] + lline[8:9])
-            CNVkit_regions.append(["CNVkit", sample2, lline[0], lline[1], lline[2], CNVkit_CR, CNVkit_MAF, purity, length, CN_CNVkit, lline[4]])
+            CNVkit_regions.append(["CNVkit", sample2, lline[0], lline[1], lline[2], CNVkit_CR, CNVkit_MAF, purity, length, CN_CNVkit, lline[3]])
         elif CN_CNVkit > 4.0 and length > 10000:
-            CNVkit_regions.append(["CNVkit", sample2, lline[0], lline[1], lline[2], CNVkit_CR, CNVkit_MAF, purity, length, CN_CNVkit, lline[4]])
+            CNVkit_regions.append(["CNVkit", sample2, lline[0], lline[1], lline[2], CNVkit_CR, CNVkit_MAF, purity, length, CN_CNVkit, lline[3]])
     seg.close()
 
 '''Extract events from GATK'''
@@ -117,6 +116,7 @@ for cnv_file_name in GATK_CNV_files:
             GATK_regions.append(["GATK_CNV", sample2, lline[0], lline[1], lline[2], GATK_CR, GATK_MAF, purity, length, GATK_corrected_CN, lline[4], lline[5]])
     seg.close()
 
+'''Add GATK CN and BAF to CNVkit clinical results'''
 Both_regions = []
 for region1 in GATK_regions:
     found = False
@@ -125,7 +125,7 @@ for region1 in GATK_regions:
             if ((int(region1[3]) >= int(region2[3]) and int(region1[3]) <= int(region2[4])) or
                 (int(region1[4]) >= int(region2[3]) and int(region1[4]) <= int(region2[4])) or
                 (int(region1[3]) <= int(region2[3]) and int(region1[4]) >= int(region2[4]))):
-                if (region1[5] < 0 and region2[5] < 0) or (region1[5] > 0 and region2[5] > 0):
+                if (region1[9] < 1.5 and region2[9] < 1.5) or (region1[9] > 2.5 and region2[9] > 2.5):
                     Both_regions.append(region2)
                     found = True
     if found :
@@ -146,7 +146,7 @@ for region in Both_regions:
             if genes == "" :
                 genes = gene
             else :
-                genes += ",gene"
+                genes += "," + gene
     nr_obs_cov = ""
     nr_obs_baf = ""
     if method == "GATK_CNV" :
@@ -154,7 +154,7 @@ for region in Both_regions:
         nr_obs_baf = region[11]
     #cnv_relevant.write("Method\tsample\tgenes\tchrom\tstart_pos\tend_pos\tCN\tBAF\tregion_size\tnr_exons\tnr_obs_cov\tnr_obs_baf\tpurity\n")
     cnv_relevant.write(method + "\t" + region[1] + "\t" + genes + "\t" + region[2] + "\t" + region[3] + "\t" +
-                       region[4] + "\t" + str(region[5]) + "\t" + str(region[6]) + "\t" + str(region[8]) + "\t" +
+                       region[4] + "\t" + str(region[9]) + "\t" + str(region[6]) + "\t" + str(region[8]) + "\t" +
                        str(nr_exons) + "\t" + nr_obs_cov + "\t" + nr_obs_baf + "\t" + str(region[7]) + "\n")
     found_gene = False
     clinical_gene = ""
@@ -162,7 +162,7 @@ for region in Both_regions:
         if gene in relevant_genes :
             found_gene = True
             clinical_gene = gene
-    if (found_gene and region[9] > 0) or (region[9] < 0 and region[2] == "chr1") :
+    if (found_gene and region[9] > 2.5) or (region[9] < 1.5 and region[2] == "chr1") :
         cnv_relevant_clinical.write(method + "\t" + region[1] + "\t" + clinical_gene + "\t" + region[2] + "\t" + region[3] + "\t" +
                            region[4] + "\t" + str(region[9]) + "\t" + str(region[6]) + "\t" + str(region[8]) + "\t" +
                            str(nr_exons) + "\t" + nr_obs_cov + "\t" + nr_obs_baf + "\t" + str(region[7]) + "\n")
