@@ -1,5 +1,7 @@
 
-in_vcf = open(snakemake.input.vcf)
+import gzip
+
+in_vcf = snakemake.input.vcf
 out_vcf = open(snakemake.output.vcf, "w")
 
 with gzip.open(in_vcf, 'rt') as f:
@@ -10,6 +12,9 @@ with gzip.open(in_vcf, 'rt') as f:
             out_vcf.write(line + "\n")
             if line[:6] == "#CHROM":
                 header = False
+            continue
+        lline = line.strip().split("\t")
+        if len(lline) == 1 :
             continue
         ref = lline[3]
         alt = lline[4]
@@ -54,6 +59,8 @@ with gzip.open(in_vcf, 'rt') as f:
         AD = DATA[AD_index].split(",")
         if len(AD) == 2:
             VD = int(AD[1])
+        elif AD_index != 0 :
+            VD = int(AD[0])
         else:
             VD = int(DATA[VD_index])
         DP = int(DATA[DP_index])

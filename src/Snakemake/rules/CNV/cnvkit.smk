@@ -50,7 +50,7 @@ rule Filter_vcf_for_LoH:
     output:
         vcf="recall/{sample}.ensemble.vep.LoH.vcf",
     container:
-        config["singularity"].get("python", config["python"].get("default", ""))
+        config["singularity"].get("python", config["singularity"].get("default", ""))
     script:
         "../../../scripts/python/Filter_vcf_LoH.py"
 
@@ -73,7 +73,8 @@ rule Call_LoH:
 
 checkpoint Filter_cnv:
     input:
-        cnvkit_segments=["CNV/cnvkit_calls/" + sample_id.Index + "-ready.cns" for sample_id in samples.itertuples()],
+        #cnvkit_segments=["CNV/cnvkit_calls/" + sample_id.Index + "-ready.cns" for sample_id in samples.itertuples()],
+        cnvkit_segments=["CNV/cnvkit_calls/" + sample_id.Index + "-LoH.cns" for sample_id in samples.itertuples()],
         GATK_CNV_segments=["CNV/CNV_GATK/" + sample_id.Index + "_clean.modelFinal.seg" for sample_id in samples.itertuples()],
         relevant_genes=config["cnvkit"]["relevant_genes"],
         bed_file="CNV/bed/cnvkit_manifest.target.bed",
@@ -88,7 +89,8 @@ checkpoint Filter_cnv:
     container:
         config["singularity"].get("python", config["singularity"].get("default", ""))
     script:
-        "../../../scripts/python/Filter_cnv.py"
+        #"../../../scripts/python/Filter_cnv.py"
+        "../../../scripts/python/Filter_cnv_Loh.py"
 
 
 rule create_cnv_kit_plots:
@@ -108,7 +110,7 @@ rule create_cnv_kit_plots:
         "(cnvkit.py scatter {input.cnr} -s {input.cns} -o {output.png} {params.extra}) &> {log}"
 
 
-rule create_gene_plots:
+rule create_chrom_plots:
     input:
         cns="CNV/cnvkit_calls/{sample}-ready.cns",
         cnr="CNV/cnvkit_calls/{sample}-ready.cnr",
@@ -149,7 +151,8 @@ rule create_gene_region_plots:
     container:
         config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
     shell:
-        "(cnvkit.py scatter {input.cnr} -s {input.cns} -o {output.png} -c {params.chr} -g {params.gene} --title \"{params.title}\") &> {log}"
+        # "(cnvkit.py scatter {input.cnr} -s {input.cns} -o {output.png} -c {params.chr} -g {params.gene} --title \"{params.title}\") &> {log}"
+        "(cnvkit.py scatter {input.cnr} -s {input.cns} -o {output.png} -c {params.chr} --title \"{params.title}\") &> {log}"
 
 
 rule generate_cnv_plots:

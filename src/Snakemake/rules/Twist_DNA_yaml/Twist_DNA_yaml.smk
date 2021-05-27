@@ -61,13 +61,13 @@ rule Create_Twist_DNA_yaml:
         outfile.write("runfolder_path: /projects/wp1/nobackup/ngs/klinik/INBOX/" + run_folder_name + "/\n")
         outfile.write("samplesheet: /projects/wp1/nobackup/ngs/klinik/INBOX/" + run_folder_name + "/" + sample_sheet_name + "\n")
         outfile.write("bcl2fastq_version: 2.17.1.14\n\n")
-        outfile.write("DNA_Samples:\n")
+        #outfile.write("DNA_Samples:\n")
 
         outfile_samples.write("sample\tTC\tplatform")
         outfile_units.write("sample\tunit\tfq1\tfq2")
 
         for sample in DNA_sample_list:
-            outfile.write("  " + sample[0] + ": \"S" + str(sample[1]) + "\"\n")
+            #outfile.write("  " + sample[0] + ": \"S" + str(sample[1]) + "\"\n")
             outfile_samples.write("\n" + sample[0] + "\t" + str(sample[2]) + "\tNextSeq")
             outfile_units.write(
                 "\n"
