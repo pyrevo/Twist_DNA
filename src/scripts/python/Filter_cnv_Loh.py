@@ -163,6 +163,6 @@ for region in Both_regions:
             found_gene = True
             clinical_gene = gene
     if (found_gene and region[9] > 2.5) or (region[9] < 1.5 and region[2] == "chr1") :
-        cnv_relevant_clinical.write(method + "\t" + region[1] + "\t" + clinical_gene + "\t" + region[2] + "\t" + region[3] + "\t" +
+        cnv_relevant_clinical.write(method + "\t" + region[1] + "\t" + "1p19q" + "\t" + region[2] + "\t" + region[3] + "\t" +
                            region[4] + "\t" + str(region[9]) + "\t" + str(region[6]) + "\t" + str(region[8]) + "\t" +
                            str(nr_exons) + "\t" + nr_obs_cov + "\t" + nr_obs_baf + "\t" + str(region[7]) + "\n")
