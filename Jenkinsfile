@@ -98,7 +98,7 @@ pipeline {
             dockerfile {
                     filename 'tests/dockerfiles/twist_dna_working.dockerfile'
                     dir './'
-                    args '-u 0 --privileged -v $HOME/.m2:/home/jenkins/.m2 -v /beegfs-storage:/beegfs-storage:ro'
+                    args '-u 0 --privileged -v /beegfs-storage:/beegfs-storage:ro'
                     registryUrl 'https://docker-registry.cgu10.igp.uu.se'
                     registryCredentialsId 'cgu-registry'
            }
