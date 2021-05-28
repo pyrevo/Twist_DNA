@@ -121,8 +121,8 @@ pipeline {
                 branch 'master'
                 branch 'develop'
                 expression { isPullRequest == true }
-         }
-     }
+            }
+        }
         agent {
             dockerfile {
                  filename 'tests/dockerfiles/twist_dna_working_full.dockerfile'
