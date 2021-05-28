@@ -71,7 +71,7 @@ for cnv_file_name in cnvkit_files:
         CNVkit_CR = float(lline[4])
         CNVkit_MAF = lline[5]
         if CNVkit_MAF == "":
-            CNVkit_MAF = 0.5
+            CNVkit_MAF = 0.0
         else :
             CNVkit_MAF = float(CNVkit_MAF)
         length = int(lline[2]) - int(lline[1]) + 1
@@ -109,7 +109,7 @@ for cnv_file_name in GATK_CNV_files:
         CN_GATK_100 = round(2*pow(2, GATK_CR), 2)
         purity = sample_purity_dict[sample2][3]
         GATK_corrected_CN = round(2 + (CN_GATK_100 - 2) * (1/purity), 1)
-        if GATK_corrected_CN < 1.2 and abs(GATK_MAF - 0.5) > 0.15 and length > 100000 and Points_CR > 20 and Points_MAF > 20 :
+        if GATK_corrected_CN < 1.2 and abs(GATK_MAF - 0.5) > 0.15 and length > 100000 and (Points_CR > 20 or Points_MAF > 20) :
             #print(lline[:6] + lline[8:9])
             GATK_regions.append(["GATK_CNV", sample2, lline[0], lline[1], lline[2], GATK_CR, GATK_MAF, purity, length, GATK_corrected_CN, lline[4], lline[5]])
         elif GATK_corrected_CN > 4.0 and length > 10000:
