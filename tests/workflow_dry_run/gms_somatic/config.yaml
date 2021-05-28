@@ -13,7 +13,7 @@ reference: #change to hg38
 
 
 singularity:
-    default: "docker://gmsuppsala/somatic:develop"
+    default: /singularity/somatic_develop.sif
 
 mutect_vcf_filter: "--max-alt-allele-count 3 --max-events-in-region 8"
 
