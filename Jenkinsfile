@@ -16,7 +16,7 @@ pipeline {
             expression { isPullRequest == false }
             anyOf {
                    branch 'master'
-                    branch 'develop'
+                   branch 'develop'
             }
         }
         environment {
