@@ -89,7 +89,13 @@ pipeline {
         }
     }
     stage('Dry run tests') {
-
+        when {
+            anyOf {
+                    expression { isPullRequest == true }
+                    branch 'master'
+                    branch 'develop'
+            }
+        }
         agent {
             dockerfile {
                     filename 'tests/dockerfiles/twist_dna_working.dockerfile'
