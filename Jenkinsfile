@@ -81,7 +81,7 @@ pipeline {
                 VERSION=${BRANCH_NAME};
                 IMAGE_NAME2="test_env_somatic_full"
                 echo "${CGU_CREDS_PSW}" | docker login ${CGU_REGISTRY_URL} -u ${CGU_CREDS_USR} --password-stdin;
-                IMAGE_ID2="docker-registry.cgu10.igp.uu.se/gmsuppsala/$IMAGE_NAME1";
+                IMAGE_ID2="docker-registry.cgu10.igp.uu.se/gmsuppsala/$IMAGE_NAME2";
                 docker tag $tmpName2 $IMAGE_ID2:$VERSION;
                 docker push $IMAGE_ID2:$VERSION;
                 docker logout;
