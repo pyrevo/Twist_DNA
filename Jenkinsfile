@@ -88,17 +88,13 @@ pipeline {
                     docker tag $tmpName2 $IMAGE_ID2:$VERSION;
                     docker push $IMAGE_ID2:$VERSION;
                     docker logout;
-                fi                
+                fi
                '''
         }
     }
     stage('Dry run tests') {
         when {
             expression { isPullRequest == true }
-            anyOf {
-                    branch 'master'
-                    branch 'develop'
-            }
         }
         agent {
             dockerfile {
