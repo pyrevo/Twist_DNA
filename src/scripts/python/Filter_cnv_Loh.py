@@ -20,7 +20,7 @@ out_path = snakemake.params.out_path
 
 #cnv_relevant.write("caller\tsample\tgene\tchrom\tregion\tregion_size\tnr_exons/nr_points\tCopy_ratio\tCN_100%_TC\t")
 #cnv_relevant.write("\tpurity\tCN_adjusted\n")
-cnv_relevant_clinical.write("Method\tsample\tgenes\tchrom\tstart_pos\tend_pos\tCN\tBAF\tregion_size\tnr_exons\tnr_obs_cov\tnr_obs_baf\tpurity\n")
+cnv_relevant_clinical.write("Method\tsample\tgenes\tchrom\tstart_pos\tend_pos\tCN_CNVkit\tCN_GATK\tBAF\tregion_size\tnr_exons\tnr_obs_cov\tnr_obs_baf\tpurity\n")
 cnv_relevant.write("Method\tsample\tgenes\tchrom\tstart_pos\tend_pos\tCN\tBAF\tregion_size\tnr_exons\tnr_obs_cov\tnr_obs_baf\tpurity\n")
 
 chrom_len = {"chr1": 249250621, "chr2": 243199373, "chr3": 198022430, "chr4": 191154276, "chr5": 180915260, "chr6": 171115067,
@@ -126,7 +126,9 @@ for region1 in GATK_regions:
                 (int(region1[4]) >= int(region2[3]) and int(region1[4]) <= int(region2[4])) or
                 (int(region1[3]) <= int(region2[3]) and int(region1[4]) >= int(region2[4]))):
                 if (region1[9] < 1.5 and region2[9] < 1.5) or (region1[9] > 2.5 and region2[9] > 2.5):
-                    Both_regions.append(region2)
+                    if not (region2[1] == Both_regions[-1][1] and region2[2] == Both_regions[-1][2] and
+                            region2[3] == Both_regions[-1][3] and region2[4] == Both_regions[-1][4]) :
+                            Both_regions.append(region2 + [region1[9]])
                     found = True
     if found :
         Both_regions.append(region1)
@@ -152,20 +154,21 @@ for region in Both_regions:
     if method == "GATK_CNV" :
         nr_obs_cov = region[10]
         nr_obs_baf = region[11]
-    #cnv_relevant.write("Method\tsample\tgenes\tchrom\tstart_pos\tend_pos\tCN\tBAF\tregion_size\tnr_exons\tnr_obs_cov\tnr_obs_baf\tpurity\n")
+    #cnv_relevant.write("Method\tsample\tgenes\tchrom\tstart_pos\tend_pos\tCN_CNVkit\tCN_GATK\tBAF\tregion_size\tnr_exons\tnr_obs_cov\tnr_obs_baf\tpurity\n")
     cnv_relevant.write(method + "\t" + region[1] + "\t" + genes + "\t" + region[2] + "\t" + region[3] + "\t" +
                        region[4] + "\t" + str(region[9]) + "\t" + str(region[6]) + "\t" + str(region[8]) + "\t" +
                        str(nr_exons) + "\t" + nr_obs_cov + "\t" + nr_obs_baf + "\t" + str(region[7]) + "\n")
-    found_gene = False
-    clinical_gene = ""
-    for gene in genes.split(",") :
-        if gene in relevant_genes :
-            found_gene = True
-            clinical_gene = gene
-    '''change this'''
-    if (region[9] < 1.5 and region[2] == "chr1") :
-        clinical_gene = "IDH1"
-    if (found_gene and region[9] > 2.5) or (region[9] < 1.5 and region[2] == "chr1") :
-        cnv_relevant_clinical.write(method + "\t" + region[1] + "\t" + clinical_gene + "\t" + region[2] + "\t" + region[3] + "\t" +
-                           region[4] + "\t" + str(region[9]) + "\t" + str(region[6]) + "\t" + str(region[8]) + "\t" +
-                           str(nr_exons) + "\t" + nr_obs_cov + "\t" + nr_obs_baf + "\t" + str(region[7]) + "\n")
+    if method == "CNVkit" :
+        found_gene = False
+        clinical_gene = ""
+        for gene in genes.split(",") :
+            if gene in relevant_genes :
+                found_gene = True
+                clinical_gene = gene
+        '''change this'''
+        if (region[9] < 1.5 and (region[2] == "chr1" or region[2] == "chr19") :
+            clinical_gene = "IDH1"
+        if (found_gene and region[9] > 2.5) or (region[9] < 1.5 and region[2] == "chr1") :
+            cnv_relevant_clinical.write(method + "\t" + region[1] + "\t" + clinical_gene + "\t" + region[2] + "\t" + region[3] + "\t" +
+                               region[4] + "\t" + str(region[9]) + "\t" + str(region[11]) + "\t" + str(region[6]) + "\t" + str(region[8]) + "\t" +
+                               str(nr_exons) + "\t" + nr_obs_cov + "\t" + nr_obs_baf + "\t" + str(region[7]) + "\n")
