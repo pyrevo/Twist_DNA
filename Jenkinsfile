@@ -68,14 +68,22 @@ pipeline {
         }
         steps{
             sh '''
-                tmpName="image-$RANDOM";
-                docker build . --file tests/dockerfiles/test_env.dockerfile --tag $tmpName  --no-cache;
+                tmpName1="image1-$RANDOM";
+                docker build . --file tests/dockerfiles/test_env.dockerfile --tag $tmpName1 --no-cache;
                 VERSION=${BRANCH_NAME};
-                IMAGE_NAME="test_env_somatic"
+                IMAGE_NAME1="test_env_somatic"
                 echo "${CGU_CREDS_PSW}" | docker login ${CGU_REGISTRY_URL} -u ${CGU_CREDS_USR} --password-stdin;
-                IMAGE_ID="docker-registry.cgu10.igp.uu.se/gmsuppsala/$IMAGE_NAME";
-                docker tag $tmpName $IMAGE_ID:$VERSION;
-                docker push $IMAGE_ID:$VERSION;
+                IMAGE_ID1="docker-registry.cgu10.igp.uu.se/gmsuppsala/$IMAGE_NAME1";
+                docker tag $tmpName1 $IMAGE_ID1:$VERSION;
+                docker push $IMAGE_ID1:$VERSION;
+                tmpName2="image2-$RANDOM";
+                docker build . --file tests/dockerfiles/test_env_full.dockerfile --tag $tmpName2  --no-cache;
+                VERSION=${BRANCH_NAME};
+                IMAGE_NAME2="test_env_somatic_full"
+                echo "${CGU_CREDS_PSW}" | docker login ${CGU_REGISTRY_URL} -u ${CGU_CREDS_USR} --password-stdin;
+                IMAGE_ID2="docker-registry.cgu10.igp.uu.se/gmsuppsala/$IMAGE_NAME1";
+                docker tag $tmpName2 $IMAGE_ID2:$VERSION;
+                docker push $IMAGE_ID2:$VERSION;
                 docker logout;
                '''
         }
@@ -111,7 +119,7 @@ pipeline {
      }
         agent {
             dockerfile {
-                 filename 'tests/dockerfiles/twist_dna_working.dockerfile'
+                 filename 'tests/dockerfiles/twist_dna_working_full.dockerfile'
                  dir './'
                  args '-u 0 --privileged -v $HOME/.m2:/home/jenkins/.m2 -v /beegfs-storage:/beegfs-storage:ro'
                  registryUrl 'https://docker-registry.cgu10.igp.uu.se'
@@ -133,7 +141,7 @@ pipeline {
        }
        agent {
            dockerfile {
-                filename 'tests/dockerfiles/twist_dna_working.dockerfile'
+                filename 'tests/dockerfiles/twist_dna_working_full.dockerfile'
                 dir './'
                 args '-u 0 --privileged -v $HOME/.m2:/home/jenkins/.m2 -v /beegfs-storage:/beegfs-storage:ro'
                 registryUrl 'https://docker-registry.cgu10.igp.uu.se'
