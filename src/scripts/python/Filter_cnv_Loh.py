@@ -126,9 +126,12 @@ for region1 in GATK_regions:
                 (int(region1[4]) >= int(region2[3]) and int(region1[4]) <= int(region2[4])) or
                 (int(region1[3]) <= int(region2[3]) and int(region1[4]) >= int(region2[4]))):
                 if (region1[9] < 1.5 and region2[9] < 1.5) or (region1[9] > 2.5 and region2[9] > 2.5):
-                    if not (region2[1] == Both_regions[-1][1] and region2[2] == Both_regions[-1][2] and
-                            region2[3] == Both_regions[-1][3] and region2[4] == Both_regions[-1][4]) :
+                    if len(Both_regions) > 0 :
+                        if not (region2[1] == Both_regions[-1][1] and region2[2] == Both_regions[-1][2] and
+                                region2[3] == Both_regions[-1][3] and region2[4] == Both_regions[-1][4]) :
                             Both_regions.append(region2 + [region1[9]])
+                    else :
+                        Both_regions.append(region2 + [region1[9]])
                     found = True
     if found :
         Both_regions.append(region1)
@@ -166,7 +169,7 @@ for region in Both_regions:
                 found_gene = True
                 clinical_gene = gene
         '''change this'''
-        if (region[9] < 1.5 and (region[2] == "chr1" or region[2] == "chr19") :
+        if (region[9] < 1.5 and (region[2] == "chr1" or region[2] == "chr19")) :
             clinical_gene = "IDH1"
         if (found_gene and region[9] > 2.5) or (region[9] < 1.5 and region[2] == "chr1") :
             cnv_relevant_clinical.write(method + "\t" + region[1] + "\t" + clinical_gene + "\t" + region[2] + "\t" + region[3] + "\t" +
