@@ -13,10 +13,9 @@ pipeline {
     }
     stage('Build - dependent software container') {
         when {
-            expression { isPullRequest == false }
             anyOf {
-                   branch 'master'
-                   branch 'develop'
+                   expression { isPullRequest == false && env.BRANCH_NAME == 'master' }
+                   expression { isPullRequest == false && env.BRANCH_NAME == 'develop' }
             }
         }
         environment {
@@ -28,7 +27,7 @@ pipeline {
         }
         steps{
             sh '''
-                for versionFilePath in $( git  --no-pager diff --name-only -r ${GIT_PREVIOUS_COMMIT} ${GIT_COMMIT} | grep VERSION);
+                for versionFilePath in $( git --no-pager diff --name-only @~..@ | grep VERSION);
                 do
                     folder=${versionFilePath%"/VERSION"};
                     IMAGE_NAME=${folder##*/};
@@ -55,10 +54,9 @@ pipeline {
     }
     stage('Build - test container') {
         when {
-            expression { isPullRequest == false }
             anyOf {
-                    branch 'master'
-                    branch 'develop'
+                   expression { isPullRequest == false && env.BRANCH_NAME == 'master' }
+                   expression { isPullRequest == false &&  env.BRANCH_NAME == 'develop' }
             }
         }
         environment {
@@ -68,7 +66,7 @@ pipeline {
         }
         steps{
             sh '''
-                if [ $( git  --no-pager diff --name-only -r ${GIT_PREVIOUS_COMMIT} ${GIT_COMMIT} | grep "test_env.dockerfile") ]; then
+                if [ $( git --no-pager diff --name-only @~..@ | grep "test_env.dockerfile") ]; then
                     tmpName1="image1-$RANDOM";
                     docker build . --file tests/dockerfiles/test_env.dockerfile --tag $tmpName1 --no-cache;
                     VERSION=${BRANCH_NAME};
@@ -78,7 +76,7 @@ pipeline {
                     docker tag $tmpName1 $IMAGE_ID1:$VERSION;
                     docker push $IMAGE_ID1:$VERSION;
                 fi
-                if [ $( git  --no-pager diff --name-only -r ${GIT_PREVIOUS_COMMIT} ${GIT_COMMIT} | grep "test_env.dockerfile") ]; then
+                if [ $( git --no-pager diff --name-only @~..@ | grep "test_env.dockerfile") ]; then
                     tmpName2="image2-$RANDOM";
                     docker build . --file tests/dockerfiles/test_env_full.dockerfile --tag $tmpName2  --no-cache;
                     VERSION=${BRANCH_NAME};
@@ -118,9 +116,8 @@ pipeline {
      stage('Small dataset 1') {
      when {
          anyOf {
-                branch 'master'
-                branch 'develop'
-                expression { isPullRequest == true }
+                expression { env.BRANCH_NAME == 'master' || isPullRequest == true }
+                expression { env.BRANCH_NAME == 'develop' || isPullRequest == true }
             }
         }
         agent {
@@ -139,10 +136,9 @@ pipeline {
     }
     stage('Small dataset 2') {
        when {
-           expression { isPullRequest == false }
            anyOf {
-                   branch 'master'
-                   branch 'develop'
+                   expression { env.BRANCH_NAME == 'master' && isPullRequest == false }
+                   expression { env.BRANCH_NAME == 'develop' && isPullRequest == false }
            }
        }
        agent {
