@@ -68,33 +68,33 @@ pipeline {
         }
         steps{
             sh '''
-                tmpName1="image1-$RANDOM";
-                docker build . --file tests/dockerfiles/test_env.dockerfile --tag $tmpName1 --no-cache;
-                VERSION=${BRANCH_NAME};
-                IMAGE_NAME1="test_env_somatic"
-                echo "${CGU_CREDS_PSW}" | docker login ${CGU_REGISTRY_URL} -u ${CGU_CREDS_USR} --password-stdin;
-                IMAGE_ID1="docker-registry.cgu10.igp.uu.se/gmsuppsala/$IMAGE_NAME1";
-                docker tag $tmpName1 $IMAGE_ID1:$VERSION;
-                docker push $IMAGE_ID1:$VERSION;
-                tmpName2="image2-$RANDOM";
-                docker build . --file tests/dockerfiles/test_env_full.dockerfile --tag $tmpName2  --no-cache;
-                VERSION=${BRANCH_NAME};
-                IMAGE_NAME2="test_env_somatic_full"
-                echo "${CGU_CREDS_PSW}" | docker login ${CGU_REGISTRY_URL} -u ${CGU_CREDS_USR} --password-stdin;
-                IMAGE_ID2="docker-registry.cgu10.igp.uu.se/gmsuppsala/$IMAGE_NAME2";
-                docker tag $tmpName2 $IMAGE_ID2:$VERSION;
-                docker push $IMAGE_ID2:$VERSION;
-                docker logout;
+                if [ $( git  --no-pager diff --name-only -r ${GIT_PREVIOUS_COMMIT} ${GIT_COMMIT} | grep "test_env.dockerfile") ]; then
+                    tmpName1="image1-$RANDOM";
+                    docker build . --file tests/dockerfiles/test_env.dockerfile --tag $tmpName1 --no-cache;
+                    VERSION=${BRANCH_NAME};
+                    IMAGE_NAME1="test_env_somatic"
+                    echo "${CGU_CREDS_PSW}" | docker login ${CGU_REGISTRY_URL} -u ${CGU_CREDS_USR} --password-stdin;
+                    IMAGE_ID1="docker-registry.cgu10.igp.uu.se/gmsuppsala/$IMAGE_NAME1";
+                    docker tag $tmpName1 $IMAGE_ID1:$VERSION;
+                    docker push $IMAGE_ID1:$VERSION;
+                fi
+                if [ $( git  --no-pager diff --name-only -r ${GIT_PREVIOUS_COMMIT} ${GIT_COMMIT} | grep "test_env.dockerfile") ]; then
+                    tmpName2="image2-$RANDOM";
+                    docker build . --file tests/dockerfiles/test_env_full.dockerfile --tag $tmpName2  --no-cache;
+                    VERSION=${BRANCH_NAME};
+                    IMAGE_NAME2="test_env_somatic_full"
+                    echo "${CGU_CREDS_PSW}" | docker login ${CGU_REGISTRY_URL} -u ${CGU_CREDS_USR} --password-stdin;
+                    IMAGE_ID2="docker-registry.cgu10.igp.uu.se/gmsuppsala/$IMAGE_NAME2";
+                    docker tag $tmpName2 $IMAGE_ID2:$VERSION;
+                    docker push $IMAGE_ID2:$VERSION;
+                    docker logout;
+                fi
                '''
         }
     }
     stage('Dry run tests') {
         when {
             expression { isPullRequest == true }
-            anyOf {
-                    branch 'master'
-                    branch 'develop'
-            }
         }
         agent {
             dockerfile {
