@@ -217,6 +217,8 @@ def aggregate_input_gene(wildcards, bedfile):
             lline = line.strip().split("\t")
             sample = lline[1]
             gene = lline[2]
+            if gene == "1p19q?" :
+                continue
             call_type = lline[0]
             if call_type == "GATK_CNV":
                 continue

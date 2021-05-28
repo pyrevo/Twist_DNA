@@ -170,7 +170,7 @@ for region in Both_regions:
                 clinical_gene = gene
         '''change this'''
         if (region[9] < 1.5 and (region[2] == "chr1" or region[2] == "chr19")) :
-            clinical_gene = "IDH1"
+            clinical_gene = "1p19q?"
             cnv_relevant_clinical.write(method + "\t" + region[1] + "\t" + clinical_gene + "\t" + region[2] + "\t" + region[3] + "\t" +
                                region[4] + "\t" + str(region[9]) + "\t" + str(region[11]) + "\t" + str(region[6]) + "\t" + str(region[8]) + "\t" +
                                str(nr_exons) + "\t" + nr_obs_cov + "\t" + nr_obs_baf + "\t" + str(region[7]) + "\n")
