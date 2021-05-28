@@ -14,8 +14,8 @@ pipeline {
     stage('Build - dependent software container') {
         when {
             anyOf {
-                   expression { isPullRequest == false && branch 'master' }
-                   expression { isPullRequest == false &&  branch 'develop' }
+                   expression { isPullRequest == false && env.BRANCH_NAME == 'master' }
+                   expression { isPullRequest == false && env.BRANCH_NAME == 'develop' }
             }
         }
         environment {
@@ -55,8 +55,8 @@ pipeline {
     stage('Build - test container') {
         when {
             anyOf {
-                   expression { isPullRequest == false && branch 'master' }
-                   expression { isPullRequest == false &&  branch 'develop' }
+                   expression { isPullRequest == false && env.BRANCH_NAME == 'master' }
+                   expression { isPullRequest == false &&  env.BRANCH_NAME == 'develop' }
             }
         }
         environment {
@@ -116,8 +116,8 @@ pipeline {
      stage('Small dataset 1') {
      when {
          anyOf {
-                expression { branch 'master' || isPullRequest == true }
-                expression { branch 'develop' || isPullRequest == true }
+                expression { env.BRANCH_NAME == 'master' || isPullRequest == true }
+                expression { env.BRANCH_NAME == 'develop' || isPullRequest == true }
             }
         }
         agent {
@@ -137,8 +137,8 @@ pipeline {
     stage('Small dataset 2') {
        when {
            anyOf {
-                   expression { branch 'master' && isPullRequest == false }
-                   expression { branch 'develop' && isPullRequest == false }
+                   expression { env.BRANCH_NAME == 'master' && isPullRequest == false }
+                   expression { env.BRANCH_NAME == 'develop' && isPullRequest == false }
            }
        }
        agent {
