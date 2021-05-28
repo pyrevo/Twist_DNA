@@ -90,8 +90,8 @@ pipeline {
     }
     stage('Dry run tests') {
         when {
+            expression { isPullRequest == true }
             anyOf {
-                    expression { isPullRequest == true }
                     branch 'master'
                     branch 'develop'
             }
