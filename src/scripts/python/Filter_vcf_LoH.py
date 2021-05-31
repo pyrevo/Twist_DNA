@@ -14,11 +14,11 @@ with gzip.open(in_vcf, 'rt') as f:
                 header = False
             continue
         lline = line.strip().split("\t")
-        if len(lline) == 1 :
+        if len(lline) == 1:
             continue
         ref = lline[3]
         alt = lline[4]
-        if len(ref) > 1 or len(alt) > 1 :
+        if len(ref) > 1 or len(alt) > 1:
             continue
         filter = lline[6]
         INFO = lline[7]
@@ -59,7 +59,7 @@ with gzip.open(in_vcf, 'rt') as f:
         AD = DATA[AD_index].split(",")
         if len(AD) == 2:
             VD = int(AD[1])
-        elif AD_index != 0 :
+        elif AD_index != 0:
             VD = int(AD[0])
         else:
             VD = int(DATA[VD_index])
