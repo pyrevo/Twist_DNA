@@ -6,7 +6,7 @@ rule Create_targets:
         bed="CNV/bed/cnvkit_manifest.target.bed",
     log:
         "logs/CNV_cnvkit/Create_targets.log",
-    singularity:
+    container:
         config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
     shell:
         "(cnvkit.py target --split {input.bed} -o {output.bed}) &> {log}"
@@ -19,7 +19,7 @@ rule Create_anti_targets:
         bed="CNV/bed/cnvkit_manifest.antitarget.bed",
     log:
         "logs/CNV_cnvkit/Create_anti_targets.log",
-    singularity:
+    container:
         config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
     shell:
         "(cnvkit.py antitarget {input.bed} -o {output.bed}) &> {log}"
@@ -38,16 +38,27 @@ rule Call_cnv:
     log:
         "logs/CNV_cnvkit/Call_cnv.log",
     threads: 8
-    singularity:
+    container:
         config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
     shell:
         "(cnvkit.py batch {input.bams} {params.extra} -r {input.PoN} -p {threads} -d {params.outdir}) &> {log}"
 
 
+rule Filter_vcf_for_LoH:
+    input:
+        vcf="recall/{sample}.ensemble.vep.vcf.gz",
+    output:
+        vcf="recall/{sample}.ensemble.vep.LoH.vcf",
+    container:
+        config["singularity"].get("python", config["singularity"].get("default", ""))
+    script:
+        "../../../scripts/python/Filter_vcf_LoH.py"
+
+
 rule Call_LoH:
     input:
         segment="CNV/cnvkit_calls/{sample}-ready.cns",
-        vcf="Results/DNA/{sample}/vcf/{sample}.ensemble.vep.exon.soft_filter.multibp.vcf",
+        vcf="recall/{sample}.ensemble.vep.LoH.vcf",
     output:
         segment="CNV/cnvkit_calls/{sample}-LoH.cns",
     params:
@@ -62,22 +73,25 @@ rule Call_LoH:
 
 checkpoint Filter_cnv:
     input:
-        cnvkit_segments=["CNV/cnvkit_calls/" + sample_id.Index + "-ready.cns" for sample_id in samples.itertuples()],
+        #cnvkit_segments=["CNV/cnvkit_calls/" + sample_id.Index + "-ready.cns" for sample_id in samples.itertuples()],
+        cnvkit_segments=["CNV/cnvkit_calls/" + sample_id.Index + "-LoH.cns" for sample_id in samples.itertuples()],
         GATK_CNV_segments=["CNV/CNV_GATK/" + sample_id.Index + "_clean.modelFinal.seg" for sample_id in samples.itertuples()],
         relevant_genes=config["cnvkit"]["relevant_genes"],
         bed_file="CNV/bed/cnvkit_manifest.target.bed",
     output:
         relevant_cnvs="Results/DNA/CNV/Reported_cnvs.txt",
+        relevant_cnvs_clinical="Results/DNA/CNV/Reported_cnvs_clinical.txt",
     params:
         purity=[sample.Index + ";" + str(sample.TC) for sample in samples.itertuples()],
         in_path="CNV/cnvkit_calls/",
         out_path="Results/DNA/CNV/",
     log:
         "logs/CNV_cnvkit/Filter_cnv.log",
-    singularity:
+    container:
         config["singularity"].get("python", config["singularity"].get("default", ""))
     script:
-        "../../../scripts/python/Filter_cnv.py"
+        #"../../../scripts/python/Filter_cnv.py"
+        "../../../scripts/python/Filter_cnv_Loh.py"
 
 
 rule create_cnv_kit_plots:
@@ -91,13 +105,13 @@ rule create_cnv_kit_plots:
     log:
         "logs/CNV_cnvkit/{sample}_scatter_cnv.log",
     threads: 8
-    singularity:
+    container:
         config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
     shell:
         "(cnvkit.py scatter {input.cnr} -s {input.cns} -o {output.png} {params.extra}) &> {log}"
 
 
-rule create_gene_plots:
+rule create_chrom_plots:
     input:
         cns="CNV/cnvkit_calls/{sample}-ready.cns",
         cnr="CNV/cnvkit_calls/{sample}-ready.cnr",
@@ -112,7 +126,7 @@ rule create_gene_plots:
     log:
         "logs/CNV_cnvkit/{sample}_{gene}_{chr}_scatter_cnv.gene.log",
     threads: 8
-    singularity:
+    container:
         config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
     shell:
         "(cnvkit.py scatter {input.cnr} -s {input.cns} -o {output.png} -c {params.chr} --title \"{params.title}\") &> {log}"
@@ -135,10 +149,11 @@ rule create_gene_region_plots:
     log:
         "logs/CNV_cnvkit/{sample}_{gene}_{chr}:{gene_region}_scatter_cnv.gene.region.log",
     threads: 8
-    singularity:
+    container:
         config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
     shell:
-        "(cnvkit.py scatter {input.cnr} -s {input.cns} -o {output.png} -c {params.chr} -g {params.gene} --title \"{params.title}\") &> {log}"
+        # "(cnvkit.py scatter {input.cnr} -s {input.cns} -o {output.png} -c {params.chr} -g {params.gene} --title \"{params.title}\") &> {log}"
+        "(cnvkit.py scatter {input.cnr} -s {input.cns} -o {output.png} -c {params.chr} --title \"{params.title}\") &> {log}"
 
 
 rule generate_cnv_plots:
@@ -183,7 +198,7 @@ def extract_gene_string(gene, gene_region, cnv_relevant, bedfile):
 def aggregate_input_gene(wildcards, bedfile):
     gene_list = []
     gene_region_list = []
-    with checkpoints.Filter_cnv.get().output[0].open() as cnv_relevant:
+    with checkpoints.Filter_cnv.get().output[1].open() as cnv_relevant:
         gene_regions = {}
         with open(bedfile) as cnv_bed_file:
             for line in cnv_bed_file:
@@ -202,6 +217,8 @@ def aggregate_input_gene(wildcards, bedfile):
             lline = line.strip().split("\t")
             sample = lline[1]
             gene = lline[2]
+            if gene == "1p19q?":
+                continue
             call_type = lline[0]
             if call_type == "GATK_CNV":
                 continue
