@@ -18,5 +18,4 @@ WORKDIR /singularity
 
 RUN singularity pull docker://gmsuppsala/somatic:develop
 RUN singularity pull docker://broadinstitute/gatk:4.1.9.0
-RUN singularity pull docker://rjmashl/msisensor2_mgi:0.1
 RUN singularity pull docker://ensemblorg/ensembl-vep:release_99.0
