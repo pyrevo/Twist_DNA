@@ -53,7 +53,7 @@ PoN:
     #ONCOCNV: "DATA/ONCOCNV_Twist_PoN.txt"
     #ONCOCNV2: "DATA/ONCOCNV_Twist_PoN.Processed.txt"
     GATK: "DATA/GATK_Twist_PoN.hdf5"
-    Msisensor_pro: "DATA/Msisensor_pro_reference.list_baseline"
+    msisensor_pro: "DATA/Msisensor_pro_reference.list_baseline"
 
 configfiles:
     multiqc: "Config/Pipeline/multiqc_config.yaml"
