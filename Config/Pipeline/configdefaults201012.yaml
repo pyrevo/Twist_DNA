@@ -48,12 +48,12 @@ reference: #change to hg38
        chrX: 155270560
        chrY: 59373566
 
-
 PoN:
     cnvkit: "DATA/cnvkit_Twist_PoN.cnn"
     #ONCOCNV: "DATA/ONCOCNV_Twist_PoN.txt"
     #ONCOCNV2: "DATA/ONCOCNV_Twist_PoN.Processed.txt"
     GATK: "DATA/GATK_Twist_PoN.hdf5"
+    msisensor-pro: "DATA/Msisensor_pro_reference.list_baseline"
 
 configfiles:
     multiqc: "Config/Pipeline/multiqc_config.yaml"
