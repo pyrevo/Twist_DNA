@@ -42,6 +42,7 @@ LABEL freebayes=1.3.2
 LABEL gatk4=4.1.9.0
 LABEL genefuse=0.6.1
 LABEL gridss=2.10.2
+LABEL msisensor-pro=1.1.a
 LABEL multiqc=1.9
 LABEL pandas=1.2.1
 LABEL parallel=20190522
