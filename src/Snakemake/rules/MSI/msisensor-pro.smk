@@ -12,7 +12,7 @@ rule msisensor_pro:
     log:
         "logs/MSI/msisensor-pro_{sample}.log",
     container:
-        config["singularity"]["msisensor-pro"]
+        config["singularity"].get("msisensor-pro", config["singularity"].get("default", ""))
     shell:
         "(msisensor-pro pro {params.extra} -d {input.PoN} -t {input.bam} -o {params.out_prefix}) > {log}"
 

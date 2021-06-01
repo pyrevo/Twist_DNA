@@ -9,7 +9,7 @@ rule msisensor_pro_scan:
     output:
         PoN_list="/projects/wp1/nobackup/ngs/utveckling/Twist_DNA_DATA/MSI_PoN_new/Msisensor_pro_reference.list",
     container:
-        config["singularity"]["msisensor-pro"]
+        config["singularity"].get("msisensor-pro", config["singularity"].get("default", ""))
     shell:
         "msisensor-pro scan -d {input.ref} -o {output.PoN_list}"
 
@@ -25,7 +25,7 @@ rule msisensor_pro_baseline:
         out_dir="/projects/wp1/nobackup/ngs/utveckling/Twist_DNA_DATA/MSI_PoN_new/",
         out_file="/projects/wp1/nobackup/ngs/utveckling/Twist_DNA_DATA/MSI_PoN_new/reference.list_baseline",
     container:
-        config["singularity"]["msisensor-pro"]
+        config["singularity"].get("msisensor-pro", config["singularity"].get("default", ""))
     shell:
         "msisensor-pro baseline {params.extra} -d {output.PoN_list} -i {input.Normal_bams} -o {params.out_dir} && "
         "mv {params.out_file} {output.PoN_list}"
