@@ -5,10 +5,10 @@ rule msisensor_pro:
         bai="Bam/DNA/{sample}-ready.bam.bai",
         PoN=config["PoN"]["msisensor-pro"],
     output:
-        msi_score="/MSI/{sample}",
+        msi_score="MSI/{sample}",
     params:
         extra="-c 50 -b 2",  # -c = minimal coverage
-        out_prefix="/MSI/{sample}",
+        out_prefix="MSI/{sample}",
     log:
         "logs/MSI/msisensor-pro_{sample}.log",
     container:
@@ -19,7 +19,7 @@ rule msisensor_pro:
 
 rule msisensor_pro_copy_results:
     input:
-        msi_score="/MSI/{sample}",
+        msi_score="MSI/{sample}",
     output:
         msi_score="Results/DNA/{sample}/MSI/{sample}",
     log:
