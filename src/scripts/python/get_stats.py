@@ -11,7 +11,7 @@ picardMet3 = snakemake.input.picardMet3
 # picardMet4 = snakemake.input.picardMet4
 picardMet5 = snakemake.input.picardMet5
 samtools = snakemake.input.samtools
-multiQCheader = snakemake.input.multiQCheader
+# multiQCheader = snakemake.input.multiQCheader
 # cartoolLog = sys.argv[7]
 sample = snakemake.wildcards.sample
 outFile = snakemake.output.sample
@@ -110,10 +110,10 @@ with open(batchFile, 'a') as file:
     writer.writerow(line)
 
 # Print multiQCheader
-with open(multiQCheader, 'r') as f:
-    with open(outFile, "w") as file:
-        for mqcline in f:
-            file.write(mqcline)
-        writer = csv.writer(file, delimiter=',', lineterminator='\n')
-        writer.writerow(header)
-        writer.writerow(line)
+# with open(multiQCheader, 'r') as f:
+with open(outFile, "w") as file:
+    # for mqcline in f:
+    #     file.write(mqcline)
+    writer = csv.writer(file, delimiter=',', lineterminator='\n')
+    writer.writerow(header)
+    writer.writerow(line)
