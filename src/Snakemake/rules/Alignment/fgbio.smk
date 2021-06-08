@@ -51,7 +51,7 @@ rule bwa_mem_fgbio:
     threads: 10
     benchmark:
         repeat(_bwa_mem_fgbio1_benchmark, config.get("benchmark", {}).get("repeats", 1))
-    singularity:
+    container:
         config["singularity"].get("bwa", config["singularity"].get("default", ""))
     wrapper:
         "0.70.0/bio/bwa/mem"
@@ -65,7 +65,7 @@ rule merge_bam_for_fgbio:
         ],
     output:
         temp("alignment/{sample}.merged.prep_fgbio.sort.bam"),
-    singularity:
+    container:
         config["singularity"].get("samtools", config["singularity"].get("default", ""))
     shell:
         """
@@ -159,7 +159,7 @@ rule bwa_mem_fgbio2:
         index=config["reference"]["ref"],
         extra=r"-C -c 250 -M -R '@RG\tID:{sample}\tSM:{sample}\tPL:illumina\tPU:{sample} -v 1'",
     threads: 10
-    singularity:
+    container:
         config["singularity"].get("bwa", config["singularity"].get("default", ""))
     shell:
         "(bwa mem -t {threads} {params.extra} {params.index} {input.reads} | samtools sort -@ {threads} -o {output} - ) &> {log}"

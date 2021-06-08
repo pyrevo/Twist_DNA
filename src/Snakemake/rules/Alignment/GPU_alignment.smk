@@ -11,7 +11,7 @@ rule GPU_align:
     log:
         "logs/GPU_align/{sample}.log",
     threads: 40
-    # singularity:
+    # container:
     #    config["singularitys"]["GPU"]
     shell:
         "(pbrun fq2bam "
@@ -29,7 +29,7 @@ rule samtools_index_GPU:
         "Bam/DNA/{sample}-ready.bam.bai",
     log:
         "logs/map/samtools_index/{sample}.log",
-    singularity:
+    container:
         config["singularity"]["samtools"]
     shell:
         "(samtools index {input} {output}) &> {log}"

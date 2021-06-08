@@ -52,7 +52,7 @@ rule bam_split:
         bai=_bam_split_input + ".bai",
     output:
         bam=temp(_bam_split_output),
-    singularity:
+    container:
         config["singularity"].get("samtools", config["singularity"].get("default", ""))
     log:
         "logs/bam/split_bam_{sample}.{chr}.log",

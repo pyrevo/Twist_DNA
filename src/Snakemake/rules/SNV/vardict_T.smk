@@ -77,7 +77,7 @@ rule vardict:
         sample_name=lambda wildcards: wildcards.sample,
         af_th="0.01",
     threads: 5
-    singularity:
+    container:
         config["singularity"].get("vardict", config["singularity"].get("default", ""))
     wrapper:
         "0.72.0/bio/vardict"
@@ -92,7 +92,7 @@ rule filter_vardict:
         filter="-i 'QUAL >= 0'",
     log:
         "logs/variantCalling/vardict/{sample}.{chr}.filter.log",
-    singularity:
+    container:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     wrapper:
         "0.72.0/bio/bcftools/filter"
@@ -135,7 +135,7 @@ rule merge_vcf_vardict:
         temp("vardict/temp/{sample}.unsort.filtered.mod.vcf"),
     log:
         "logs/variantCalling/vardict/merge_vcf/{sample}.log",
-    singularity:
+    container:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     wrapper:
         "0.70.0/bio/bcftools/concat"
@@ -146,7 +146,7 @@ rule sortVardict:
         "vardict/temp/{sample}.unsort.filtered.mod.vcf",
     output:
         _vardict_output,
-    singularity:
+    container:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     log:
         "logs/variantCalling/vardict/{sample}.sort.log",

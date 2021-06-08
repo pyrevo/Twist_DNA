@@ -6,7 +6,7 @@ rule fixAF:
         temp("{method}/{sample}.{method}.okAF.vcf"),
     log:
         "logs/variantCalling/fixAF/{method}/{sample}.log",
-    singularity:
+    container:
         config["singularity"].get("python", config["singularity"].get("default", ""))
     script:
         "../../../scripts/python/fix_af.py"

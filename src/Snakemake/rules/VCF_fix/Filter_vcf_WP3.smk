@@ -6,7 +6,7 @@ rule Filter_SNP_vcf:
         vcf="haplotypecaller/{sample}.vep.filteredSNP.vcf.gz",
     log:
         "logs/variantCalling/FilterSNP/{sample}.log",
-    singularity:
+    container:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     shell:
         "bcftools filter -O v --soft-filter 'GATKCutoffSNP' "
@@ -24,7 +24,7 @@ rule Filter_INDEL_vcf:
         vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.vcf.gz",
     log:
         "logs/variantCalling/FilterINDEL/{sample}.log",
-    singularity:
+    container:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     shell:
         "bcftools filter -O v --soft-filter 'GATKCutoffIndel' "
@@ -42,7 +42,7 @@ rule FilterAF_vcf:
         vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.filteredAF.vcf",
     log:
         "logs/variantCalling/FilterAF/{sample}.log",
-    singularity:
+    container:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     shell:
         "bcftools filter -e 'AF<0.25' {input.vcf} -o {output.vcf}"
@@ -65,7 +65,7 @@ rule Filter_HLA:
         bed=config["bed"]["HLA"],
     output:
         vcf="haplotypecaller/{sample}.vep.filteredSNP.filteredINDEL.filteredAF.Cartagenia.noHLA.vcf",
-    singularity:
+    container:
         config["singularity"].get("bedtools", config["singularity"].get("default", ""))
     shell:
         "bedtools subtract -header -a {input.vcf} -b {input.bed} > {output.vcf}"

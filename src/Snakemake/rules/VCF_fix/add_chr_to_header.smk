@@ -25,7 +25,7 @@ rule add_header_to_vcf:
         "{vcf}.fixChr.vcf",
     output:
         temp("{vcf}.chrAdded.vcf"),
-    singularity:
+    container:
         config["singularity"].get("python", config["singularity"].get("default", ""))
     params:
         type="contig",

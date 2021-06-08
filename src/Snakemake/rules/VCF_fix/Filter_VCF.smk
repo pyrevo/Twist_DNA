@@ -4,7 +4,7 @@ rule compress_and_index:
     output:
         vcf="{path}/{vcf_file,[^/]+}.vcf.gz",
         tbi="{path}/{vcf_file,[^/]+}.vcf.gz.tbi",
-    singularity:
+    container:
         config["singularity"].get("default", "")
     shell:
         "bgzip {input.vcf} && tabix {output.vcf}"
@@ -16,7 +16,7 @@ rule intron_filter:
         bed=config["bed"]["bedfile"],
     output:
         vcf=temp("recall/{sample}.ensemble.vep.exon.vcf"),
-    singularity:
+    container:
         config["singularity"].get("python_htslib", config["singularity"].get("default", ""))
     script:
         "../../../scripts/python/filter_introns.py"
@@ -29,7 +29,7 @@ rule Soft_filter:
         vcf="recall/{sample}.ensemble.vep.exon.soft_filter.vcf",
     params:
         filter="-e 'FORMAT/AD<20 || FORMAT/DP<50 || FORMAT/AF<0.05'",
-    singularity:
+    container:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     shell:
         "bcftools filter -O v -o {output.vcf} --soft-filter 'Soft_filter' {params.filter} -m '+' {input.vcf}"
@@ -44,7 +44,7 @@ rule ffpe_filter:
         vcf=temp("Results/DNA/{sample}/vcf/{sample}.ensemble.vep.exon.soft_filter.ffpe.temp.vcf"),
     params:
         java=config["java"]["SOBDetector"],
-    singularity:
+    container:
         config["singularity"].get("default", "")
     shell:
         #"module load oracle-jdk-1.8/1.8.0_162 && "

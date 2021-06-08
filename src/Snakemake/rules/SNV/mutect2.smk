@@ -102,7 +102,7 @@ rule mutect2:
     threads: 1
     log:
         "logs/variantCalling/mutect2_{sample}.{chr}.log",
-    singularity:
+    container:
         config["singularity"].get("mutect2", config["singularity"].get("default", ""))
     wrapper:
         "0.72.0/bio/gatk/mutect"
@@ -123,7 +123,7 @@ rule mutect2_gvcf:
     threads: 1
     log:
         "logs/variantCalling/mutect2_gvcf_{sample}.{chr}.log",
-    singularity:
+    container:
         config["singularity"].get("mutect2", config["singularity"].get("default", ""))
     wrapper:
         "0.72.0/bio/gatk/mutect"
@@ -142,7 +142,7 @@ rule filterMutect2:
         extra=config.get("mutect_vcf_filter", ""),
     log:
         "logs/variantCalling/mutect2/filter_{sample}.{chr}.log",
-    singularity:
+    container:
         config["singularity"].get("mutect2", config["singularity"].get("default", ""))
     shell:
         "(gatk --java-options '-Xmx4g' FilterMutectCalls {params.extra} -R {input.fasta} -V {input.vcf} -O {output.vcf}) &> {log}"
@@ -158,7 +158,7 @@ rule Merge_vcf:
         temp("mutect2/temp/{sample}.mutect2.SB.vcf"),
     log:
         "logs/variantCalling/mutect2/merge_vcf/{sample}.log",
-    singularity:
+    container:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     wrapper:
         "0.70.0/bio/bcftools/concat"
@@ -176,7 +176,7 @@ rule Merge_gvcf:
         "-O z ",
     log:
         "logs/variantCalling/mutect2/merge_gvcf/{sample}.log",
-    singularity:
+    container:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     wrapper:
         "0.70.0/bio/bcftools/concat"
@@ -201,7 +201,7 @@ rule mutect2HardFilter:
         _mutect_output_vcf,
     log:
         "logs/variantCalling/mutect2/{sample}.hardFilt.log",
-    singularity:
+    container:
         config["singularity"].get("python", config["singularity"].get("default", ""))
     script:
         "../../../scripts/python/hardFilter_PASS_mutect2.py"
@@ -217,7 +217,7 @@ rule merge_mutect_bam:
         _mutect_output_bam,
     log:
         "logs/variantCalling/merge_bam/{sample}.log",
-    singularity:
+    container:
         config["singularity"].get("samtools", config["singularity"].get("default", ""))
     wrapper:
         "0.70.0/bio/samtools/merge"

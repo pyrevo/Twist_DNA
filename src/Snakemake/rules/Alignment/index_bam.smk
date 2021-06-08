@@ -55,7 +55,7 @@ rule samtools_index:
         _index_bam_input,
     output:
         _index_bam_output,
-    singularity:
+    container:
         config["singularity"].get("samtools", config["singularity"].get("default", ""))
     wrapper:
         "0.70.0/bio/samtools/index"

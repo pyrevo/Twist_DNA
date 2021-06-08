@@ -67,7 +67,7 @@ rule bam_merge:
         ],
     output:
         _bam_merge_output,
-    singularity:
+    container:
         config["singularity"].get("samtools", config["singularity"].get("default", ""))
     shell:
         "samtools merge -c -p {output} {input}"

@@ -57,7 +57,7 @@ rule Haplotypecaller:
         extra="--interval-set-rule INTERSECTION --native-pair-hmm-threads 1 -ploidy 2",
     log:
         "logs/variantCalling/Haplotypecaller/call/{sample}.{chrom}.log",
-    singularity:
+    container:
         config["singularity"].get("gatk4", config["singularity"].get("default", ""))
     shell:
         "(gatk --java-options '-Xmx6g' HaplotypeCaller -R {params.reference} {params.annotation} -I {input.bam} "
@@ -71,7 +71,7 @@ rule Merge_Haplotypecaller_vcf:
         vcf="haplotypecaller/{sample}.vcf.gz",
     log:
         "logs/variantCalling/Haplotypecaller/merge_vcf/{sample}.log",
-    singularity:
+    container:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     shell:
         "(bcftools concat -o {output} -O z {input}) &> {log}"
