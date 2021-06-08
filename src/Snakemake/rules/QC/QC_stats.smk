@@ -21,7 +21,7 @@ rule getStatsforMqc:
         picardMet5="qc/{sample}/{sample}.duplication_metrics.txt",
         samtools="qc/{sample}/{sample}.samtools-stats.txt",
         #multiQCheader = config["programdir"]["dir"]+"src/qc/multiqc-header.txt",
-        multiQCheader="DATA/multiqc-header.txt",
+        #multiQCheader="DATA/multiqc-header.txt",
         #cartool = "qc/{sample}/{sample}_Log.csv",
         batch="qc/batchQC_stats_unsorted.csv",
     output:
