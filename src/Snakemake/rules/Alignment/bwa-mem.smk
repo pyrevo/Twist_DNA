@@ -110,7 +110,7 @@ rule bwa_mem:
     threads: 10
     benchmark:
         repeat(_bwa_benchmark, config.get("benchmark", {}).get("repeats", 1))
-    singularity:
+    container:
         config["singularity"].get("bwa", config["singularity"].get("default", ""))
     wrapper:
         "0.70.0/bio/bwa/mem"
@@ -121,7 +121,7 @@ rule finilize_alignment_process:
         lambda wildcards: get_bam_files(wildcards),
     output:
         _bwa_mem_output,
-    singularity:
+    container:
         config["singularity"].get("samtools", config["singularity"].get("default", ""))
     params:
         num_units=lambda wildcards: utils.get_num_units(units, wildcards.sample),

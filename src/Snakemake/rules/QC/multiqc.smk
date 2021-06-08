@@ -26,7 +26,7 @@ rule multiqcBatch:
         "-c " + config["configfiles"]["multiqc"] + " --ignore *_stats_mqc.csv",
     log:
         "logs/report/multiqc.log",
-    singularity:
+    container:
         config["singularity"].get("multiqc", config["singularity"].get("default", ""))
     wrapper:
         "0.72.0/bio/multiqc"

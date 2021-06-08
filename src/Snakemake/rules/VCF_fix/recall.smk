@@ -23,7 +23,7 @@ rule recall:
         order=sort_order,
     log:
         "logs/variantCalling/recall/{sample}.log",
-    singularity:
+    container:
         config["singularity"].get("ensemble", config["singularity"].get("default", ""))
     shell:
         "(bcbio-variation-recall ensemble -n {params.support} --names {params.order} {output.vcf} {input.ref} {input.vcfs}) &> {log}"
@@ -37,7 +37,7 @@ rule sort_recall:
         tbi="recall/{sample}.all.vcf.gz.tbi",
     log:
         "logs/variantCalling/recall/{sample}.sort.log",
-    singularity:
+    container:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     shell:
         "(bcftools sort -o {output.vcf} -O z {input} && tabix {output.vcf} ) &> {log}"
@@ -50,7 +50,7 @@ rule filter_recall:
         "recall/{sample}.ensemble.vcf.gz",
     log:
         "logs/variantCalling/recall/{sample}.filter_recall.log",
-    singularity:
+    container:
         config["singularity"].get("python", config["singularity"].get("default", ""))
     script:
         "../../../scripts/python/filter_recall.py"
@@ -63,7 +63,7 @@ rule index_filterRecall:
         tbi="recall/{sample}.ensemble.vcf.gz.tbi",
     log:
         "logs/variantCalling/recall/{sample}.index_recallFilter.log",
-    singularity:
+    container:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     shell:
         "(tabix {input}) &> {log}"
@@ -90,7 +90,7 @@ rule index_filterRecall:
 #         tbi = "variantCalls/recall/{sample}_{seqID}.multiPASS.sort.vcf.gz.tbi" #temp
 #     log:
 #         "logs/recall/{sample}_{seqID}.multiPASS.sort.log"
-#     singularity:
+#     container:
 #         config["singularitys"]["bcftools"]
 #     shell:
 #         "(bcftools sort -o {output.vcf} -O z {input} && tabix {output.vcf}) &> {log}"
@@ -105,7 +105,7 @@ rule index_filterRecall:
 #         "--allow-overlaps -d all -O z"
 #     log:
 #         "logs/recall/{sample}_{seqID}.concat.log"
-#     singularity:
+#     container:
 #         config["singularitys"]["bcftools"]
 #     shell:
 #         "(bcftools concat {params} -o {output} {input.vcf} {input.multi}) &> {log}"

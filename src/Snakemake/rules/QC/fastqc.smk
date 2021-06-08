@@ -12,7 +12,7 @@
 #     log:
 #         "logs/qc/fastqc/{sample}Aligned.sortedByCoord.log"
 #     threads: 10
-#     singularity:
+#     container:
 #         config["singularity"]["fastqc"]
 #     shell:
 #         "(fastqc --quiet -t {threads} --outdir {params.outdir} {input}) &> {log}"

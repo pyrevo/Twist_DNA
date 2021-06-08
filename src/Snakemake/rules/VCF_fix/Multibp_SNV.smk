@@ -5,7 +5,7 @@ rule Find_multibp_SNV:
         ref=config["reference"]["ref"],
     output:
         vcf=temp("recall/{sample}.ensemble.vep.exon.soft_filter.multibp.vcf.temp"),
-    singularity:
+    container:
         config["singularity"].get("python_samtools", config["singularity"].get("default", ""))
     script:
         "../../../scripts/python/Multibp_SNV.py"
@@ -29,7 +29,7 @@ rule sort_multiplebp_vcf:
         vcf=_sort_input,
     output:
         vcf=_sort_output,
-    singularity:
+    container:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     wrapper:
         "0.72.0/bio/bcftools/sort"

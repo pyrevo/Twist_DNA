@@ -7,7 +7,7 @@ rule decompose:  #Do we need decompose as well, maybe for all but vardict??
         temp("{method}/{sample}.{method}.decomposed.vcf.gz"),
     log:
         "logs/variantCalling/vt/{sample}.{method}.decomposed.log",
-    singularity:
+    container:
         config["singularity"].get("vt", config["singularity"].get("default", ""))
     shell:
         "(vt decompose -s {input.vcf} | vt decompose_blocksub -o {output} -) &> {log}"
@@ -21,7 +21,7 @@ rule normalizeAll:
         "{method}/{sample}.{method}.normalized.vcf.gz",
     log:
         "logs/variantCalling/vt/{sample}.{method}.normalized.log",
-    singularity:
+    container:
         config["singularity"].get("vt", config["singularity"].get("default", ""))
     shell:
         "(vt normalize -n -r {input.ref} -o {output} {input.vcf} ) &> {log}"
@@ -34,7 +34,7 @@ rule indexNormalize:
         tbi="{method}/{sample}.{method}.normalized.vcf.gz.tbi",
     log:
         "logs/variantCalling/vt/{sample}.{method}.index.log",
-    singularity:
+    container:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     shell:
         "(tabix {input.vcf}) 2> {log}"

@@ -68,7 +68,7 @@ rule freebayes:
     threads: 1
     params:
         extra=" --min-alternate-fraction 0.01 --allele-balance-priors-off --pooled-discrete --pooled-continuous --report-genotype-likelihood-max --genotype-qualities --strict-vcf --no-partial-observations ",
-    singularity:
+    container:
         config["singularity"].get("freebayes", config["singularity"].get("default", ""))
     wrapper:
         "0.70.0/bio/freebayes"
@@ -83,7 +83,7 @@ rule filter_freebayes:
         filter="-i 'ALT=\"<*>\" || QUAL > 5'",
     log:
         "logs/variantCalling/freebayes/{sample}.{chr}.filter.log",
-    singularity:
+    container:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     wrapper:
         "0.72.0/bio/bcftools/filter"
@@ -110,7 +110,7 @@ rule Merge_freebayes_vcf:
         temp("freebayes/temp/{sample}.merged.SB.vcf"),
     log:
         "logs/variantCalling/mutect2/merge_vcf/{sample}.log",
-    singularity:
+    container:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     wrapper:
         "0.70.0/bio/bcftools/concat"
@@ -121,7 +121,7 @@ rule sortFreebayes:
         "freebayes/temp/{sample}.merged.SB.vcf",
     output:
         _freebayes_output,
-    singularity:
+    container:
         config["singularity"].get("bcftools", config["singularity"].get("default", ""))
     log:
         "logs/variantCalling/freebayes/{sample}.sort.log",

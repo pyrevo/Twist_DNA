@@ -11,7 +11,7 @@ rule vep:
         "--check_existing --pick --sift b --polyphen b --ccds --uniprot --hgvs --symbol --numbers --domains --regulatory --canonical --protein --biotype --uniprot --tsl --appris --gene_phenotype --af --af_1kg --af_gnomad --max_af --pubmed --variant_class ",
     log:
         "logs/variantCalling/vep/{sample}.log",
-    singularity:
+    container:
         config["singularity"]["vep"]
     threads: 10
     shell:

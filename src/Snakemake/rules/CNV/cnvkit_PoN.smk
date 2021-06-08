@@ -15,7 +15,7 @@ rule Create_targets:
         bed="CNV/bed/cnvkit_manifest.target.bed",
     log:
         "logs/CNV_cnvkit/Create_targets.log",
-    singularity:
+    container:
         config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
     shell:
         "(cnvkit.py target --split {input.bed} -o {output.bed}) &> {log}"
@@ -28,7 +28,7 @@ rule Create_anti_targets:
         bed="CNV/bed/cnvkit_manifest.antitarget.bed",
     log:
         "logs/CNV_cnvkit/Create_anti_targets.log",
-    singularity:
+    container:
         config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
     shell:
         "(cnvkit.py antitarget {input.bed} -o {output.bed}) &> {log}"
@@ -46,7 +46,7 @@ rule Build_normal_reference:
     params:
         extra=config.get("cnvkit", {}).get("extra", ""),
     threads: 4
-    singularity:
+    container:
         config["singularity"].get("cnvkit", config["singularity"].get("default", ""))
     shell:
         "cnvkit.py batch "

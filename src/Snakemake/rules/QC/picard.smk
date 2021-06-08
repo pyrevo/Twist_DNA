@@ -49,7 +49,7 @@ rule picardInsertSize:
         pdf=_picardInsertSize_output_pdf,
     log:
         "logs/qc/picard/InsertSize/{sample}.log",
-    singularity:
+    container:
         config["singularity"].get("picard", config["singularity"].get("default", ""))
     wrapper:
         "0.72.0/bio/picard/collectinsertsizemetrics"
@@ -82,7 +82,7 @@ rule PicardAlignmentSummaryMetrics:
         metrics=_PicardAlignmentSummaryMetrics_output,
     log:
         "logs/qc/picard/AlignmentSummaryMetrics/{sample}.log",
-    singularity:
+    container:
         config["singularity"].get("picard", config["singularity"].get("default", ""))
     wrapper:
         "0.72.0/bio/picard/collectalignmentsummarymetrics"
@@ -98,7 +98,7 @@ rule PicardAlignmentSummaryMetrics:
 #         pdf="qc/{sample}/{sample}.gc_bias.metrics.pdf",
 #     log:
 #         "logs/qc/picard/GcBiasSummaryMetrics/{sample}.log",
-#     singularity:
+#     container:
 #         config["singularity"].get("picard", config["singularity"].get("default", ""))
 #     shell:
 #         "(java -Xmx4g -jar /opt/conda/share/picard-2.20.1-0/picard.jar CollectGcBiasMetrics I={input.bam} R={input.ref} O={output.gc} CHART={output.pdf} S={output.summary}) &> {log}"

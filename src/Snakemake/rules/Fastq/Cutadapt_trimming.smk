@@ -89,7 +89,7 @@ rule cutadapt:
     log:
         _cutadapt_trimming_log,
     threads: 10
-    singularity:
+    container:
         config["singularity"].get("cutadapt", config["singularity"].get("default", ""))
     wrapper:
         "0.73.0/bio/cutadapt/pe"

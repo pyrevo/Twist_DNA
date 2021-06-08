@@ -98,7 +98,7 @@ rule fastp:
     threads: 5
     benchmark:
         repeat(_fastp_trimming_trimming_benchmark, config.get("benchmark", {}).get("repeats", 1))
-    singularity:
+    container:
         config["singularity"].get("fastp", config["singularity"].get("default", ""))
     wrapper:
         "v0.69.0/bio/fastp"

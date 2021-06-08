@@ -28,7 +28,7 @@ rule bedToIntervalList:
         interval_list,  #Should be based on bedfile...
     log:
         "logs/gatk/bedToIntervalList.log",
-    singularity:
+    container:
         config["singularity"]["gatk4"]
     shell:
         "(gatk BedToIntervalList  -I {input.bed} -O {output} -SD {input.refDict} ) &> {log} "
@@ -45,7 +45,7 @@ rule preprocessIntervals:
         extra=" ".join(config.get("gatk4", {}).get("preprocessIntervals", [])),
     log:
         "logs/Normals/GATK/preprocessIntervals.log",
-    singularity:
+    container:
         config["singularity"]["gatk4"]
     shell:
         "(gatk --java-options '-Xmx4g' PreprocessIntervals -L {input.intervalList} -R {input.ref} "
@@ -66,7 +66,7 @@ rule collectReadCounts:
         extra=" ".join(config.get("gatk4", {}).get("collectReadCounts", [])),
     log:
         "logs/Normals/GATK/{normal}.collectReadCounts.log",
-    singularity:
+    container:
         config["singularity"]["gatk4"]
     shell:
         "(gatk --java-options '-Xmx4g' CollectReadCounts -I {input.bam} -L {input.interval} "
@@ -83,7 +83,7 @@ rule createReadCountPanelOfNormals:
         input=lambda wildcards, input: " -I ".join(input),
     log:
         "logs/Normals/GATK/{design}.readCountPoN.log",
-    singularity:
+    container:
         config["singularity"]["gatk4"]
     shell:
         "(gatk --java-options '-Xmx4g' CreateReadCountPanelOfNormals -I {params.input} "

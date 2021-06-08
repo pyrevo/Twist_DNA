@@ -20,7 +20,7 @@ rule samtools_stats:
         extra="-t " + config["bed"]["bedfile"],
     log:
         "logs/qc/samtools_stats/{sample}.log",
-    singularity:
+    container:
         config["singularity"].get("samtools", config["singularity"].get("default", ""))
     wrapper:
         "0.72.0/bio/samtools/stats"
