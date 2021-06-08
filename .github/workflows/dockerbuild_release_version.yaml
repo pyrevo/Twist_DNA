@@ -28,7 +28,7 @@ jobs:
         run: echo "${{ secrets.HUB_PASSWORD }}" | docker login ${{ secrets.DOCKER_REGISTRY_URL }} -u ${{ secrets.DOCKERHUB_USER }} --password-stdin
 
       - name: Build and push the images
-        if: "!contains(github.event.message, 'RELEASE DOCKER SOMATIC VERSION:')"
+        if: !contains(github.event.message, 'RELEASE DOCKER SOMATIC VERSION:')
             run: |
               folder=dockerfiles/somatic/VERSION"
               IMAGE_NAME=${folder##*/}
