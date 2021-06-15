@@ -33,7 +33,7 @@ rule JuLI_annotate:
     input:
         fusions="Results/DNA/{sample}/JuLI/{sample}.txt",
     output:
-        fusions="Results/DNA/{sample}/JuLI/{sample}.annotation.txt",
+        fusions="Results/DNA/{sample}/JuLI/{sample}.annotated.txt",
     params:
         ref=config["reference"]["ref"],
         Refgene="/opt/references/refGene_hg19.txt",
