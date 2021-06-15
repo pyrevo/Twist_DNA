@@ -81,9 +81,10 @@ java:
 
 singularity:
     default: "docker://gmsuppsala/somatic:develop"
-    execute: "singularity exec -B /data -B /projects -B /scratch -B /data_twist_dna_cutadapt "
+    execute: "singularity exec -e -B /data -B /projects -B /scratch -B /data_twist_dna_cutadapt "
     gatk4_cnv: "docker://broadinstitute/gatk:4.1.9.0"
     vep: "docker://ensemblorg/ensembl-vep:release_99.0"
+    JuLI: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/JuLI.0.1.6.1.simg"
 
 cartool:
     cov: "100 200 1000"
