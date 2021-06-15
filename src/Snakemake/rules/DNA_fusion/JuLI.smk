@@ -10,7 +10,7 @@ rule JuLI_call:
         ref=config["reference"]["ref"],
         Refgene="/opt/references/refGene_hg19.txt",
         Gap="/opt/references/gap_hg19.txt",
-        OutputPath="Results/DNA/{sample}/JuLI/{sample}",
+        OutputPath="Results/DNA/{sample}/JuLI",
     threads: 10
     log:
         "logs/DNA_fusion/JuLI/{sample}.log",
@@ -21,7 +21,7 @@ rule JuLI_call:
         "library(juliv0.1.6.1); "
         "callfusion(CaseBam=\"{input.bam}\", "
         "TestID=\"{sample}\", "
-        "OutputPath=\"{sample}\", "
+        "OutputPath=\"{params.OutputPath}\", "
         "Thread=\"{threads}\", "
         "Refgene=\"{params.Refgene}\", "
         "Gap=\"{params.Gap}\", "
