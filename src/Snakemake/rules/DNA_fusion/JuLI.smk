@@ -18,20 +18,20 @@ rule JuLI_call:
         config["singularity"].get("JuLI", config["singularity"].get("default", ""))
     shell:
         "Rscript -e '"
-        "callfusion(CaseBam='{input.bam}', "
+        "callfusion(CaseBam=\"{input.bam}\", "
         "TestID='{sample}', "
         "OutputPath='{sample}', "
         "Thread={threads}, "
-        "Refgene='{params.Refgene}', "
-        "Gap='{params.Gap}', "
-        "Reference='{params.ref}')'"
+        "Refgene=\"{params.Refgene}\", "
+        "Gap=\"{params.Gap}\", "
+        "Reference=\"{params.ref}\")'"
 
 
 rule JuLI_annotate:
     input:
         fusions="Results/DNA/{sample}/JuLI/{sample}.txt",
     output:
-        fusions="Results/DNA/{sample}/JuLI/{sample}.annotated.txt",
+        fusions="Results/DNA/{sample}/JuLI/{sample}.annotation.txt",
     params:
         ref=config["reference"]["ref"],
         Refgene="/opt/references/refGene_hg19.txt",
@@ -44,8 +44,8 @@ rule JuLI_annotate:
         config["singularity"].get("JuLI", config["singularity"].get("default", ""))
     shell:
         "Rscript -e '"
-        "annofusion(Output='{input.fusion}',
-        "Refgene='{params.Refgene}', "
-        "Cosmic='{params.Cosmic}', "
-        "Pfam='{params.Pfam}', "
-        "Uniprot='{params.Uniprot}')"
+        "annofusion(Output=\"{input.fusions}\", "
+        "Refgene=\"{params.Refgene}\", "
+        "Cosmic=\"{params.Cosmic}\", "
+        "Pfam=\"{params.Pfam}\", "
+        "Uniprot=\"{params.Uniprot}\")"
