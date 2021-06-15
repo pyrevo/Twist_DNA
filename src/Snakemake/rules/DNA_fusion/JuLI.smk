@@ -11,16 +11,17 @@ rule JuLI_call:
         Refgene="/opt/references/refGene_hg19.txt",
         Gap="/opt/references/gap_hg19.txt",
         OutputPath="Results/DNA/{sample}/JuLI",
+        sample_name=lambda wildcards: wildcards.sample,
     threads: 10
     log:
-        "logs/DNA_fusion/JuLI/{sample}.log",
+        "logs/DNA_fusion_call/JuLI/{sample}.log",
     container:
         config["singularity"].get("JuLI", config["singularity"].get("default", ""))
     shell:
         "(Rscript -e '"
         "library(juliv0.1.6.1); "
         "callfusion(CaseBam=\"{input.bam}\", "
-        "TestID=\"{sample}\", "
+        "TestID=\"{params.sample_name}\", "
         "OutputPath=\"{params.OutputPath}\", "
         "Thread=\"{threads}\", "
         "Refgene=\"{params.Refgene}\", "
@@ -40,7 +41,7 @@ rule JuLI_annotate:
         Pfam="/opt/references/Pfam-A.full.human",
         Uniprot="/opt/references/HGNC_GeneName_UniProtID_160524.txt",
     log:
-        "logs/DNA_fusion/JuLI/{sample}.log",
+        "logs/DNA_fusion_annotate/JuLI/{sample}.log",
     container:
         config["singularity"].get("JuLI", config["singularity"].get("default", ""))
     shell:
