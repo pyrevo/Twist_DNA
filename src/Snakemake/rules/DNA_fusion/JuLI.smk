@@ -18,10 +18,11 @@ rule JuLI_call:
         config["singularity"].get("JuLI", config["singularity"].get("default", ""))
     shell:
         "Rscript -e '"
+        "library(juliv0.1.6.1); "
         "callfusion(CaseBam=\"{input.bam}\", "
-        "TestID='{sample}', "
-        "OutputPath='{sample}', "
-        "Thread={threads}, "
+        "TestID=\"{sample}\", "
+        "OutputPath=\"{sample}\", "
+        "Thread=\"{threads}\", "
         "Refgene=\"{params.Refgene}\", "
         "Gap=\"{params.Gap}\", "
         "Reference=\"{params.ref}\")'"
@@ -44,6 +45,7 @@ rule JuLI_annotate:
         config["singularity"].get("JuLI", config["singularity"].get("default", ""))
     shell:
         "Rscript -e '"
+        "library(juliv0.1.6.1); "
         "annofusion(Output=\"{input.fusions}\", "
         "Refgene=\"{params.Refgene}\", "
         "Cosmic=\"{params.Cosmic}\", "
