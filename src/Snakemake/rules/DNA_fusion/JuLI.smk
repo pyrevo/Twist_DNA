@@ -65,4 +65,5 @@ rule JuLI_annotate:
         "Refgene=\"{params.Refgene}\", "
         "Cosmic=\"{params.Cosmic}\", "
         "Pfam=\"{params.Pfam}\", "
-        "Uniprot=\"{params.Uniprot}\")')  &> {log}"
+        "Uniprot=\"{params.Uniprot}\") && "
+        "touch {output.fusions}')  &> {log}"
