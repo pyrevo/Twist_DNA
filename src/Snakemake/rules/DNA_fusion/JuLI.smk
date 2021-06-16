@@ -5,16 +5,17 @@ rule JuLI_call:
         bam="Bam/DNA/{sample}-ready.bam",
         bai="Bam/DNA/{sample}-ready.bam.bai",
     output:
-        fusions="Results/DNA/{sample}/JuLI/{sample}.txt",
+        fusions="Results/DNA/{sample}/Fusions/JuLI/{sample}.txt",
     params:
         ref=config["reference"]["ref"],
         Refgene="/opt/references/refGene_hg19.txt",
         Gap="/opt/references/gap_hg19.txt",
         OutputPath="Results/DNA/{sample}/JuLI",
         sample_name=lambda wildcards: wildcards.sample,
+        MinMappingQuality='20'
     threads: 10
     log:
-        "logs/DNA_fusion_call/JuLI/{sample}.log",
+        "logs/DNA_fusion/JuLI_call/{sample}.log",
     container:
         config["singularity"].get("JuLI", config["singularity"].get("default", ""))
     shell:
@@ -23,6 +24,7 @@ rule JuLI_call:
         "callfusion(CaseBam=\"{input.bam}\", "
         "TestID=\"{params.sample_name}\", "
         "OutputPath=\"{params.OutputPath}\", "
+        "MinMappingQuality=\"{params.MinMappingQuality}\", "
         "Thread=\"{threads}\", "
         "Refgene=\"{params.Refgene}\", "
         "Gap=\"{params.Gap}\", "
@@ -31,9 +33,9 @@ rule JuLI_call:
 
 rule JuLI_annotate:
     input:
-        fusions="Results/DNA/{sample}/JuLI/{sample}.txt",
+        fusions="Results/DNA/{sample}/Fusions/JuLI/{sample}.txt",
     output:
-        fusions="Results/DNA/{sample}/JuLI/{sample}.annotated.txt",
+        fusions="Results/DNA/{sample}/Fusions/JuLI/{sample}.annotated.txt",
     params:
         ref=config["reference"]["ref"],
         Refgene="/opt/references/refGene_hg19.txt",
@@ -41,7 +43,7 @@ rule JuLI_annotate:
         Pfam="/opt/references/Pfam-A.full.human",
         Uniprot="/opt/references/HGNC_GeneName_UniProtID_160524.txt",
     log:
-        "logs/DNA_fusion_annotate/JuLI/{sample}.log",
+        "logs/DNA_fusion/JuLI_annotate/{sample}.log",
     container:
         config["singularity"].get("JuLI", config["singularity"].get("default", ""))
     shell:
@@ -52,3 +54,15 @@ rule JuLI_annotate:
         "Cosmic=\"{params.Cosmic}\", "
         "Pfam=\"{params.Pfam}\", "
         "Uniprot=\"{params.Uniprot}\")')  &> {log}"
+
+
+rule JuLI_filter_druggable:
+    input:
+        fusions="Results/DNA/{sample}/Fusions/JuLI/{sample}.annotated.txt",
+        genes="DATA/druggable.hg19.csv",
+    output:
+        fusions="Results/DNA/{sample}/Fusions/JuLI/{sample}.annotated.filtered.txt",
+    container:
+        config["singularity"].get("python", config["singularity"].get("default", ""))
+    script:
+        "../../../scripts/python/JuLI_filter.py"

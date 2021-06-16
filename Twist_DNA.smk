@@ -51,8 +51,8 @@ def get_input():
     input_list.append(["Results/DNA/" + s + "/MSI/" + s for s in sample_list])
 
     '''Fusion/SV'''
-    input_list.append(["Results/DNA/" + s + "/geneFuse/fusions_" + s + ".txt" for s in sample_list])
-    input_list.append(["Results/DNA/" + s + "/JuLI/" + s + ".annotated.txt" for s in sample_list])
+    input_list.append(["Results/DNA/" + s + "/Fusions/geneFuse/fusions_" + s + ".txt" for s in sample_list])
+    input_list.append(["Results/DNA/" + s + "/Fusions/JuLI/" + s + ".annotated.filtered.txt" for s in sample_list])
 
     '''TMB'''
     input_list.append(["Results/DNA/" + s + "/TMB/" + s + ".TMB.txt" for s in sample_list])
