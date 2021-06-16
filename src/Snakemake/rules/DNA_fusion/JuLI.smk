@@ -10,7 +10,7 @@ rule JuLI_call:
         ref=config["reference"]["ref"],
         Refgene="/opt/references/refGene_hg19.txt",
         Gap="/opt/references/gap_hg19.txt",
-        OutputPath="Results/DNA/{sample}/JuLI",
+        OutputPath="Results/DNA/{sample}/Fusions/JuLI",
         sample_name=lambda wildcards: wildcards.sample,
         MinMappingQuality='20'
     threads: 10
