@@ -25,10 +25,12 @@ RUN /venv/bin/conda-unpack
 FROM debian:buster-slim AS runtime
 
 # Copy JuLI reference files into docker container
+RUN apt update && apt install wget unzip -y
 RUN wget https://github.com/sgilab/JuLI/raw/master/JuLI-v0.1.6.1.zip
 RUN unzip JuLI-v0.1.6.1.zip
-RUN mkdir -p /references_JuLI
-COPY JuLI-v0.1.6.1/references/* /references_JuLI/
+RUN mkdir /references_JuLI
+RUN cp -r /JuLI-v0.1.6.1/references /references_JuLI
+RUN rm -r /JuLI-v0.1.6.1 JuLI-v0.1.6.1.zip
 
 ################## METADATA ######################
 
@@ -55,7 +57,7 @@ LABEL parallel=20190522
 LABEL picard=2.25.0
 LABEL pysam=0.16.0.1
 LABEL python=3.7
-LABEL r-base=3.6.1
+LABEL r-base=4.1.0
 LABEL samtools=1.11
 LABEL sed=4.7
 LABEL snakemake-wrapper-utils=0.1.3
