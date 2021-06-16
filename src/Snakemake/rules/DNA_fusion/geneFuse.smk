@@ -52,8 +52,8 @@ rule geneFuse:
         fastq1=_genefuse_input_r1,
         fastq2=_genefuse_input_r2,
     output:
-        html="Results/DNA/{sample}/geneFuse/geneFuse_report_{sample}.html",
-        fusions="Results/DNA/{sample}/geneFuse/fusions_{sample}.txt",
+        html="Results/DNA/{sample}/Fusions/geneFuse/geneFuse_report_{sample}.html",
+        fusions="Results/DNA/{sample}/Fusions/geneFuse/fusions_{sample}.txt",
     params:
         genes=config["geneFuse"]["genes"],
         ref=config["reference"]["ref"],
