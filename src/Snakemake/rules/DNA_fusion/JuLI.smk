@@ -12,7 +12,7 @@ rule JuLI_call:
         Gap="/opt/references_JuLI/gap_hg19.txt",
         OutputPath="Results/DNA/{sample}/Fusions/JuLI",
         sample_name=lambda wildcards: wildcards.sample,
-        MinMappingQuality='20'
+        MinMappingQuality='20',
     threads: 10
     log:
         "logs/DNA_fusion/JuLI_call/{sample}.log",
