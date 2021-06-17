@@ -24,14 +24,6 @@ RUN /venv/bin/conda-unpack
 # for us.
 FROM debian:buster-slim AS runtime
 
-# Copy JuLI reference files into docker container
-RUN apt update && apt install wget unzip -y
-RUN wget https://github.com/sgilab/JuLI/raw/master/JuLI-v0.1.6.1.zip
-RUN unzip JuLI-v0.1.6.1.zip
-RUN mkdir /references_JuLI
-RUN cp -r /JuLI-v0.1.6.1/references /references_JuLI
-RUN rm -r /JuLI-v0.1.6.1 JuLI-v0.1.6.1.zip
-
 ################## METADATA ######################
 
 LABEL VERSION=0.0.30
@@ -39,6 +31,7 @@ LABEL bamtools=2.5.1
 LABEL bcbio-variation-recall=0.2.6
 LABEL bcftools=1.11
 LABEL bedtools=2.29
+LABEL bioconductor-rsamtools
 LABEL biobambam=2.0.87
 LABEL bwa=0.7.17
 LABEL cnvkit=0.9.8
@@ -57,7 +50,11 @@ LABEL parallel=20190522
 LABEL picard=2.25.0
 LABEL pysam=0.16.0.1
 LABEL python=3.7
-LABEL r-base=4.1.0
+LABEL r-gert=1.3.0
+LABEL r-devtools=2.0.2
+LABEL r-openssl
+LABEL r-usethis=2.0.1
+#LABEL r-base=4.1.0
 LABEL samtools=1.11
 LABEL sed=4.7
 LABEL snakemake-wrapper-utils=0.1.3
@@ -79,12 +76,22 @@ COPY --from=build /venv /usr/local
 COPY --from=build /bin/ps /bin
 COPY --from=build /lib/* /lib/
 
+RUN apt-get update && apt-get install libgit2-dev libfreetype6 fontconfig fonts-dejavu -y && apt-get clean
+
+RUN wget --no-check-certificate https://github.com/sgilab/JuLI/raw/master/JuLI-v0.1.6.1.zip
+RUN unzip JuLI-v0.1.6.1.zip
+RUN mkdir /references_JuLI
+RUN cp -r /JuLI-v0.1.6.1/references /references_JuLI
+RUN rm -r /JuLI-v0.1.6.1 JuLI-v0.1.6.1.zip
+
 RUN mkdir /venv
 RUN ln -s /usr/local/lib /venv/lib
 RUN ln -s /usr/local/bin /venv/bin
-RUN apt-get update && apt-get install libfreetype6 fontconfig fonts-dejavu -y && apt-get clean
+#RUN apt-get update && apt-get install software-properties-common -y && apt-get clean
+#RUN add-apt-repository ppa:cran/libgit2 && apt-get update && apt-get install libfreetype6 fontconfig fonts-dejavu r-cran-rcurl libgit2-dev -y && apt-get clean
+
 ENV FONTCONFIG_PATH="/etc/fonts"
 ENV FONTCONFIG_FILE="/etc/fonts/fonts.conf"
 #Install R devtool package JuLI and its dependencies
-RUN R --slave -e 'install.packages("devtools", repos="https://cloud.r-project.org/"); install.packages("BiocManager"); BiocManager::install("Rsamtools"); library("devtools"); devtools::install_github("jonca79/JuLI")'
+RUN R --slave -e 'library("devtools"); devtools::install_github("jonca79/JuLI")'
 #SHELL ["/bin/bash", "-c"]
