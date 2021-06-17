@@ -84,7 +84,7 @@ RUN ln -s /usr/local/lib /venv/lib
 RUN ln -s /usr/local/bin /venv/bin
 #RUN apt-get update && apt-get install software-properties-common -y && apt-get clean
 #RUN add-apt-repository ppa:cran/libgit2 && apt-get update && apt-get install libfreetype6 fontconfig fonts-dejavu r-cran-rcurl libgit2-dev -y && apt-get clean
-RUN apt-get update && apt-get install libfreetype6 fontconfig fonts-dejavu r-cran-rcurl libgit2-dev -y && apt-get clean
+RUN apt-get update && apt-get install libfreetype6 fontconfig fonts-dejavu -y && apt-get clean
 ENV FONTCONFIG_PATH="/etc/fonts"
 ENV FONTCONFIG_FILE="/etc/fonts/fonts.conf"
 #Install R devtool package JuLI and its dependencies
