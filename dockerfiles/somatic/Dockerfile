@@ -31,7 +31,7 @@ LABEL bamtools=2.5.1
 LABEL bcbio-variation-recall=0.2.6
 LABEL bcftools=1.11
 LABEL bedtools=2.29
-LABEL bioconductor-rsamtools
+LABEL bioconductor-rsamtools=2.2.0
 LABEL biobambam=2.0.87
 LABEL bwa=0.7.17
 LABEL cnvkit=0.9.8
@@ -52,7 +52,7 @@ LABEL pysam=0.16.0.1
 LABEL python=3.7
 LABEL r-gert=1.3.0
 LABEL r-devtools=2.0.2
-LABEL r-openssl
+LABEL r-openssl=1.4.4
 LABEL r-usethis=2.0.1
 #LABEL r-base=4.1.0
 LABEL samtools=1.11
