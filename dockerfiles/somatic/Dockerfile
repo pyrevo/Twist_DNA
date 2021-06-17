@@ -78,7 +78,7 @@ COPY --from=build /lib/* /lib/
 
 RUN apt-get update && apt-get install libgit2-dev libfreetype6 fontconfig fonts-dejavu -y && apt-get clean
 
-RUN wget --no-check-certificate https://github.com/sgilab/JuLI/raw/master/JuLI-v0.1.6.1.zip
+RUN wget https://github.com/sgilab/JuLI/raw/master/JuLI-v0.1.6.1.zip
 RUN unzip JuLI-v0.1.6.1.zip
 RUN mkdir /references_JuLI
 RUN cp -r /JuLI-v0.1.6.1/references /references_JuLI
@@ -87,6 +87,8 @@ RUN rm -r /JuLI-v0.1.6.1 JuLI-v0.1.6.1.zip
 RUN mkdir /venv
 RUN ln -s /usr/local/lib /venv/lib
 RUN ln -s /usr/local/bin /venv/bin
+RUN ln -s /usr/local/ssl /venv/ssl
+
 #RUN apt-get update && apt-get install software-properties-common -y && apt-get clean
 #RUN add-apt-repository ppa:cran/libgit2 && apt-get update && apt-get install libfreetype6 fontconfig fonts-dejavu r-cran-rcurl libgit2-dev -y && apt-get clean
 
