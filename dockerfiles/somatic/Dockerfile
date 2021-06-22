@@ -76,7 +76,7 @@ COPY --from=build /venv /usr/local
 COPY --from=build /bin/ps /bin
 COPY --from=build /lib/* /lib/
 
-RUN apt-get update && apt-get install libgit2-dev libfreetype6 fontconfig fonts-dejavu -y && apt-get clean
+RUN apt-get update && apt-get install libgfortran4 libgit2-dev libfreetype6 fontconfig fonts-dejavu -y && apt-get clean
 
 RUN mkdir /venv
 RUN ln -s /usr/local/lib /venv/lib
