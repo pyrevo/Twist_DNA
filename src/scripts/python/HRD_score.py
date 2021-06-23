@@ -1,7 +1,7 @@
 
 
 segment_filename = snakemake.input.segment
-HRD_outfile = open(snakemake.output.HRD)
+HRD_outfile = open(snakemake.output.HRD, "w")
 
 
 def read_cnvkit_segments(input_filename, segments):
