@@ -13,7 +13,6 @@ def read_cnvkit_segments(input_filename, segments):
         start_pos = int(columns[1])
         end_pos = int(columns[2])
         exons = columns[3].split(",")
-        #nr_exons = sum('Exon' in s for s in exons)
         nr_exons = len(exons)
         length = end_pos - start_pos + 1
         log2 = float(columns[4])
@@ -33,12 +32,8 @@ def read_cnvkit_segments(input_filename, segments):
             continue
         if chrom not in segments:
             segments[chrom] = []
-        #segments[chrom].append({
-        #    "start_pos": start_pos, "end_pos": end_pos, "exons": exons, "nr_exons": nr_exons, "length": length,
-        #    "log2": log2, "baf": baf, "cn": cn, "cn1": cn1, "cn2": cn2, "depth": depth, "nr_probes": nr_probes
-        #})
         segments[chrom].append({
-            "start_pos": start_pos, "end_pos": end_pos, "nr_exons": nr_exons, "length": length,
+            "start_pos": start_pos, "end_pos": end_pos, "exons": exons, "nr_exons": nr_exons, "length": length,
             "log2": log2, "baf": baf, "cn": cn, "cn1": cn1, "cn2": cn2, "depth": depth, "nr_probes": nr_probes
         })
     return segments
@@ -53,7 +48,7 @@ def filter_merge_segments(segments, min_size):
             if segment["nr_exons"] <= 1 or segment["nr_probes"] < 20 or segment["length"] < min_size:
                 continue
             if prev_segment != []:
-                #if prev_segment["cn"] == segment["cn"]:
+                # if prev_segment["cn"] == segment["cn"]:
                 if (
                     (prev_segment["cn"] > 2 and segment["cn"] > 2) or
                     (prev_segment["cn"] < 2 and segment["cn"] < 2) or
@@ -84,7 +79,6 @@ def count_LoH_score(filtered_merged_segments):
         nr_LOH_segments = 0
         for segment in filtered_merged_segments[chrom]:
             nr_segments += 1
-            #if segment["LoH"] and segment["length"] > 15000000:
             if segment["cn"] != 2 and segment["length"] > 15000000:
                 nr_LOH_segments += 1
         '''No LoH_score for LoH of entire chromosome'''
@@ -121,7 +115,7 @@ def count_TAI_score(filtered_merged_segments):
         nr_segments = 0
         nr_TAI_segments = 0
         i = 0
-        last_segment = len(filtered_merged_segments[chrom]) -1
+        last_segment = len(filtered_merged_segments[chrom]) - 1
         for segment in filtered_merged_segments[chrom]:
             nr_segments += 1
             if (
@@ -153,7 +147,5 @@ LST_score = count_LST_score(filtered_merged_segments)
 TAI_score = count_TAI_score(filtered_merged_segments)
 
 HRD_score = LoH_score + LST_score + TAI_score
-#print("Sample, HRD_score, LoH_score, LST_score, TAI_score")
-#print(sample.split("/")[-1], HRD_score, LoH_score, LST_score, TAI_score)
 HRD_outfile.write("HRD_score\tLoH_score\tLST_score\tTAI_score\n")
 HRD_outfile.write(str(HRD_score) + "\t" + str(LoH_score) + "\t" + str(LST_score) + "\t" + str(TAI_score) + "\n")

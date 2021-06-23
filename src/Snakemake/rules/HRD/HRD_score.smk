@@ -8,6 +8,5 @@ rule HRD_score:
         "logs/HRD/HRD_score_{sample}.log",
     container:
         config["singularity"].get("python", config["singularity"].get("default", ""))
-    shell:
-        script:
-            "../../../scripts/python/HRD_score.py"
+    script:
+        "../../../scripts/python/HRD_score.py"
