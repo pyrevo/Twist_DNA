@@ -9,6 +9,8 @@ def read_cnvkit_segments(input_filename, segments):
     next(segment_file)
     for line in segment_file:
         columns = line.strip().split("\t")
+        if len(columns) < 13 :
+            continue
         chrom = columns[0]
         start_pos = int(columns[1])
         end_pos = int(columns[2])
@@ -148,4 +150,7 @@ TAI_score = count_TAI_score(filtered_merged_segments)
 
 HRD_score = LoH_score + LST_score + TAI_score
 HRD_outfile.write("HRD_score\tLoH_score\tLST_score\tTAI_score\n")
-HRD_outfile.write(str(HRD_score) + "\t" + str(LoH_score) + "\t" + str(LST_score) + "\t" + str(TAI_score) + "\n")
+if segments == {} :
+    HRD_outfile.write("The HRD score could no be calculated! Probably due to lack of SNPs\n")
+else :
+    HRD_outfile.write(str(HRD_score) + "\t" + str(LoH_score) + "\t" + str(LST_score) + "\t" + str(TAI_score) + "\n")
