@@ -131,7 +131,7 @@ for line in vcf:
         vcf_dict[key] = [DP, Ref_DP, Alt_DP, AF, AA_change, CDS_change]
 
 
-'''Report all interesting positions (All but region) with coverage < 50'''
+'''Report all interesting positions (All but region) with coverage < 200'''
 depth_dict = {}
 for region in gene_regions:
     sample = bam_file.split("/")[-1].split(".")[0]
@@ -145,7 +145,7 @@ for region in gene_regions:
         key = chrom + "_" + pos
         if key in inv_pos:
             coverage = int(lline[2])
-            if coverage < 50:
+            if coverage < 200:
                 for info in inv_pos[key]:
                     outfile.write(info + "\t")
                 outfile.write(str(coverage) + "\t" + pos + "\n")
