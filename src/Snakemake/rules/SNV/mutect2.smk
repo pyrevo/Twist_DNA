@@ -237,8 +237,8 @@ rule filterMutect2:
         ob_prior="mutect2/temp/{sample}.mutect2.read-orientation-model.tar.gz",
         fasta=config["reference"]["ref"],
     output:
-        vcf=temp("mutect2/temp/{sample}.mutect2.SB.vcf.gz"),
-        vcf_tbi=temp("mutect2/temp/{sample}.mutect2.SB.vcf.gz.tbi"),
+        vcf=temp("mutect2/temp/{sample}.mutect2.SB.vcf"),
+        #vcf_tbi=temp("mutect2/temp/{sample}.mutect2.SB.vcf.gz.tbi"),
         #vcf=temp("mutect2/temp/{sample}.{chr}.mutect2.vcf.gz"),
         #vcf_tbi=temp("mutect2/temp/{sample}.{chr}.mutect2.vcf.gz.tbi"),
     params:
