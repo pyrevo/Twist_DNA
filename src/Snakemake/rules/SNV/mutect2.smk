@@ -200,7 +200,7 @@ rule LearnReadOrientationModel:
 
 rule GetPileupSummaries:
     input:
-        "mutect2/temp/{sample}.mutect2.read-orientation-model.tar.gz",
+        "Bam/DNA/{sample}-ready.bam",
     params:
         "DATA/small_exac_common_3.vcf.gz",
     output:
