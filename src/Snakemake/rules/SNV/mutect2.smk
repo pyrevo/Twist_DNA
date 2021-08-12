@@ -202,7 +202,7 @@ rule GetPileupSummaries:
     input:
         "mutect2/temp/{sample}.mutect2.read-orientation-model.tar.gz",
     params:
-        "DATA/small_exac_common_3.vcf",
+        "DATA/small_exac_common_3.vcf.gz",
     output:
         temp("mutect2/temp/{sample}.mutect2.getpileupsummaries.table"),
     log:
