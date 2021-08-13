@@ -9,6 +9,7 @@
 - [System configuration](#system-configuration)
 	- [Requirements](#requirements)
 	- [DRMAA installation for HPC clusters users](#drmaa-installation-for-hpc-clusters-users)
+	- [Clone the Twist_DNA github repo](#clone-the-twist_dna-github-repo)
 - [Reference files](#reference-files)
 	- [Reference download](#reference-download)
 	- [Reference indexing](#reference-indexing)
@@ -81,7 +82,7 @@ or
 
 ```bash
 export DRMAA_LIBRARY_PATH=/usr/lib/gridengine-drmaa/lib/libdrmaa.so.1.0
-```https://ewels.github.io/AWS-iGenomes/https://ewels.github.io/AWS-iGenomes/https://ewels.github.io/AWS-iGenomes/
+```
 
 ### Clone the Twist_DNA github repo
 
