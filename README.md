@@ -4,6 +4,24 @@
 
 # Twist_DNA
 
+***********************
+
+- [System configuration](#system-configuration)
+	- [Requirements](#requirements)
+	- [DRMAA installation for HPC clusters users](#drmaa-installation-for-hpc-clusters-users)
+- [Reference files](#reference-files)
+	- [Reference download](#reference-download)
+	- [Reference indexing](#reference-indexing)
+	- [VEP reference database download](#vep-reference-database-download)
+	- [Interval list for Picard](#interval-list-for-Picard)
+- [Configuration files](#configuration-files)
+	- [Config file generation](#config-file-generation)
+	- [Config file generation on HPC clusters](#config-file-generation-on-hpc-clusters)
+	- [Additional required files](#additional-required-files)
+- [Run the workflow](#run-the-workflow)
+
+***********************
+
 ## System configuration
 
 ### Requirements
@@ -45,7 +63,7 @@ mamba env create -f env.yml
 ```
 
 
-### DRMAA installation for HPC cluster users
+### DRMAA installation for HPC clusters users
 It requires admin rights, please ask your system administrator. 
 Libraries to be installed:
 
@@ -75,7 +93,7 @@ cd "$THIS_PATH/Twist_DNA"
 <br>
 
 
-## Retrieving reference files
+## Reference files
 
 ### Reference download
 NGI is using [iGenomes](https://github.com/ewels/AWS-iGenomes 'GitHub repository') hosted at [Amazon Web Services](https://aws.amazon.com/?nc2=h_lg 'Amazon Web Services').
@@ -141,14 +159,14 @@ snakemake -p -j 1 -s path/to/Twist_DNA/src/Snakemake/rules/Twist_DNA_yaml/Twist_
 Alternatively, you can use a template and change the paths to the reference files accordingly with your system. You can find the template [here](https://github.com/clinical-genomics-uppsala/Twist_DNA/blob/develop/Config/Pipeline/configdefaults201012.yaml 'Twist_DNA.yaml example') and rename it as Twist_DNA.yaml.
 
 
-### Config file generation on HPC cluster
+### Config file generation on HPC clusters
 On HPC clusters users can run the following command to generate the config file:
 
 ```bash
 snakemake -p -j 1 --drmaa "-A wp1 -p core -n 1 -t 2:00:00 " -s ./src/Snakemake/rules/Twist_DNA_yaml/Twist_DNA_yaml.smk
 ```
 
-### Required files
+### Additional required files
 You can find a template for each of the additional files needed to run Twist_DNA. Just modify them accordingly with your samples:
 
 1. [samplesheet.csv](https://github.com/clinical-genomics-uppsala/Twist_DNA/blob/develop/tests/workflow_dry_run/twist_dna/samplesheet.csv 'samplesheet.csv example')
