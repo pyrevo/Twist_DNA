@@ -75,7 +75,7 @@ cd "$THIS_PATH/Twist_DNA"
 <br>
 
 
-## Retrieving reference fileshttps://github.com/ewels/AWS-iGenomes
+## Retrieving reference files
 
 ### Reference download
 NGI is using [iGenomes](https://github.com/ewels/AWS-iGenomes 'GitHub repository') hosted at [Amazon Web Services](https://aws.amazon.com/?nc2=h_lg 'Amazon Web Services').
@@ -112,7 +112,7 @@ tar xvzf homo_sapiens_refseq_vep_99_GRCh37.tar.gz
 ```
 
 ### Interval list for Picard
-You may need to re-generate the Picard interval file, this depends upon the reference. If so, you can simply run [BedToIntervalList](https://gatk.broadinstitute.org/hc/en-us/articles/360036883931-BedToIntervalList-Picard- 'BedToIntervalList'):
+You may need to re-generate the Picard interval file, this depends upon the reference. If so, you can simply run [BedToIntervalList](https://gatk.broadinstitute.org/hc/en-us/articles/360036883931-BedToIntervalList-Picard- 'Picard BedToIntervalList'):
 
 ```bash
 picard BedToIntervalList -I pool1_pool2_nochr_3c.sort.merged.hg19.210311.met.annotated.bed -O pool1_pool2_nochr_3c.sort.merged.padded20.hg19.210311.met.annotated.interval_list -SD genome.dict
@@ -138,7 +138,7 @@ You can generate the config file directly using this command:
 snakemake -p -j 1 -s path/to/Twist_DNA/src/Snakemake/rules/Twist_DNA_yaml/Twist_DNA_yaml.smk
 ```
 
-Alternatively, you can use a template and change the paths to the reference files accordingly with your system. You can find the template [here](https://github.com/clinical-genomics-uppsala/Twist_DNA/blob/develop/Config/Pipeline/configdefaults201012.yaml) and rename it as Twist_DNA.yaml.
+Alternatively, you can use a template and change the paths to the reference files accordingly with your system. You can find the template [here](https://github.com/clinical-genomics-uppsala/Twist_DNA/blob/develop/Config/Pipeline/configdefaults201012.yaml 'Twist_DNA.yaml example') and rename it as Twist_DNA.yaml.
 
 
 ### Config file generation on HPC cluster
@@ -151,9 +151,9 @@ snakemake -p -j 1 --drmaa "-A wp1 -p core -n 1 -t 2:00:00 " -s ./src/Snakemake/r
 ### Required files
 You can find a template for each of the additional files needed to run Twist_DNA. Just modify them accordingly with your samples:
 
-1. [samplesheet.csv](https://github.com/clinical-genomics-uppsala/Twist_DNA/blob/develop/tests/workflow_dry_run/twist_dna/samplesheet.csv)
-2. [units.tsv](https://github.com/clinical-genomics-uppsala/Twist_DNA/blob/develop/tests/workflow_dry_run/twist_dna/units.tsv)
-3. [samples.tsv](https://github.com/clinical-genomics-uppsala/Twist_DNA/blob/develop/tests/workflow_dry_run/twist_dna/samples.tsv)
+1. [samplesheet.csv](https://github.com/clinical-genomics-uppsala/Twist_DNA/blob/develop/tests/workflow_dry_run/twist_dna/samplesheet.csv 'samplesheet.csv example')
+2. [units.tsv](https://github.com/clinical-genomics-uppsala/Twist_DNA/blob/develop/tests/workflow_dry_run/twist_dna/units.tsv 'units.tsv example')
+3. [samples.tsv](https://github.com/clinical-genomics-uppsala/Twist_DNA/blob/develop/tests/workflow_dry_run/twist_dna/samples.tsv 'samples.tsv example')
 
 <br>
 
