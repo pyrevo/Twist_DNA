@@ -1,7 +1,7 @@
+/projects/wp1/nobackup/ngs/utveckling/analys/2021/Twist_DNA_GMS_prevalidation/mutect2/KMP-00118.mutect2.gvcf.gz
 /projects/wp1/nobackup/ngs/utveckling/analys/2021/Twist_DNA_GMS_prevalidation/mutect2/KMP-00119.mutect2.gvcf.gz
 /projects/wp1/nobackup/ngs/utveckling/analys/2021/Twist_DNA_GMS_prevalidation/mutect2/KMP-00120.mutect2.gvcf.gz
 /projects/wp1/nobackup/ngs/utveckling/analys/2021/Twist_DNA_GMS_prevalidation/mutect2/KMP-00121.mutect2.gvcf.gz
-/projects/wp1/nobackup/ngs/utveckling/analys/2021/Twist_DNA_GMS_prevalidation/mutect2/KMP-00122.mutect2.gvcf.gz
 /projects/wp1/nobackup/ngs/utveckling/analys/2021/Twist_DNA_GMS_prevalidation/mutect2/PVAL-38.mutect2.gvcf.gz
 /projects/wp1/nobackup/ngs/utveckling/analys/2021/Twist_DNA_GMS_prevalidation/mutect2/PVAL-39.mutect2.gvcf.gz
 /projects/wp1/nobackup/ngs/utveckling/analys/2021/Twist_DNA_GMS_prevalidation/mutect2/PVAL-40.mutect2.gvcf.gz
