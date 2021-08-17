@@ -9,7 +9,7 @@ analysis_type = snakemake.params.type
 
 gvcf_filenames = []
 if analysis_type == "panel" :
-    gcvf_file = open(gvcf_files)
+    gvcf_file = open(gvcf_files)
     for line in gvcf_file :
         gvcf_filenames.append(line.strip())
 elif analysis_type == "run" :
