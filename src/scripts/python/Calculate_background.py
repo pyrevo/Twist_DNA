@@ -1,13 +1,24 @@
 
 import gzip
 import statistics
+import sys
 
-gvcf_file = open(snakemake.input.gvcfs)
+gvcf_files = snakemake.input.gvcfs
 background_file = open(snakemake.output.background, "w")
+analysis_type = snakemake.params.type
 
 gvcf_filenames = []
-for line in gvcf_file :
-    gvcf_filenames.append(line.strip())
+if analysis_type == "panel" :
+    gcvf_file = open(gvcf_files)
+    for line in gvcf_file :
+        gvcf_filenames.append(line.strip())
+elif analysis_type == "run" :
+    gvcf_filenames = gvcf_files
+else :
+    print("Wrong analysis type. Should be panel or run")
+    sys.exit(1)
+
+
 
 # file_list = [39, 40, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 69, 70, 71, 72, 85, 86, 87, 88]
 background_dict = {}
@@ -56,17 +67,27 @@ for file_name in gvcf_filenames :
             else :
                 background_dict[key] = [alt_AF]
 
-for key in background_dict :
-    background_dict[key].sort()
-    nr_obs = len(background_dict[key])
-    if nr_obs > 3 :
-        median_background = statistics.median(background_dict[key])
-        '''This is the sample variance s² with Bessel’s correction, also known as variance with N-1 degrees of freedom.
-        Provided that the data points are representative (e.g. independent and identically distributed),
-        the result should be an unbiased estimate of the true population variance.'''
-        stdev_background = statistics.stdev(background_dict[key])
-        #print(key, median_background, stdev_background, background_dict[key])
-        background_file.write(
-            key.split("_")[0] + "\t" + key.split("_")[1] + "\t" + str(median_background) + "\t" + str(stdev_background) + "\n"
-        )
+if analysis_type == "panel" :
+    background_file.write("Median\tSD\n")
+    for key in background_dict :
+        background_dict[key].sort()
+        nr_obs = len(background_dict[key])
+        if nr_obs > 3 :
+            median_background = statistics.median(background_dict[key])
+            '''This is the sample variance s² with Bessel’s correction, also known as variance with N-1 degrees of freedom.
+            Provided that the data points are representative (e.g. independent and identically distributed),
+            the result should be an unbiased estimate of the true population variance.'''
+            stdev_background = statistics.stdev(background_dict[key])
+            #print(key, median_background, stdev_background, background_dict[key])
+            background_file.write(
+                key.split("_")[0] + "\t" + key.split("_")[1] + "\t" + str(median_background) + "\t" + str(stdev_background) + "\n"
+            )
+else :
+    background_file.write("Median\tSD\tSecond_highest\n")
+    for key in background_dict :
+        background_dict[key].sort()
+        nr_obs = len(background_dict[key])
+        if nr_obs > 1 :
+            median_background = statistics.median(background_dict[key])
+            second_highest = background_dict[key][-2]
 background_file.close()
