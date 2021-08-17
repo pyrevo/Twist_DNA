@@ -7,7 +7,7 @@ rule Calculate_background_panel:
     output:
         background="DATA/background_panel.tsv",
     params:
-        type = "panel",
+        type="panel",
     container:
         config["singularity"].get("python", config["singularity"].get("default", ""))
     script:
@@ -16,7 +16,7 @@ rule Calculate_background_panel:
 
 rule Calculate_background_run:
     input:
-        gvcfs=expand("mutect2/temp/{sample}.mutect2.gvcf.gz"),
+        gvcfs=["mutect2/" + sample.Index + ".mutect2.gvcf.gz" for sample in samples.itertuples()],
     output:
         background="DATA/background_run.tsv",
     params:
