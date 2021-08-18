@@ -41,13 +41,13 @@ for line in bed:
         continue
     chrom = lline[0].split(".")[0].split("0")[-1]
     start_pos = lline[1]
-    # if Report == "hotspot":
-    hotspot_dict[chrom + "_" + start_pos] = ""
     end_pos = lline[2]
     gene = lline[3]
     pos = int(start_pos)
     while pos <= int(end_pos):
         inv_pos[chrom + "_" + str(pos)] = lline
+        if Report == "hotspot" or Report == "region_all":
+            hotspot_dict[chrom + "_" + pos] = ""
         pos += 1
     if first_gene:
         prev_gene = gene
@@ -233,11 +233,14 @@ for region in gene_regions:
                 alt_AF = gvcf_sample_dict[key]
                 if panel_sd > 0.0:
                     pos_sd = (alt_AF - panel_median) / panel_sd
-            outfile2.write(
-                "\t" + "{:.4f}".format(panel_median) + "\t" + "{:.4f}".format(panel_sd) + "\t" + "{:.4f}".format(run_median) +
-                "\t" + "{:.4f}".format(alt_AF) + "\t" + "{:.2f}".format(pos_sd)
-            )
+            if key in hotspot_dict and alt_AF >= 0.005 :
+                outfile2.write(
+                    "\t" + "{:.4f}".format(panel_median) + "\t" + "{:.4f}".format(panel_sd) + "\t" + "{:.4f}".format(run_median) +
+                    "\t" + "{:.4f}".format(alt_AF) + "\t" + "{:.2f}".format(pos_sd)
+                )
             if key in vcf_dict:
+                if key not in hotspot_dict or alt_AF < 0.005:
+                    outfile2.write("\t\t\t\t\t")
                 for info in vcf_dict[key]:
                     outfile2.write("\t" + str(info))
             outfile2.write("\n")
