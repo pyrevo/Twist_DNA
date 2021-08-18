@@ -89,5 +89,7 @@ else:
         nr_obs = len(background_dict[key])
         if nr_obs > 1:
             median_background = statistics.median(background_dict[key])
-            second_highest = background_dict[key][-2]
+            background_file.write(
+                key.split("_")[0] + "\t" + key.split("_")[1] + "\t" + str(median_background) + "\n"
+            )
 background_file.close()

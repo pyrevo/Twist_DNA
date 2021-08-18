@@ -163,8 +163,7 @@ for line in background_run:
     key = chrom + "_" + pos
     if key in hotspot_dict:
         median = float(columns[2])
-        sd = float(columns[3])
-        gvcf_run_dict[key] = [median, sd]
+        gvcf_run_dict[key] = median
 with gzip.open(gvcf, 'rt') as infile:
     file_content = infile.read().split("\n")
     header = True
@@ -223,19 +222,16 @@ for region in gene_regions:
             panel_median = 1000
             panel_sd = 1000
             run_median = 1000
-            run_sd = 1000
             alt_AF = 0.0
             pos_sd = 1000
             if key in gvcf_panel_dict:
                 panel_median = gvcf_panel_dict[key][0]
                 panel_sd = gvcf_panel_dict[key][1]
             if key in gvcf_run_dict:
-                run_median = gvcf_run_dict[key][0]
-                if panel_sd > 0.0:
-                    run_sd = (run_median - panel_median) / panel_sd
+                run_median = gvcf_run_dict[key]
             if key in gvcf_sample_dict:
                 alt_AF = gvcf_sample_dict[key]
-                if pos_sd > 0.0:
+                if panel_sd > 0.0:
                     pos_sd = (alt_AF - panel_median) / panel_sd
             outfile2.write(
                 "\t" + "{:.4f}".format(panel_median) + "\t" + "{:.4f}".format(panel_sd) + "\t" + "{:.4f}".format(run_median) +
