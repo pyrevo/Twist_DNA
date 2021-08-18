@@ -41,8 +41,8 @@ for line in bed:
         continue
     chrom = lline[0].split(".")[0].split("0")[-1]
     start_pos = lline[1]
-    if Report == "hotspot":
-        hotspot_dict[chrom + "_" + start_pos] = ""
+    # if Report == "hotspot":
+    hotspot_dict[chrom + "_" + start_pos] = ""
     end_pos = lline[2]
     gene = lline[3]
     pos = int(start_pos)
@@ -155,7 +155,7 @@ for line in background_panel:
         median = float(columns[2])
         sd = float(columns[3])
         gvcf_panel_dict[key] = [median, sd]
-next(background_panel)
+next(background_run)
 for line in background_run:
     columns = line.strip().split()
     chrom = columns[0]
@@ -164,7 +164,7 @@ for line in background_run:
     if key in hotspot_dict:
         median = float(columns[2])
         sd = float(columns[3])
-        gvcf_panel_dict[key] = [median, sd]
+        gvcf_run_dict[key] = [median, sd]
 with gzip.open(gvcf, 'rt') as infile:
     file_content = infile.read().split("\n")
     header = True
@@ -238,7 +238,8 @@ for region in gene_regions:
                 if pos_sd > 0.0:
                     pos_sd = (alt_AF - panel_median) / panel_sd
             outfile2.write(
-                "\t" + str(panel_median) + "\t" + str(panel_sd) + "\t" + str(run_median) + "\t" + str(alt_AF) + "\t" + str(pos_sd)
+                "\t" + "{:.4f}".format(panel_median) + "\t" + "{:.4f}".format(panel_sd) + "\t" + "{:.4f}".format(run_median) +
+                "\t" + "{:.4f}".format(alt_AF) + "\t" + "{:.2f}".format(pos_sd)
             )
             if key in vcf_dict:
                 for info in vcf_dict[key]:
