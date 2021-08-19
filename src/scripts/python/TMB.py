@@ -22,6 +22,7 @@ nr_TMB = 0
 header = True
 prev_pos = ""
 prev_chrom = ""
+TMB_list = []
 for line in vcf:
     if header:
         if line[:6] == "#CHROM":
@@ -102,16 +103,19 @@ for line in vcf:
             GnomAD <= 0.0001 and db1000G <= 0.0001 and Observations <= 1 and INFO.find("MUC6") == -1 and
             INFO.find("Complex") == -1):
         if ("missense_variant" in Variant_type or
-                "splice_region_variant" in Variant_type or
-                "splice_acceptor_variant" in Variant_type or
+                #"splice_region_variant" in Variant_type or
+                #"splice_acceptor_variant" in Variant_type or
                 "stop_gained" in Variant_type or
                 # "frameshift_variant" in Variant_type or
                 # "protein_altering_variant" in Variant_type or
-                "splice_donor_variant" in Variant_type or
+                #"splice_donor_variant" in Variant_type or
                 "stop_lost" in Variant_type):
             if len(ref) == 1 and len(alt) == 1:
                 nr_TMB += 1
+                TMB_list.append(line)
 
 TMB = nr_TMB * 0.78
 output_tmb.write("TMB:\t" + str(TMB) + "\n")
-output_tmb.write("Variants:\t" + str(nr_TMB) + "\n")
+output_tmb.write("Variants:\t" + str(nr_TMB) + "\nList of variants:\n")
+for TMB in TMB_list :
+    output_tmb.write(line)
