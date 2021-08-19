@@ -118,4 +118,4 @@ TMB = nr_TMB * 0.78
 output_tmb.write("TMB:\t" + str(TMB) + "\n")
 output_tmb.write("Variants:\t" + str(nr_TMB) + "\nList of variants:\n")
 for TMB in TMB_list :
-    output_tmb.write(line)
+    output_tmb.write(TMB)
