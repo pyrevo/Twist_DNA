@@ -87,7 +87,7 @@ else:
     for key in background_dict:
         background_dict[key].sort()
         nr_obs = len(background_dict[key])
-        if nr_obs > 1:
+        if nr_obs >= 1:
             median_background = statistics.median(background_dict[key])
             background_file.write(
                 key.split("_")[0] + "\t" + key.split("_")[1] + "\t" + str(median_background) + "\n"

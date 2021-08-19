@@ -47,7 +47,7 @@ for line in bed:
     while pos <= int(end_pos):
         inv_pos[chrom + "_" + str(pos)] = lline
         if Report == "hotspot" or Report == "region_all":
-            hotspot_dict[chrom + "_" + pos] = ""
+            hotspot_dict[chrom + "_" + str(pos)] = ""
         pos += 1
     if first_gene:
         prev_gene = gene
@@ -140,8 +140,7 @@ for line in vcf:
         vcf_dict[key] = [DP, Ref_DP, Alt_DP, AF, AA_change, CDS_change]
 
 
-'''find all positions in the gvcfs overlapping hotspots'''
-'''OBS! only hotspot positions included now, change to all but region_all?'''
+'''find all positions in the gvcfs overlapping hotspots (not including indels)'''
 gvcf_panel_dict = {}
 gvcf_run_dict = {}
 gvcf_sample_dict = {}
@@ -233,13 +232,15 @@ for region in gene_regions:
                 alt_AF = gvcf_sample_dict[key]
                 if panel_sd > 0.0:
                     pos_sd = (alt_AF - panel_median) / panel_sd
-            if key in hotspot_dict and alt_AF >= 0.005 :
+            found_hotspot = False
+            if key in hotspot_dict and ((alt_AF >= 0.005 and pos_sd >= 3.0) or key in vcf_dict):
+                found_hotspot = True
                 outfile2.write(
                     "\t" + "{:.4f}".format(panel_median) + "\t" + "{:.4f}".format(panel_sd) + "\t" + "{:.4f}".format(run_median) +
                     "\t" + "{:.4f}".format(alt_AF) + "\t" + "{:.2f}".format(pos_sd)
                 )
             if key in vcf_dict:
-                if key not in hotspot_dict or alt_AF < 0.005:
+                if key not found_hotspot:
                     outfile2.write("\t\t\t\t\t")
                 for info in vcf_dict[key]:
                     outfile2.write("\t" + str(info))
