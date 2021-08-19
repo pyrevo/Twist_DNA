@@ -24,7 +24,6 @@ for line in artifacts:
 '''Background'''
 gvcf_panel_dict = {}
 gvcf_run_dict = {}
-gvcf_sample_dict = {}
 next(background_panel)
 for line in background_panel:
     columns = line.strip().split()
@@ -147,11 +146,11 @@ for line in vcf:
                     panel_sd = gvcf_panel_dict[key2][1]
                 if key2 in gvcf_run_dict:
                     run_median = gvcf_run_dict[key2]
-                if key2 in gvcf_sample_dict:
-                    if panel_sd > 0.0:
-                        pos_sd = (AF - panel_median) / panel_sd
-                nr_TMB += 1
-                TMB_list.append([line, panel_median, panel_sd, run_median, AF, pos_sd])
+                if panel_sd > 0.0:
+                    pos_sd = (AF - panel_median) / panel_sd
+                if pos_sd > 5.0 :
+                    nr_TMB += 1
+                    TMB_list.append([line, panel_median, panel_sd, run_median, AF, pos_sd])
 
 TMB = nr_TMB * 0.78
 output_tmb.write("TMB:\t" + str(TMB) + "\n")

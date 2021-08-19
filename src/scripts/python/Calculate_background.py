@@ -68,7 +68,7 @@ for file_name in gvcf_filenames:
                 background_dict[key] = [alt_AF]
 
 if analysis_type == "panel":
-    background_file.write("Median\tSD\n")
+    background_file.write("Chrom\tPos\tMedian\tSD\n")
     for key in background_dict:
         background_dict[key].sort()
         nr_obs = len(background_dict[key])
@@ -83,7 +83,7 @@ if analysis_type == "panel":
                 key.split("_")[0] + "\t" + key.split("_")[1] + "\t" + str(median_background) + "\t" + str(stdev_background) + "\n"
             )
 else:
-    background_file.write("Median\tSD\tSecond_highest\n")
+    background_file.write("Chrom\tPos\tMedian\n")
     for key in background_dict:
         background_dict[key].sort()
         nr_obs = len(background_dict[key])
