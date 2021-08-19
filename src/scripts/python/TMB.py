@@ -143,10 +143,10 @@ for line in vcf:
                 pos_sd = 1000
                 key2 = key[3:]
                 if key2 in gvcf_panel_dict:
-                    panel_median = gvcf_panel_dict[key][0]
-                    panel_sd = gvcf_panel_dict[key][1]
+                    panel_median = gvcf_panel_dict[key2][0]
+                    panel_sd = gvcf_panel_dict[key2][1]
                 if key2 in gvcf_run_dict:
-                    run_median = gvcf_run_dict[key]
+                    run_median = gvcf_run_dict[key2]
                 if key2 in gvcf_sample_dict:
                     if panel_sd > 0.0:
                         pos_sd = (AF - panel_median) / panel_sd
