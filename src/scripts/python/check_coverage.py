@@ -240,7 +240,7 @@ for region in gene_regions:
                     "\t" + "{:.4f}".format(alt_AF) + "\t" + "{:.2f}".format(pos_sd)
                 )
             if key in vcf_dict:
-                if key not found_hotspot:
+                if not found_hotspot:
                     outfile2.write("\t\t\t\t\t")
                 for info in vcf_dict[key]:
                     outfile2.write("\t" + str(info))
