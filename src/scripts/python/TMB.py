@@ -81,6 +81,10 @@ for line in vcf:
     Callers = INFO_list[Caller_index]
     if Callers.find("vardict") == -1:
         continue
+    if Callers.find("mutect2") == -1:
+        continue
+    if Callers.find("freebayes") == -1:
+        continue
     VEP_INFO = INFO.split("CSQ=")[1]
     Variant_type = VEP_INFO.split("|")[1].split("&")
     db1000G = VEP_INFO.split("|")[41]
@@ -124,7 +128,7 @@ for line in vcf:
         continue
 
     # TMB
-    if (filter.find("PASS") != -1 and DP > 200 and VD > 20 and AF >= 0.05 and AF <= 0.35 and
+    if (filter.find("PASS") != -1 and DP > 200 and VD > 20 and AF >= 0.05 and AF <= 0.40 and
             GnomAD <= 0.0001 and db1000G <= 0.0001 and Observations <= 1 and INFO.find("MUC6") == -1 and
             INFO.find("Complex") == -1):
         if ("missense_variant" in Variant_type or
@@ -152,7 +156,7 @@ for line in vcf:
                     nr_TMB += 1
                     TMB_list.append([line, panel_median, panel_sd, run_median, AF, pos_sd])
 
-TMB = nr_TMB * 0.78
+TMB = nr_TMB * 1.0
 output_tmb.write("TMB:\t" + str(TMB) + "\n")
 output_tmb.write("Variants:\t" + str(nr_TMB) + "\nList of variants:\n")
 for TMB in TMB_list :
