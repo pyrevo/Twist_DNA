@@ -6,7 +6,7 @@ import gzip
 bed = open(snakemake.input.bed)
 vcf = open(snakemake.input.vcf)
 bam_file = snakemake.input.bam
-background_panel=open(snakemake.input.background_panel)
+background_panel_filename=snakemake.input.background_panel
 background_run=open(snakemake.input.background_run)
 gvcf=snakemake.input.gvcf
 outfile = open(snakemake.output.coverage, "w")
@@ -144,16 +144,18 @@ for line in vcf:
 gvcf_panel_dict = {}
 gvcf_run_dict = {}
 gvcf_sample_dict = {}
-next(background_panel)
-for line in background_panel:
-    columns = line.strip().split()
-    chrom = columns[0]
-    pos = columns[1]
-    key = chrom + "_" + pos
-    if key in hotspot_dict:
-        median = float(columns[2])
-        sd = float(columns[3])
-        gvcf_panel_dict[key] = [median, sd]
+if background_panel_filename != "":
+    background_panel = open(background_panel_filename)
+    next(background_panel)
+    for line in background_panel:
+        columns = line.strip().split()
+        chrom = columns[0]
+        pos = columns[1]
+        key = chrom + "_" + pos
+        if key in hotspot_dict:
+            median = float(columns[2])
+            sd = float(columns[3])
+            gvcf_panel_dict[key] = [median, sd]
 next(background_run)
 for line in background_run:
     columns = line.strip().split()
