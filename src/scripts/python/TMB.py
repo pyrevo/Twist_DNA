@@ -159,7 +159,7 @@ for line in vcf:
                     TMB_sSNV.append([line, panel_median, panel_sd, run_median, AF, pos_sd])
 
 nsTMB = nr_nsSNV_TMB * 1.0
-total_TMB = (nr_sSNV_TMB + nr_nsSNV_TMB) * 0.2
+total_TMB = (nr_sSNV_TMB + nr_nsSNV_TMB) * 0.8
 output_tmb.write("nsSNV TMB:\t" + str(nsTMB) + "\n")
 output_tmb.write("nsSNV variants:\t" + str(nr_nsSNV_TMB) + "\n")
 output_tmb.write("TMB:\t" + str(total_TMB) + "\n")
