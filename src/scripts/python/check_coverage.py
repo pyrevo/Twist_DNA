@@ -6,9 +6,9 @@ import gzip
 bed = open(snakemake.input.bed)
 vcf = open(snakemake.input.vcf)
 bam_file = snakemake.input.bam
-background_panel_filename=snakemake.input.background_panel
-background_run=open(snakemake.input.background_run)
-gvcf=snakemake.input.gvcf
+background_panel_filename = snakemake.input.background_panel
+background_run = open(snakemake.input.background_run)
+gvcf = snakemake.input.gvcf
 outfile = open(snakemake.output.coverage, "w")
 outfile2 = open(snakemake.output.coverage2, "w")
 

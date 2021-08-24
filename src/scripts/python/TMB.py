@@ -1,9 +1,9 @@
 
 vcf = open(snakemake.input.vcf)
 artifacts = open(snakemake.input.artifacts)
-background_panel_filename=snakemake.input.background_panel
-background_run=open(snakemake.input.background_run)
-gvcf=snakemake.input.gvcf
+background_panel_filename = snakemake.input.background_panel
+background_run = open(snakemake.input.background_run)
+gvcf = snakemake.input.gvcf
 output_tmb = open(snakemake.output.tmb, "w")
 
 
@@ -24,7 +24,7 @@ for line in artifacts:
 '''Background'''
 gvcf_panel_dict = {}
 gvcf_run_dict = {}
-if background_panel_filename != "" :
+if background_panel_filename != "":
     background_panel = open(background_panel_filename)
     next(background_panel)
     for line in background_panel:
@@ -148,13 +148,13 @@ for line in vcf:
                 run_median = gvcf_run_dict[key2]
             if panel_sd > 0.0:
                 pos_sd = (AF - panel_median) / panel_sd
-            if pos_sd > 5.0 :
+            if pos_sd > 5.0:
                 if ("missense_variant" in Variant_type or
                         "stop_gained" in Variant_type or
                         "stop_lost" in Variant_type):
                     nr_nsSNV_TMB += 1
                     TMB_nsSNV.append([line, panel_median, panel_sd, run_median, AF, pos_sd])
-                elif ("synonymous_variant" in Variant_type :
+                elif "synonymous_variant" in Variant_type:
                     nr_sSNV_TMB += 1
                     TMB_sSNV.append([line, panel_median, panel_sd, run_median, AF, pos_sd])
 
@@ -164,12 +164,12 @@ output_tmb.write("nsSNV TMB:\t" + str(nsTMB) + "\n")
 output_tmb.write("nsSNV variants:\t" + str(nr_nsSNV_TMB) + "\n")
 output_tmb.write("TMB:\t" + str(total_TMB) + "\n")
 output_tmb.write("SNV coding variants:\t" + str(nr_nsSNV_TMB) + "\nList of variants:\n")
-for TMB in TMB_nsSNV :
+for TMB in TMB_nsSNV:
     output_tmb.write(
         TMB[0].strip() + "\t" + "{:.4f}".format(TMB[1]) + "\t" + "{:.4f}".format(TMB[2]) + "\t" + "{:.4f}".format(TMB[3]) +
         "\t" + "{:.4f}".format(TMB[4]) + "\t" + "{:.2f}".format(TMB[5]) + "\n"
     )
-for TMB in TMB_sSNV :
+for TMB in TMB_sSNV:
     output_tmb.write(
         TMB[0].strip() + "\t" + "{:.4f}".format(TMB[1]) + "\t" + "{:.4f}".format(TMB[2]) + "\t" + "{:.4f}".format(TMB[3]) +
         "\t" + "{:.4f}".format(TMB[4]) + "\t" + "{:.2f}".format(TMB[5]) + "\n"

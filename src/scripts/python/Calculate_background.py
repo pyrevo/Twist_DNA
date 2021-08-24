@@ -19,7 +19,6 @@ else:
     sys.exit(1)
 
 
-
 # file_list = [39, 40, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 69, 70, 71, 72, 85, 86, 87, 88]
 background_dict = {}
 
@@ -78,7 +77,7 @@ if analysis_type == "panel":
             Provided that the data points are representative (e.g. independent and identically distributed),
             the result should be an unbiased estimate of the true population variance.'''
             stdev_background = statistics.stdev(background_dict[key])
-            #print(key, median_background, stdev_background, background_dict[key])
+            # print(key, median_background, stdev_background, background_dict[key])
             background_file.write(
                 key.split("_")[0] + "\t" + key.split("_")[1] + "\t" + str(median_background) + "\t" + str(stdev_background) + "\n"
             )
