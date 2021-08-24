@@ -3,7 +3,8 @@ rule TMB:
     input:
         vcf="Results/DNA/{sample}/vcf/{sample}.ensemble.vep.exon.soft_filter.multibp.vcf",
         artifacts=config["TMB"]["Artifacts"],
-        background_panel="DATA/background_panel.tsv",
+        #background_panel="DATA/background_panel.tsv",
+        background_panel=config["Background"]["backgound_panel"],
         background_run="DATA/background_run.tsv",
         gvcf="mutect2/{sample}.mutect2.gvcf.gz",
     output:
