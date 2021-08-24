@@ -2,10 +2,9 @@
 
 rule Calculate_background_panel:
     input:
-        # gvcfs="DATA/gvcf_files.txt",
-        gvcfs=config["Background"]["mutect2_gvcfs"],
+        gvcfs="gvcf_files.txt",
     output:
-        background="DATA/background_panel.tsv",
+        background="background_panel.tsv",
     params:
         type="panel",
     container:
