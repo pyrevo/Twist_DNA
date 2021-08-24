@@ -14,14 +14,14 @@ if background_panel_filename != "" :
         pos = lline[1]
         median = float(lline[2])
         sd = float(lline[3])
-        background_panel_dict[chrom + "_" + pos] = [type, observations]
+        background_panel_dict[chrom + "_" + pos] = [median, sd]
 
 
 header = True
 for line in in_vcf :
     if header:
+        out_vcf.write(line)
         if line[:6] == "#CHROM":
-            out_vcf.write(line)
             header = False
         continue
     lline = line.strip().split("\t")
@@ -48,7 +48,8 @@ for line in in_vcf :
     nr_SD = 1000
     if len(ref) == 1 and len(alt) == 1:
         if key in background_panel_dict:
-            nr_SD = (AF - background_panel_dict[key][0]) / background_panel_dict[key][0]
+            if background_panel_dict[key][0] > 0.0 :
+                nr_SD = (AF - background_panel_dict[key][0]) / background_panel_dict[key][0]
     if nr_SD < 10.0 :
         if filter == "PASS" :
             filter = "LownrSD=" + str(nr_SD)

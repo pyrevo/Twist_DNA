@@ -11,15 +11,15 @@ for line in artifacts:
     chrom = lline[0]
     pos = lline[1]
     type = lline[2]
-    observations = lline[3]
+    observations = int(lline[3])
     artifact_dict[chrom + "_" + pos] = [type, observations]
 
 
 header = True
 for line in in_vcf :
     if header:
+        out_vcf.write(line)
         if line[:6] == "#CHROM":
-            out_vcf.write(line)
             header = False
         continue
     lline = line.strip().split("\t")
@@ -38,7 +38,7 @@ for line in in_vcf :
         if key in artifact_dict:
             if artifact_dict[key][0] == "INDEL" :
                 Observations = artifact_dict[key][1]
-    if Observations > 0 :
+    if Observations >= 2 :
         if filter == "PASS" :
             filter = "Arti=" + str(Observations)
         else :
