@@ -163,7 +163,7 @@ total_TMB = (nr_sSNV_TMB + nr_nsSNV_TMB) * 0.2
 output_tmb.write("nsSNV TMB:\t" + str(nsTMB) + "\n")
 output_tmb.write("nsSNV variants:\t" + str(nr_nsSNV_TMB) + "\n")
 output_tmb.write("TMB:\t" + str(total_TMB) + "\n")
-output_tmb.write("SNV coding variants:\t" + str(nr_nsSNV_TMB) + "\nList of variants:\n")
+output_tmb.write("SNV in coding regions:\t" + str(nr_sSNV_TMB + nr_nsSNV_TMB) + "\nList of variants:\n")
 for TMB in TMB_nsSNV:
     output_tmb.write(
         TMB[0].strip() + "\t" + "{:.4f}".format(TMB[1]) + "\t" + "{:.4f}".format(TMB[2]) + "\t" + "{:.4f}".format(TMB[3]) +
