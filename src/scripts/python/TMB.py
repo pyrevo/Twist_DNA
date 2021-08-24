@@ -46,7 +46,7 @@ for line in background_run:
 
 
 nr_nsSNV_TMB = 0
-nr_sSNV_TMB
+nr_sSNV_TMB = 0
 header = True
 prev_pos = ""
 prev_chrom = ""
