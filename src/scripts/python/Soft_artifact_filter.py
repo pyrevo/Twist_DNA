@@ -1,7 +1,18 @@
 
-in_vcf = open(snakemake.input.vcf)
+from pysam import VariantFile
+
+in_vcf_filename = snakemake.input.vcf
 artifacts = open(snakemake.params.artifacts)
-out_vcf = open(snakemake.output.vcf, "w")
+out_vcf_filename = snakemake.output.vcf
+
+
+in_vcf = VariantFile(in_vcf_filename)
+new_header = vcf_in.header
+new_header.filter.add("Artifact", "SNV or INDEL observed in other samples")
+new_header.info.add("Artifact", "1", "Integer", "Number of observations of SNV or INDEL in other samples")
+out_vcf = VariantFile(out_vcf_filename, 'w', header=new_header)
+out_vcf.close()
+in_vcf.close()
 
 
 artifact_dict = {}
@@ -15,10 +26,12 @@ for line in artifacts:
     artifact_dict[chrom + "_" + pos] = [type, observations]
 
 
+out_vcf = open(out_vcf_filename, "a")
+in_vcf = open(in_vcf_filename)
 header = True
 for line in in_vcf :
     if header:
-        out_vcf.write(line)
+        #out_vcf.write(line)
         if line[:6] == "#CHROM":
             header = False
         continue
@@ -40,14 +53,15 @@ for line in in_vcf :
                 Observations = artifact_dict[key][1]
     if Observations >= 2 :
         if filter == "PASS" :
-            filter = "Arti=" + str(Observations)
+            filter = "Artifact"
         else :
-            filter += "|Arti=" + str(Observations)
+            filter += ";Artifact"
         lline[6] = filter
-        out_vcf.write(lline[0])
-        for l in lline[1:] :
-            out_vcf.write("\t" + l)
-        out_vcf.write("\n")
-    else :
-        out_vcf.write(line)
+    INFO = lline[7]
+    INFO = "Artifact=" + str(Observations) + "|"
+    lline[7] = INFO
+    out_vcf.write(lline[0])
+    for l in lline[1:] :
+        out_vcf.write("\t" + l)
+    out_vcf.write("\n")
 out_vcf.close()

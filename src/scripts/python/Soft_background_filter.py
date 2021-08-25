@@ -1,7 +1,19 @@
 
-in_vcf = open(snakemake.input.vcf)
+from pysam import VariantFile
+
+in_vcf_filename = snakemake.input.vcf
 background_panel_filename = snakemake.params.background_panel
-out_vcf = open(snakemake.output.vcf, "w")
+out_vcf_filename = snakemake.output.vcf
+
+
+in_vcf = VariantFile(in_vcf_filename)
+new_header = vcf_in.header
+new_header.filter.add("LownrSD", "Variant is close to background median in background panel")
+new_header.info.add("PanelMedian", "1", "Float", "Background median MAF in panel")
+new_header.info.add("PositionNrSD", "1", "Float", "Number of Standard Deviations from background panel median")
+out_vcf = VariantFile(out_vcf_filename, 'w', header=new_header)
+out_vcf.close()
+in_vcf.close()
 
 
 background_panel_dict = {}
@@ -17,10 +29,12 @@ if background_panel_filename != "" :
         background_panel_dict[chrom + "_" + pos] = [median, sd]
 
 
+out_vcf = open(out_vcf_filename, "a")
+in_vcf = open(in_vcf_filename)
 header = True
 for line in in_vcf :
     if header:
-        out_vcf.write(line)
+        #out_vcf.write(line)
         if line[:6] == "#CHROM":
             header = False
         continue
@@ -32,8 +46,6 @@ for line in in_vcf :
     alt = lline[4]
     filter = lline[6]
     INFO = lline[7]
-    if INFO[:3] == "AA=":
-        continue
     INFO_list = INFO.split(";")
     AF_index = 0
     Caller_index = 0
@@ -48,18 +60,20 @@ for line in in_vcf :
     nr_SD = 1000
     if len(ref) == 1 and len(alt) == 1:
         if key in background_panel_dict:
-            if background_panel_dict[key][0] > 0.0 :
-                nr_SD = (AF - background_panel_dict[key][0]) / background_panel_dict[key][0]
+            panel_median = background_panel_dict[key][0]
+            if panel_median > 0.0 :
+                nr_SD = (AF - panel_median) / background_panel_dict[key][1]
     if nr_SD < 10.0 :
         if filter == "PASS" :
-            filter = "LownrSD=" + str(nr_SD)
+            filter = "LownrSD"
         else :
-            filter += "|LownrSD=" + str(nr_SD)
+            filter += ";LownrSD"
         lline[6] = filter
-        out_vcf.write(lline[0])
-        for l in lline[1:] :
-            out_vcf.write("\t" + l)
-        out_vcf.write("\n")
-    else :
-        out_vcf.write(line)
+    INFO = "PanelMedian=" + str(panel_median) + "|"
+    INFO = "PositionNrSD=" + str(nr_SD) + "|"
+    lline[7] = INFO
+    out_vcf.write(lline[0])
+    for l in lline[1:] :
+        out_vcf.write("\t" + l)
+    out_vcf.write("\n")
 out_vcf.close()
