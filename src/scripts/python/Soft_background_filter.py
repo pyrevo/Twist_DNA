@@ -17,7 +17,7 @@ in_vcf.close()
 
 
 background_panel_dict = {}
-if background_panel_filename != "" :
+if background_panel_filename != "":
     background_panel = open(background_panel_filename)
     next(background_panel)
     for line in background_panel:
@@ -32,9 +32,9 @@ if background_panel_filename != "" :
 out_vcf = open(out_vcf_filename, "a")
 in_vcf = open(in_vcf_filename)
 header = True
-for line in in_vcf :
+for line in in_vcf:
     if header:
-        #out_vcf.write(line)
+        # out_vcf.write(line)
         if line[:6] == "#CHROM":
             header = False
         continue
@@ -61,19 +61,19 @@ for line in in_vcf :
     if len(ref) == 1 and len(alt) == 1:
         if key in background_panel_dict:
             panel_median = background_panel_dict[key][0]
-            if panel_median > 0.0 :
+            if panel_median > 0.0:
                 nr_SD = (AF - panel_median) / background_panel_dict[key][1]
-            INFO = "PanelMedian=" + {:.4f}".format(panel_median) + ";" + INFO
-            INFO = "PositionNrSD=" + {:.2f}".format(nr_SD) + ";" + INFO
+            INFO = "PanelMedian=" + "{:.4f}".format(panel_median) + ";" + INFO
+            INFO = "PositionNrSD=" + "{:.2f}".format(nr_SD) + ";" + INFO
             lline[7] = INFO
-    if nr_SD < 10.0 :
-        if filter == "PASS" :
+    if nr_SD < 10.0:
+        if filter == "PASS":
             filter = "LownrSD"
-        else :
+        else:
             filter += ";LownrSD"
         lline[6] = filter
     out_vcf.write(lline[0])
-    for l in lline[1:] :
-        out_vcf.write("\t" + l)
+    for column in lline[1:]:
+        out_vcf.write("\t" + column)
     out_vcf.write("\n")
 out_vcf.close()

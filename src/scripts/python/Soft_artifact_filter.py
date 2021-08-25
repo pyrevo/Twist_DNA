@@ -29,9 +29,9 @@ for line in artifacts:
 out_vcf = open(out_vcf_filename, "a")
 in_vcf = open(in_vcf_filename)
 header = True
-for line in in_vcf :
+for line in in_vcf:
     if header:
-        #out_vcf.write(line)
+        # out_vcf.write(line)
         if line[:6] == "#CHROM":
             header = False
         continue
@@ -45,23 +45,23 @@ for line in in_vcf :
     Observations = 0
     if len(ref) == 1 and len(alt) == 1:
         if key in artifact_dict:
-            if artifact_dict[key][0] == "SNV" :
+            if artifact_dict[key][0] == "SNV":
                 Observations = artifact_dict[key][1]
     else:
         if key in artifact_dict:
-            if artifact_dict[key][0] == "INDEL" :
+            if artifact_dict[key][0] == "INDEL":
                 Observations = artifact_dict[key][1]
-    if Observations >= 2 :
-        if filter == "PASS" :
+    if Observations >= 2:
+        if filter == "PASS":
             filter = "Artifact"
-        else :
+        else:
             filter += ";Artifact"
         lline[6] = filter
     INFO = lline[7]
     INFO = "Artifact=" + str(Observations) + ";" + INFO
     lline[7] = INFO
     out_vcf.write(lline[0])
-    for l in lline[1:] :
-        out_vcf.write("\t" + l)
+    for column in lline[1:]:
+        out_vcf.write("\t" + column)
     out_vcf.write("\n")
 out_vcf.close()
