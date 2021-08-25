@@ -63,15 +63,15 @@ for line in in_vcf :
             panel_median = background_panel_dict[key][0]
             if panel_median > 0.0 :
                 nr_SD = (AF - panel_median) / background_panel_dict[key][1]
+            INFO = "PanelMedian=" + str(panel_median) + ";" + INFO
+            INFO = "PositionNrSD=" + str(nr_SD) + ";" + INFO
+            lline[7] = INFO
     if nr_SD < 10.0 :
         if filter == "PASS" :
             filter = "LownrSD"
         else :
             filter += ";LownrSD"
         lline[6] = filter
-    INFO = "PanelMedian=" + str(panel_median) + ";" + INFO
-    INFO = "PositionNrSD=" + str(nr_SD) + ";" + INFO
-    lline[7] = INFO
     out_vcf.write(lline[0])
     for l in lline[1:] :
         out_vcf.write("\t" + l)
