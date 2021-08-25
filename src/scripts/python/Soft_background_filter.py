@@ -69,8 +69,8 @@ for line in in_vcf :
         else :
             filter += ";LownrSD"
         lline[6] = filter
-    INFO = "PanelMedian=" + str(panel_median) + "|"
-    INFO = "PositionNrSD=" + str(nr_SD) + "|"
+    INFO = "PanelMedian=" + str(panel_median) + "|" + INFO
+    INFO = "PositionNrSD=" + str(nr_SD) + "|" + INFO
     lline[7] = INFO
     out_vcf.write(lline[0])
     for l in lline[1:] :
