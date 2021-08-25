@@ -58,7 +58,7 @@ for line in in_vcf :
             filter += ";Artifact"
         lline[6] = filter
     INFO = lline[7]
-    INFO = "Artifact=" + str(Observations) + "|" + INFO
+    INFO = "Artifact=" + str(Observations) + ";" + INFO
     lline[7] = INFO
     out_vcf.write(lline[0])
     for l in lline[1:] :
