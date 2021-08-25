@@ -41,7 +41,7 @@ rule Soft_artifact_filter:
     output:
         vcf=temp("recall/{sample}.ensemble.vep.exon.soft_filter2.vcf"),
     params:
-        artifacts = config["TMB"]["Artifacts"],
+        artifacts=config["TMB"]["Artifacts"],
     container:
         config["singularity"].get("python", config["singularity"].get("default", ""))
     script:
