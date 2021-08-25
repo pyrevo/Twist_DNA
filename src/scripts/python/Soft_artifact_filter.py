@@ -7,7 +7,7 @@ out_vcf_filename = snakemake.output.vcf
 
 
 in_vcf = VariantFile(in_vcf_filename)
-new_header = vcf_in.header
+new_header = in_vcf.header
 new_header.filter.add("Artifact", "SNV or INDEL observed in other samples")
 new_header.info.add("Artifact", "1", "Integer", "Number of observations of SNV or INDEL in other samples")
 out_vcf = VariantFile(out_vcf_filename, 'w', header=new_header)

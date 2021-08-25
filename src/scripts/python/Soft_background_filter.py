@@ -7,7 +7,7 @@ out_vcf_filename = snakemake.output.vcf
 
 
 in_vcf = VariantFile(in_vcf_filename)
-new_header = vcf_in.header
+new_header = in_vcf.header
 new_header.filter.add("LownrSD", "Variant is close to background median in background panel")
 new_header.info.add("PanelMedian", "1", "Float", "Background median MAF in panel")
 new_header.info.add("PositionNrSD", "1", "Float", "Number of Standard Deviations from background panel median")
