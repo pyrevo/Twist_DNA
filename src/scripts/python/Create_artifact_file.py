@@ -43,16 +43,16 @@ def FFPE_artifacts():
             if len(ref) == 1 and len(alt) == 1:
                 if key not in ffpe_snv_dict:
                     ffpe_snv_dict[key] = {}
-                    for caller in caller_list :
+                    for caller in caller_list:
                         ffpe_snv_dict[key][caller] = 0
-                for caller in Callers :
+                for caller in Callers:
                     ffpe_snv_dict[key][caller] += 1
             else:
                 if key not in ffpe_indel_dict:
                     ffpe_indel_dict[key] = {}
-                    for caller in caller_list :
+                    for caller in caller_list:
                         ffpe_indel_dict[key][caller] = 0
-                for caller in Callers :
+                for caller in Callers:
                     ffpe_indel_dict[key][caller] += 1
         vcf.close()
 
@@ -61,17 +61,17 @@ def FFPE_artifacts():
 
 def write_artifacts():
     out_artifacts.write("Chrom\tPos\tVariant_type")
-    for caller in caller_list :
+    for caller in caller_list:
         out_artifacts.write("\t" + caller)
     out_artifacts.write("\n")
     for key in ffpe_snv_dict:
         out_artifacts.write(key.split("_")[0] + "\t" + key.split("_")[1] + "\tSNV")
-        for caller in caller_list :
+        for caller in caller_list:
             out_artifacts.write("\t" + str(ffpe_snv_dict[key][caller]))
         out_artifacts.write("\n")
     for key in ffpe_indel_dict:
         out_artifacts.write(key.split("_")[0] + "\t" + key.split("_")[1] + "\tINDEL")
-        for caller in caller_list :
+        for caller in caller_list:
             out_artifacts.write("\t" + str(ffpe_indel_dict[key][caller]))
         out_artifacts.write("\n")
 

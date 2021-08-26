@@ -1,9 +1,11 @@
 
 configfile: "Twist_DNA.yaml"
 
+
 localrules:
     all,
     Create_artifacts,
+
 
 rule all:
     input:
