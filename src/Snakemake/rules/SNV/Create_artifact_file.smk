@@ -15,4 +15,4 @@ rule Create_varscan_artifacts:
     container:
         config["singularity"].get("python", config["singularity"].get("default", ""))
     script:
-        "../../../scripts/python/Create_artifacts.py"
+        "../../../scripts/python/Create_artifact_file.py"
