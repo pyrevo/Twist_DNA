@@ -3,14 +3,14 @@ configfile: "Twist_DNA.yaml"
 
 localrules:
     all,
-    Create_varscan_artifacts,
+    Create_artifacts,
 
 rule all:
     input:
         artifacts="Artifact_positions.txt",
 
 
-rule Create_varscan_artifacts:
+rule Create_artifacts:
     input:
         # {path}/{sample}.ensemble.vep.exon.soft_filter.multibp.vcf
         vcfs="Artifact_vcfs.txt",
