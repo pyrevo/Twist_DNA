@@ -11,7 +11,7 @@ rule Create_varscan_artifacts:
     output:
         artifacts="Artifact_positions.txt",
     params:
-        callers=["Vardict", "Freebayes", "Mutect2", "Varscan"]
+        callers=["Vardict", "Freebayes", "Mutect2", "Varscan"],
     container:
         config["singularity"].get("python", config["singularity"].get("default", ""))
     script:
