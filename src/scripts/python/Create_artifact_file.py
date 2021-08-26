@@ -65,13 +65,13 @@ def write_artifacts():
         out_artifacts.write("\t" + caller)
     out_artifacts.write("\n")
     for key in ffpe_snv_dict:
-        output_artifacts.write(key.split("_")[0] + "\t" + key.split("_")[1] + "\tSNV")
+        out_artifacts.write(key.split("_")[0] + "\t" + key.split("_")[1] + "\tSNV")
         for caller in caller_list :
-            output_artifacts.write("\t" + str(ffpe_snv_dict[key][caller]) + "\n")
+            out_artifacts.write("\t" + str(ffpe_snv_dict[key][caller]) + "\n")
     for key in ffpe_indel_dict:
-        output_artifacts.write(key.split("_")[0] + "\t" + key.split("_")[1] + "\tINDEL")
+        out_artifacts.write(key.split("_")[0] + "\t" + key.split("_")[1] + "\tINDEL")
         for caller in caller_list :
-            output_artifacts.write("\t" + str(ffpe_indel_dict[key][caller]) + "\n")
+            out_artifacts.write("\t" + str(ffpe_indel_dict[key][caller]) + "\n")
 
 
 ffpe_snv_dict, ffpe_indel_dict = FFPE_artifacts()
