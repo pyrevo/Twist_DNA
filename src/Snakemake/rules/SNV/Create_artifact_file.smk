@@ -1,4 +1,10 @@
 
+configfile: "Twist_DNA.yaml"
+
+localrules:
+    all,
+    Create_varscan_artifacts,
+
 rule all:
     input:
         artifacts="Artifact_positions.txt",
