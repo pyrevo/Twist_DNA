@@ -8,7 +8,7 @@ def FFPE_artifacts():
     ffpe_snv_dict = {}
     ffpe_indel_dict = {}
     for vcf_filename in in_vcfs:
-        vcf = open(vcf_filename)
+        vcf = open(vcf_filename.strip())
         header = True
         prev_pos = 0
         for line in vcf:
