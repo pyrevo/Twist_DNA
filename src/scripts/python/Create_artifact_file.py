@@ -39,7 +39,7 @@ def FFPE_artifacts():
                 i += 1
             prev_pos = pos
             AF = float(INFO_list[AF_index][3:])
-            Callers = INFO_list[Caller_index].split(",")
+            Callers = INFO_list[Caller_index].split("=")[1].split(",")
             if len(ref) == 1 and len(alt) == 1:
                 if key not in ffpe_snv_dict:
                     ffpe_snv_dict[key] = {}
