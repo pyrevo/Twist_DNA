@@ -108,7 +108,7 @@ rule filter_iupac_codes:
         for file in input.calls:
             command = "(cat  " + file + " | "
             command += "awk -F$'\t' -v OFS='\t' '{{if ($0 !~ /^#/) gsub(/[KMRYSWBVHDXkmryswbvhdx]/, \"N\", $4) }} {{print}}' > "
-            command += output.calls[0] + ") &> " + log[0]
+            command += output.calls[i] + ") &> " + log[0]
             subprocess.run(command, shell=True)
             i += 1
 
