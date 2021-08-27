@@ -91,13 +91,29 @@ rule filter_freebayes:
 
 rule filter_iupac_codes:
     input:
-        "freebayes/temp/{sample}.{chr}.unsort.filtered.vcf",
+        calls=expand(
+            "freebayes/temp/{{sample}}.{chr}.unsort.filtered.vcf",
+            chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
+        ),
     output:
-        temp("freebayes/temp/{sample}.{chr}.unsort.filtered.mod.vcf"),
+        calls=temp(
+            expand(
+                "freebayes/temp/{{sample}}.{chr}.unsort.filtered.mod.vcf",
+                chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
+            )
+        ),
     log:
-        "logs/variantCalling/freebayes/{sample}.{chr}.iupac_replace.log",
-    shell:
-        "(cat  {input} | awk -F$'\t' -v OFS='\t' '{{if ($0 !~ /^#/) gsub(/[KMRYSWBVHDXkmryswbvhdx]/, \"N\", $4) }} {{print}}' > {output}) &> {log}"
+        "logs/variantCalling/freebayes/{sample}.iupac_replace.log",
+    run:
+        import subprocess
+
+        i = 0
+        for file in input.calls:
+            command = "(cat  " + file + " | "
+            command += "awk -F$'\t' -v OFS='\t' '{{if ($0 !~ /^#/) gsub(/[KMRYSWBVHDXkmryswbvhdx]/, \"N\", $4) }} {{print}}' > "
+            command += output.calls[i] + ") &> " + log[0]
+            subprocess.run(command, shell=True)
+            i += 1
 
 
 rule Merge_freebayes_vcf:

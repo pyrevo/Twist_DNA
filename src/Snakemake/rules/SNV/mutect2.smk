@@ -137,7 +137,6 @@ rule Merge_vcf:
             chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
         ),
     output:
-        #temp("mutect2/temp/{sample}.mutect2.SB.vcf"),
         "mutect2/temp/{sample}.mutect2.unfilt.vcf",
     log:
         "logs/variantCalling/mutect2/merge_vcf/{sample}.log",
