@@ -71,7 +71,7 @@ rule vardict:
         reference=config["reference"]["ref"],
         regions="mutect2/bedfile.{chr}.bed",
     output:
-        vcf="vardict/temp/{sample}.{chr}.unsort.vcf",
+        vcf=temp("vardict/temp/{sample}.{chr}.unsort.vcf"),
     params:
         extra="-I 200 -Q 10 -F 0x700",
         sample_name=lambda wildcards: wildcards.sample,
@@ -100,29 +100,59 @@ rule filter_vardict:
 
 rule filter_iupac_codes_vardict:
     input:
-        "vardict/temp/{sample}.{chr}.unsort.filtered.vcf",
+        calls=expand(
+            "vardict/temp/{{sample}}.{chr}.unsort.filtered.vcf",
+            chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
+        ),
+        #"vardict/temp/{sample}.{chr}.unsort.filtered.vcf",
     output:
-        temp("vardict/temp/{sample}.{chr}.unsort.filtered.mod_iupac.vcf"),
+        calls=expand(
+            temp("vardict/temp/{{sample}}.{chr}.unsort.filtered.mod_iupac.vcf"),
+            chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
+        ),
+        #temp("vardict/temp/{sample}.{chr}.unsort.filtered.mod_iupac.vcf"),
     log:
         "logs/variantCalling/vardict/{sample}.{chr}.iupac_replace.log",
-    shell:
-        "(cat  {input} | "
-        " awk -F$'\t' -v OFS='\t' '{{if ($0 !~ /^#/) gsub(/[KMRYSWBVHDXkmryswbvhdx]/, \"N\", $4) }} {{print}}' |"
-        " awk -F$'\t' -v OFS='\t' '{{if ($0 !~ /^#/) gsub(/[KMRYSWBVHDXkmryswbvhdx]/, \"N\", $5) }} {{print}}' "
-        " > {output}) &> {log}"
+    container:
+        config["singularity"].get("python", config["singularity"].get("default", ""))
+    run:
+        import subprocess
+        i = 0
+        for file in input.calls:
+            command = "(cat  " + file + " | "
+            command += " awk -F$'\t' -v OFS='\t' '{{if ($0 !~ /^#/) gsub(/[KMRYSWBVHDXkmryswbvhdx]/, \"N\", $4) }} {{print}}' |"
+            command += " awk -F$'\t' -v OFS='\t' '{{if ($0 !~ /^#/) gsub(/[KMRYSWBVHDXkmryswbvhdx]/, \"N\", $5) }} {{print}}' "
+            command += " > " + output.calls[i] + ") &> " + log
+            subprocess.run(command, shell=True)
+            i += 1
 
 
 rule remove_duplicates_vardict:
     input:
-        "vardict/temp/{sample}.{chr}.unsort.filtered.mod_iupac.vcf",
+        calls=expand(
+            "vardict/temp/{{sample}}.{chr}.unsort.filtered.mod_iupac.vcf",
+            chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
+        ),
+        #"vardict/temp/{sample}.{chr}.unsort.filtered.mod_iupac.vcf",
     output:
-        temp("vardict/temp/{sample}.{chr}.unsort.filtered.mod_iupac.dup_removed.fixChr.vcf"),
+        calls=expand(
+            temp("vardict/temp/{{sample}}.{chr}.unsort.filtered.mod_iupac.dup_removed.fixChr.vcf"),
+            chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
+        ),
+        #temp("vardict/temp/{sample}.{chr}.unsort.filtered.mod_iupac.dup_removed.fixChr.vcf"),
     log:
         "logs/variantCalling/vardict/{sample}.{chr}.iupac_replace.removed_dup.log",
-    shell:
-        "(cat  {input} | "
-        " awk -F$'\t' -v OFS='\t' '$1!~/^#/ && $4 == $5 {{next}} {{print}}'"
-        " > {output}) &> {log}"
+    container:
+        config["singularity"].get("python", config["singularity"].get("default", ""))
+    run:
+        import subprocess
+        i = 0
+        for file in input.calls:
+            command = "(cat  " + file + " | "
+            command += " awk -F$'\t' -v OFS='\t' '$1!~/^#/ && $4 == $5 {{next}} {{print}}'"
+            command += " > " + output.calls[i] + ") &> " + log
+            subprocess.run(command, shell=True)
+            i += 1
 
 
 rule merge_vcf_vardict:
