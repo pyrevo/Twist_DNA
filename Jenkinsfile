@@ -106,7 +106,6 @@ pipeline {
             sh 'cp -r /data_twist_dna_gpu . && snakemake -n -s Twist_DNA.smk --directory /data_twist_dna_gpu'
             sh 'cp -r /data_twist_dna_cutadapt . && snakemake -n -s Twist_DNA.smk --directory /data_twist_dna_cutadapt'
             sh 'cp -r /data_twist_dna_fastp . && snakemake -n -s Twist_DNA.smk --directory /data_twist_dna_fastp'
-            sh 'cp -r /data_gms_somatic . && snakemake -n -s gms_somatic.smk --directory /data_gms_somatic/'
             sh 'cp -r /data_demultiplex . && snakemake -n -s demultiplex.smk --directory /data_demultiplex/'
         }
      }
@@ -127,7 +126,6 @@ pipeline {
             }
         }
         steps {
-            sh 'snakemake -j 4 -s /Twist_DNA/gms_somatic.smk --directory /data_gms_somatic --use-singularity --singularity-prefix /Twist_DNA --singularity-args  " --cleanenv --bind /beegfs-storage  --bind /projects --bind /data --bind /Twist_DNA "'
             sh 'snakemake -j 4 -s /Twist_DNA/Twist_DNA.smk --directory /data_twist_dna_markdup --use-singularity --singularity-prefix /Twist_DNA --singularity-args  " --cleanenv --bind /beegfs-storage  --bind /projects --bind /data --bind /Twist_DNA "'
         }
     }
