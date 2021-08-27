@@ -113,8 +113,6 @@ rule filter_iupac_codes_vardict:
         #temp("vardict/temp/{sample}.{chr}.unsort.filtered.mod_iupac.vcf"),
     log:
         "logs/variantCalling/vardict/{sample}.iupac_replace.log",
-    container:
-        config["singularity"].get("python", config["singularity"].get("default", ""))
     run:
         import subprocess
         i = 0
@@ -142,8 +140,6 @@ rule remove_duplicates_vardict:
         #temp("vardict/temp/{sample}.{chr}.unsort.filtered.mod_iupac.dup_removed.fixChr.vcf"),
     log:
         "logs/variantCalling/vardict/{sample}.iupac_replace.removed_dup.log",
-    container:
-        config["singularity"].get("python", config["singularity"].get("default", ""))
     run:
         import subprocess
         i = 0
