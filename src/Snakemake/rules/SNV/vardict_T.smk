@@ -106,10 +106,10 @@ rule filter_iupac_codes_vardict:
         ),
         #"vardict/temp/{sample}.{chr}.unsort.filtered.vcf",
     output:
-        calls=expand(
-            temp("vardict/temp/{{sample}}.{chr}.unsort.filtered.mod_iupac.vcf"),
+        calls=temp(expand(
+            "vardict/temp/{{sample}}.{chr}.unsort.filtered.mod_iupac.vcf",
             chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
-        ),
+        )),
         #temp("vardict/temp/{sample}.{chr}.unsort.filtered.mod_iupac.vcf"),
     log:
         "logs/variantCalling/vardict/{sample}.{chr}.iupac_replace.log",
@@ -135,10 +135,10 @@ rule remove_duplicates_vardict:
         ),
         #"vardict/temp/{sample}.{chr}.unsort.filtered.mod_iupac.vcf",
     output:
-        calls=expand(
-            temp("vardict/temp/{{sample}}.{chr}.unsort.filtered.mod_iupac.dup_removed.fixChr.vcf"),
+        calls=temp(expand(
+            "vardict/temp/{{sample}}.{chr}.unsort.filtered.mod_iupac.dup_removed.fixChr.vcf",
             chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
-        ),
+        )),
         #temp("vardict/temp/{sample}.{chr}.unsort.filtered.mod_iupac.dup_removed.fixChr.vcf"),
     log:
         "logs/variantCalling/vardict/{sample}.{chr}.iupac_replace.removed_dup.log",
