@@ -104,17 +104,18 @@ rule filter_iupac_codes_vardict:
             "vardict/temp/{{sample}}.{chr}.unsort.filtered.vcf",
             chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
         ),
-        #"vardict/temp/{sample}.{chr}.unsort.filtered.vcf",
     output:
-        calls=temp(expand(
-            "vardict/temp/{{sample}}.{chr}.unsort.filtered.mod_iupac.vcf",
-            chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
-        )),
-        #temp("vardict/temp/{sample}.{chr}.unsort.filtered.mod_iupac.vcf"),
+        calls=temp(
+            expand(
+                "vardict/temp/{{sample}}.{chr}.unsort.filtered.mod_iupac.vcf",
+                chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
+            )
+        ),
     log:
         "logs/variantCalling/vardict/{sample}.iupac_replace.log",
     run:
         import subprocess
+
         i = 0
         for file in input.calls:
             command = "(cat  " + file + " | "
@@ -131,17 +132,18 @@ rule remove_duplicates_vardict:
             "vardict/temp/{{sample}}.{chr}.unsort.filtered.mod_iupac.vcf",
             chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
         ),
-        #"vardict/temp/{sample}.{chr}.unsort.filtered.mod_iupac.vcf",
     output:
-        calls=temp(expand(
-            "vardict/temp/{{sample}}.{chr}.unsort.filtered.mod_iupac.dup_removed.fixChr.vcf",
-            chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
-        )),
-        #temp("vardict/temp/{sample}.{chr}.unsort.filtered.mod_iupac.dup_removed.fixChr.vcf"),
+        calls=temp(
+            expand(
+                "vardict/temp/{{sample}}.{chr}.unsort.filtered.mod_iupac.dup_removed.fixChr.vcf",
+                chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
+            )
+        ),
     log:
         "logs/variantCalling/vardict/{sample}.iupac_replace.removed_dup.log",
     run:
         import subprocess
+
         i = 0
         for file in input.calls:
             command = "(cat  " + file + " | "

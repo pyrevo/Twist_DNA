@@ -96,14 +96,17 @@ rule filter_iupac_codes:
             chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
         ),
     output:
-        calls=temp(expand(
-            "freebayes/temp/{{sample}}.{chr}.unsort.filtered.mod.vcf",
-            chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
-        )),
+        calls=temp(
+            expand(
+                "freebayes/temp/{{sample}}.{chr}.unsort.filtered.mod.vcf",
+                chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
+            )
+        ),
     log:
         "logs/variantCalling/freebayes/{sample}.iupac_replace.log",
     run:
         import subprocess
+
         i = 0
         for file in input.calls:
             command = "(cat  " + file + " | "
