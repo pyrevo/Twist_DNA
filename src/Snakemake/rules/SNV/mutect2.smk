@@ -200,7 +200,8 @@ rule LearnReadOrientationModel:
 
 rule GetPileupSummaries:
     input:
-        "Bam/DNA/{sample}-ready.bam",
+        bam="Bam/DNA/{sample}-ready.bam",
+        bai="Bam/DNA/{sample}-ready.bam.bai",
     params:
         "DATA/chr17_small_exac_common_3.vcf.gz",
     output:
@@ -210,7 +211,7 @@ rule GetPileupSummaries:
     container:
         config["singularity"].get("mutect2", config["singularity"].get("default", ""))
     shell:
-        "(gatk GetPileupSummaries -I {input} -V {params} -L {params} -O {output}) > {log}"
+        "(gatk GetPileupSummaries -I {input.bam} -V {params} -L {params} -O {output}) > {log}"
 
 
 rule CalculateContamination:
