@@ -14,8 +14,7 @@ rule all:
 
 rule Create_artifacts:
     input:
-        # {path}/{sample}.ensemble.vep.exon.soft_filter.multibp.vcf
-        vcfs="Artifact_vcfs.txt",
+        vcfs="DATA/Artifact_vcfs.txt",
     output:
         artifacts="Artifact_positions.txt",
     params:
