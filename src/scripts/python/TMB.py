@@ -17,6 +17,7 @@ for line in artifacts:
         for column in lline:
             if column == "vardict":
                 vardict_index = i
+            i += 1
         header = False
         continue
     chrom = lline[0]
