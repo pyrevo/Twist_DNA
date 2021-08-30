@@ -6,7 +6,6 @@ artifacts = open(snakemake.params.artifacts)
 out_vcf_filename = snakemake.output.vcf
 
 
-
 artifact_dict = {}
 header = True
 caller_list = []
@@ -65,7 +64,7 @@ for line in in_vcf:
                 Observations = artifact_dict[key][1]
     max_observations = 0
     for obs in Observations:
-        if int(obs) > max_observations :
+        if int(obs) > max_observations:
             max_observations = int(obs)
     if max_observations >= 2:
         if filter == "PASS":
