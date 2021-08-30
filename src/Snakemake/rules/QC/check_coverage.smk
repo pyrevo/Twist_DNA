@@ -6,7 +6,6 @@ rule check_DNA_coverage:
         bai="Bam/DNA/{sample}-ready.bam.bai",
         vcf="Results/DNA/{sample}/vcf/{sample}.ensemble.vep.exon.soft_filter.multibp.vcf",
         bed=config["hotspot_combined"],
-        #background_panel="DATA/background_panel.tsv",
         background_panel=config["Background"]["background_panel"],
         background_run="DATA/background_run.tsv",
         gvcf="mutect2/{sample}.mutect2.gvcf.gz",
