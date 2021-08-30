@@ -10,14 +10,14 @@ out_vcf_filename = snakemake.output.vcf
 artifact_dict = {}
 header = True
 caller_list = []
-Empty_observation = "0"
+Empty_observation = ["0"]
 for line in artifacts:
     lline = line.strip().split("\t")
     if header:
         caller_list = lline[3:]
         if len(caller_list) > 1:
-            for caller in caller_list:
-                Empty_observation += "|0"
+            for caller in caller_list[1:]:
+                Empty_observation.append("0")
         header = False
         continue
     chrom = lline[0]
@@ -54,7 +54,7 @@ for line in in_vcf:
     ref = lline[3]
     alt = lline[4]
     filter = lline[6]
-    Observations = [Empty_observation]
+    Observations = Empty_observation
     if len(ref) == 1 and len(alt) == 1:
         if key in artifact_dict:
             if artifact_dict[key][0] == "SNV":
