@@ -6,24 +6,35 @@ artifacts = open(snakemake.params.artifacts)
 out_vcf_filename = snakemake.output.vcf
 
 
-in_vcf = VariantFile(in_vcf_filename)
-new_header = in_vcf.header
-new_header.filters.add("Artifact", None, None, "SNV or INDEL observed in other samples")
-new_header.info.add("Artifact", "1", "Integer", "Number of observations of SNV or INDEL in other samples")
-out_vcf = VariantFile(out_vcf_filename, 'w', header=new_header)
-out_vcf.close()
-in_vcf.close()
-
-
 artifact_dict = {}
-next(artifacts)
+header = True
+caller_list = []
+Empty_observation = ["0"]
 for line in artifacts:
     lline = line.strip().split("\t")
+    if header:
+        caller_list = lline[3:]
+        if len(caller_list) > 1:
+            for caller in caller_list[1:]:
+                Empty_observation.append("0")
+        header = False
+        continue
     chrom = lline[0]
     pos = lline[1]
     type = lline[2]
-    observations = int(lline[3])
+    observations = lline[3:]
     artifact_dict[chrom + "_" + pos] = [type, observations]
+
+
+in_vcf = VariantFile(in_vcf_filename)
+new_header = in_vcf.header
+new_header.filters.add("Artifact", None, None, "SNV or INDEL observed in other samples")
+new_header.info.add(
+    "Artifact", "1", "String", "Number of observations of SNV or INDEL in panel samples per caller: " + "|".join(caller_list)
+)
+out_vcf = VariantFile(out_vcf_filename, 'w', header=new_header)
+out_vcf.close()
+in_vcf.close()
 
 
 out_vcf = open(out_vcf_filename, "a")
@@ -42,7 +53,7 @@ for line in in_vcf:
     ref = lline[3]
     alt = lline[4]
     filter = lline[6]
-    Observations = 0
+    Observations = Empty_observation
     if len(ref) == 1 and len(alt) == 1:
         if key in artifact_dict:
             if artifact_dict[key][0] == "SNV":
@@ -51,14 +62,22 @@ for line in in_vcf:
         if key in artifact_dict:
             if artifact_dict[key][0] == "INDEL":
                 Observations = artifact_dict[key][1]
-    if Observations >= 2:
+    max_observations = 0
+    for obs in Observations:
+        if int(obs) > max_observations:
+            max_observations = int(obs)
+    if max_observations >= 2:
         if filter == "PASS":
             filter = "Artifact"
         else:
             filter += ";Artifact"
         lline[6] = filter
     INFO = lline[7]
-    INFO = "Artifact=" + str(Observations) + ";" + INFO
+    Artifact_string = "Artifact=" + Observations[0]
+    if len(Observations) > 1:
+        for obs in Observations[1:]:
+            Artifact_string += "|" + obs
+    INFO = Artifact_string + ";" + INFO
     lline[7] = INFO
     out_vcf.write(lline[0])
     for column in lline[1:]:

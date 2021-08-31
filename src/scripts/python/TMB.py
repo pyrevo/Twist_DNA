@@ -8,17 +8,26 @@ output_tmb = open(snakemake.output.tmb, "w")
 
 
 FFPE_SNV_artifacts = {}
-next(artifacts)
+header = True
+vardict_index = 10000
 for line in artifacts:
     lline = line.strip().split("\t")
+    if header:
+        i = 0
+        for column in lline:
+            if column == "vardict":
+                vardict_index = i
+            i += 1
+        header = False
+        continue
     chrom = lline[0]
     pos = lline[1]
     key = chrom + "_" + pos
     type = lline[2]
     if type != "SNV":
         continue
-    observations = int(lline[3])
-    FFPE_SNV_artifacts[key] = observations
+    vadict_observations = int(lline[vardict_index])
+    FFPE_SNV_artifacts[key] = vadict_observations
 
 
 '''Background'''
