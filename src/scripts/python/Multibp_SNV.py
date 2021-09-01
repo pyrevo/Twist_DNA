@@ -53,6 +53,17 @@ for line in in_vcf:
     alt = lline[4]
     if len(ref) > 1 or len(alt) > 1:
         continue
+    INFO = lline[7]
+    INFO_list = INFO.split(";")
+    AF_index = 0
+    i = 0
+    for info in INFO_list:
+        if info[:3] == "AF=":
+            AF_index = i
+        i += 1
+    AF = float(INFO_list[AF_index][3:])
+    if AF < 0.05 :
+        continue
     if chrom == prev_chrom and pos - prev_pos <= 2:
         if not (candidate_list != [] and candidate_list[-1][0] == prev_chrom and int(candidate_list[-1][1]) == prev_pos):
             candidate_list.append(prev_lline)
@@ -121,7 +132,15 @@ for Multibp in Multibp_list:
             alt[codon_pos] = dna_change[1]
         AA_ref[codon_pos] = dna_change[0]
         AA_alt[codon_pos] = dna_change[1]
-        AF = float(variant[7].split("AF=")[1].split(";")[0])
+        INFO = variant[7]
+        INFO_list = INFO.split(";")
+        AF_index = 0
+        i = 0
+        for info in INFO_list:
+            if info[:3] == "AF=":
+                AF_index = i
+            i += 1
+        AF = float(INFO_list[AF_index][3:])
         AF_list.append(AF)
 
     AF_min = 1.0
