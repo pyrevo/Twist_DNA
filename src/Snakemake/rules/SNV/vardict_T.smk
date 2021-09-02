@@ -121,7 +121,7 @@ rule filter_iupac_codes_vardict:
             command = "(cat  " + file + " | "
             command += " awk -F$'\t' -v OFS='\t' '{{if ($0 !~ /^#/) gsub(/[KMRYSWBVHDXkmryswbvhdx]/, \"N\", $4) }} {{print}}' |"
             command += " awk -F$'\t' -v OFS='\t' '{{if ($0 !~ /^#/) gsub(/[KMRYSWBVHDXkmryswbvhdx]/, \"N\", $5) }} {{print}}' "
-            command += " > " + output.calls[i] + ") &> " + log
+            command += " > " + output.calls[i] + ") &> " + log[0]
             subprocess.run(command, shell=True)
             i += 1
 
@@ -148,7 +148,7 @@ rule remove_duplicates_vardict:
         for file in input.calls:
             command = "(cat  " + file + " | "
             command += " awk -F$'\t' -v OFS='\t' '$1!~/^#/ && $4 == $5 {{next}} {{print}}'"
-            command += " > " + output.calls[i] + ") &> " + log
+            command += " > " + output.calls[i] + ") &> " + log[0]
             subprocess.run(command, shell=True)
             i += 1
 
