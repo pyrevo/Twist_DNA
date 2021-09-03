@@ -6,20 +6,24 @@
 
 ***********************
 
-- [System configuration](#system-configuration)
-	- [Requirements](#requirements)
-	- [DRMAA installation for HPC clusters users](#drmaa-installation-for-hpc-clusters-users)
-	- [Clone the Twist_DNA github repo](#clone-the-twist_dna-github-repo)
-- [Reference files](#reference-files)
-	- [Reference download](#reference-download)
-	- [Reference indexing](#reference-indexing)
-	- [VEP reference database download](#vep-reference-database-download)
-	- [Interval list for Picard](#interval-list-for-Picard)
-- [Configuration files](#configuration-files)
-	- [Config file generation](#config-file-generation)
-	- [Config file generation on HPC clusters](#config-file-generation-on-hpc-clusters)
-	- [Additional required files](#additional-required-files)
-- [Run the workflow](#run-the-workflow)
+- [Twist_DNA](#twist_dna)
+  - [System configuration](#system-configuration)
+    - [Requirements](#requirements)
+    - [DRMAA installation for HPC clusters users](#drmaa-installation-for-hpc-clusters-users)
+    - [Clone the Twist_DNA github repo](#clone-the-twist_dna-github-repo)
+  - [Reference files](#reference-files)
+    - [Reference download](#reference-download)
+    - [Reference indexing](#reference-indexing)
+    - [VEP reference database download](#vep-reference-database-download)
+    - [Interval list for Picard](#interval-list-for-picard)
+  - [Configuration files](#configuration-files)
+    - [Config file generation](#config-file-generation)
+    - [Config file generation on HPC clusters](#config-file-generation-on-hpc-clusters)
+    - [Additional required files](#additional-required-files)
+  - [Run the workflow](#run-the-workflow)
+  - [Possible adjustments in certain cases](#possible-adjustments-in-certain-cases)
+    - [Adjustment in `rule recall`](#adjustment-in-rule-recall)
+    - [Coverage analysis](#coverage-analysis)
 
 ***********************
 
@@ -186,4 +190,44 @@ snakemake --cores 10 --use-singularity --singularity-args "--bind /mount/point/o
 You can add as many mount points as you want. It depends on how input files are distributed on your system. You can have the fastq files on /mount/point/one and the reference files /mount/point/two such as in the example above or if you have everything in the same place you can add just one mount point.
 
 <br>
+
+## Possible adjustments in certain cases
+
+In order to run the pipeline in some OS:s some changes in certain rules may be necessary.
+
+### Adjustment in `rule recall`
+
+In a Red Hat Enterprise Linux release 8.4 (Ootpa) server `rule recall` (in file: `src/Snakemake/rules/VCF_fix/recall.smk`) may cause the following error:
+
+![](https://i.imgur.com/uvm6hY7.png)
+
+![](https://i.imgur.com/vPoTm5J.png)
+
+and thus may need some adjustments. To fix the error, the following changes can be made:
+
+1. Add lines to params
+
+```python
+bcbio_singularity=config["singularity"]["execute"] + config["singularity"].get("ensemble", config["singularity"].get("default", ""))
+```
+
+2. Adjust the shell section
+
+```bash
+{params.bcbio_singularity} bcbio-variation-recall ensemble -c 50 -n {params.support} --names {params.order} {output.vcf} {input.ref} {input.vcfs} &> {log}
+```
+
+**The final outcome**
+
+After the changes, the rule should look something like [this](https://github.com/Genomic-Medicine-Linkoping/Twist_DNA/blob/c0c8230e0f1ac09dce5948a51c43f8bdc62ac22f/src/Snakemake/rules/VCF_fix/recall.smk#L24-L31).
+
+### Coverage analysis
+
+In case you wish to execute coverage analysis using `bedtools coverage` you might need to convert the appropriate interval list back to bed file that is understood by the tool. This can be accomplished with e.g. the following command:
+
+```bash=
+ILIST=pool1_pool2_nochr_3c.sort.merged.hg19.210311.met.annotated.interval_list
+BED=pool1_pool2_nochr_3c.sort.merged.hg19.210311.met.annotated.bed
+gatk IntervalListToBed -I "$ILIST" -O "$BED"
+```
 
