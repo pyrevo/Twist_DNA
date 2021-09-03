@@ -102,10 +102,13 @@ def count_LST_score(filtered_merged_segments):
         i = 0
         max_i = len(cn_sequence) - 1 - 1
         while i <= max_i:
-            '''Two adjacent large (l) regions with a gap lower than 3M bp'''
+            '''Two adjacent large (l) regions with a gap lower than 3M bp that has lower CN'''
             if cn_sequence[i:i+2] == "ll":
                 gap = filtered_merged_segments[chrom][i+1]["start_pos"] - filtered_merged_segments[chrom][i]["end_pos"]
-                if gap < 3000000:
+                cn1 = filtered_merged_segments[chrom][i]["cn"]
+                cn2 = filtered_merged_segments[chrom][i+1]["cn"]
+                cn3 = filtered_merged_segments[chrom][i+2]["cn"]
+                if gap < 3000000 and cn2 < cn1 and cn2 < cn3:
                     LST_score += 1
             i += 1
     return LST_score
@@ -126,7 +129,9 @@ def count_TAI_score(filtered_merged_segments):
             ):
                 nr_TAI_segments += 1
             i += 1
-        TAI_score += nr_TAI_segments
+        '''No TAI_score for CNV of entire chromosome'''
+        if nr_segments > 2 or (nr_segments == 2 and nr_TAI_segments == 1):
+            TAI_score += nr_TAI_segments
     return TAI_score
 
 
