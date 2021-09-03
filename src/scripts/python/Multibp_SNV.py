@@ -62,7 +62,7 @@ for line in in_vcf:
             AF_index = i
         i += 1
     AF = float(INFO_list[AF_index][3:])
-    if AF < 0.05 :
+    if AF < 0.05:
         continue
     if chrom == prev_chrom and pos - prev_pos <= 2:
         if not (candidate_list != [] and candidate_list[-1][0] == prev_chrom and int(candidate_list[-1][1]) == prev_pos):
