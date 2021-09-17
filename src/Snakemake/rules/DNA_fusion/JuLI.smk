@@ -34,7 +34,7 @@ rule JuLI_call:
 rule JuLI_filter_druggable:
     input:
         fusions="Results/DNA/{sample}/Fusions/JuLI/{sample}.txt",
-        genes="DATA/druggable.hg19.csv",
+        genes=config["geneFuses"]["genes"],
     output:
         fusions="Results/DNA/{sample}/Fusions/JuLI/{sample}.filtered.txt",
     container:
