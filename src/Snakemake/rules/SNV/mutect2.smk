@@ -154,8 +154,7 @@ rule Merge_stats:
         ),
     params:
         stats=' '.join(
-            '-stats ' + v
-            for v in expand(
+            '-stats ' + v for v in expand(
                 "mutect2/temp/{{sample}}.{chr}.mutect2.unfilt.vcf.gz.stats",
                 chr=utils.extract_chr(config['reference']['ref'] + ".fai", filter_out=config.get("skip_chrs", [])),
             )
