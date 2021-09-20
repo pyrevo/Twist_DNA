@@ -102,13 +102,13 @@ rule filter_iupac_codes_vardict:
     input:
         calls=expand(
             "vardict/temp/{{sample}}.{chr}.unsort.filtered.vcf",
-            chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
+            chr=utils.extract_chr(config['reference']['ref'] + ".fai", filter_out=config.get("skip_chrs", [])),
         ),
     output:
         calls=temp(
             expand(
                 "vardict/temp/{{sample}}.{chr}.unsort.filtered.mod_iupac.vcf",
-                chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
+                chr=utils.extract_chr(config['reference']['ref'] + ".fai", filter_out=config.get("skip_chrs", [])),
             )
         ),
     log:
@@ -130,13 +130,13 @@ rule remove_duplicates_vardict:
     input:
         calls=expand(
             "vardict/temp/{{sample}}.{chr}.unsort.filtered.mod_iupac.vcf",
-            chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
+            chr=utils.extract_chr(config['reference']['ref'] + ".fai", filter_out=config.get("skip_chrs", [])),
         ),
     output:
         calls=temp(
             expand(
                 "vardict/temp/{{sample}}.{chr}.unsort.filtered.mod_iupac.dup_removed.fixChr.vcf",
-                chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
+                chr=utils.extract_chr(config['reference']['ref'] + ".fai", filter_out=config.get("skip_chrs", [])),
             )
         ),
     log:
@@ -157,7 +157,7 @@ rule merge_vcf_vardict:
     input:
         calls=expand(
             "vardict/temp/{{sample}}.{chr}.unsort.filtered.mod_iupac.dup_removed.chrAdded.vcf",
-            chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
+            chr=utils.extract_chr(config['reference']['ref'] + ".fai", filter_out=config.get("skip_chrs", [])),
         ),
     output:
         temp("vardict/temp/{sample}.unsort.filtered.mod.vcf"),

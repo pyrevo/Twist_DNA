@@ -69,6 +69,9 @@ geneFuse:
 TMB:
     Artifacts: "/Twist_DNA/DATA/Vardict_artifact_positions.txt"
 
+mutect2:
+    GetPileupSummaries: "/Twist_DNA/DATA/chr17_small_exac_common_3.vcf.gz"
+
 java:
     SOBDetector: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/SOBDetector_v1.0.1.jar"
 

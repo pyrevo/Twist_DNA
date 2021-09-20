@@ -134,7 +134,7 @@ rule Merge_vcf:
     input:
         calls=expand(
             "mutect2/temp/{{sample}}.{chr}.mutect2.unfilt.vcf.gz",
-            chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
+            chr=utils.extract_chr(config['reference']['ref'] + ".fai", filter_out=config.get("skip_chrs", [])),
         ),
     output:
         "mutect2/temp/{sample}.mutect2.unfilt.vcf",
@@ -150,14 +150,13 @@ rule Merge_stats:
     input:
         stats=expand(
             "mutect2/temp/{{sample}}.{chr}.mutect2.unfilt.vcf.gz.stats",
-            chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
+            chr=utils.extract_chr(config['reference']['ref'] + ".fai", filter_out=config.get("skip_chrs", [])),
         ),
     params:
         stats=' '.join(
-            '-stats ' + v
-            for v in expand(
+            '-stats ' + v for v in expand(
                 "mutect2/temp/{{sample}}.{chr}.mutect2.unfilt.vcf.gz.stats",
-                chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
+                chr=utils.extract_chr(config['reference']['ref'] + ".fai", filter_out=config.get("skip_chrs", [])),
             )
         ),
     output:
@@ -174,7 +173,7 @@ rule merge_LearnReadOrientationModel:
     input:
         f1r2=expand(
             "mutect2/temp/{{sample}}.{chr}.mutect2.f1r2.tar.gz",
-            chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
+            chr=utils.extract_chr(config['reference']['ref'] + ".fai", filter_out=config.get("skip_chrs", [])),
         ),
     output:
         f1r2=temp("mutect2/temp/{sample}.mutect2.f1r2.tar.gz"),
@@ -202,7 +201,7 @@ rule GetPileupSummaries:
         bam="Bam/DNA/{sample}-ready.bam",
         bai="Bam/DNA/{sample}-ready.bam.bai",
     params:
-        "DATA/chr17_small_exac_common_3.vcf.gz",
+        config["mutect2"]["GetPileupSummaries"],
     output:
         temp("mutect2/temp/{sample}.mutect2.getpileupsummaries.table"),
     log:
@@ -257,7 +256,7 @@ rule Merge_gvcf:
     input:
         calls=expand(
             "mutect2/temp/{{sample}}.{chr}.mutect2.gvcf.gz",
-            chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
+            chr=utils.extract_chr(config['reference']['ref'] + ".fai", filter_out=config.get("skip_chrs", [])),
         ),
     output:
         "mutect2/{sample}.mutect2.gvcf.gz",
@@ -300,7 +299,7 @@ rule merge_mutect_bam:
     input:
         expand(
             "mutect2/bam_temp2/{{sample}}-ready.{chr}.indel.bam",
-            chr=utils.extract_chr(config['reference']['ref'] + ".fai"),
+            chr=utils.extract_chr(config['reference']['ref'] + ".fai", filter_out=config.get("skip_chrs", [])),
         ),
     output:
         _mutect_output_bam,
