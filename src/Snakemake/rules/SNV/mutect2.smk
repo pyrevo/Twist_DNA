@@ -201,7 +201,7 @@ rule GetPileupSummaries:
         bam="Bam/DNA/{sample}-ready.bam",
         bai="Bam/DNA/{sample}-ready.bam.bai",
     params:
-        "DATA/chr17_small_exac_common_3.vcf.gz",
+        config["mutect2"]["GetPileupSummaries"],
     output:
         temp("mutect2/temp/{sample}.mutect2.getpileupsummaries.table"),
     log:

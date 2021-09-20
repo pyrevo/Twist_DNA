@@ -26,8 +26,10 @@ for line in artifacts:
     type = lline[2]
     if type != "SNV":
         continue
-    vadict_observations = int(lline[vardict_index])
-    FFPE_SNV_artifacts[key] = vadict_observations
+    if vardict_index == 10000 :
+        continue
+    vardict_observations = int(lline[vardict_index])
+    FFPE_SNV_artifacts[key] = vardict_observations
 
 
 '''Background'''
