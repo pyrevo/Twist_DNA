@@ -32,7 +32,7 @@ _fix_fastq_run_dna_input = (
     + wildcards.read
     + "_001.fastq.gz"
 )
-_fix_fastq_run_dna_output = "fastq_temp/DNA/{sample}_R2.fastq.gz"
+_fix_fastq_run_dna_output = "fastq_temp/DNA/{sample}_{read}.fastq.gz"
 if "units" in config:
     _fix_fastq_run_dna_input = lambda wildcards: utils.get_fastq_file(
         units, wildcards.sample, wildcards.unit, "fq1" if wildcards.read == "R1" else "fq2"
@@ -40,7 +40,7 @@ if "units" in config:
     _fix_fastq_run_dna_output = "fastq_temp/DNA/{sample}_{unit}_{read}.fastq.gz"
 
 
-rule fix_fastq_run_dn:
+rule fix_fastq_run_dna:
     input:
         fastq=_fix_fastq_run_dna_input,
     output:
