@@ -186,11 +186,11 @@ for region in Both_regions:
             cnv_relevant_clinical.write(
                 method + "\t" + region[1] + "\t" + clinical_gene + "\t" + region[2] + "\t" + region[3] + "\t" +
                 region[4] + "\t" + str(region[9]) + "\t" + str(region[13]) + "\t" + str(region[14]) +
-                "\t" + str(region[8]) + "\t" + str(nr_exons) + "\t" + nr_probes + "\t" + depth + "\t" + str(region[7]) + "\n"
+                "\t" + str(region[8]) + "\t" + str(nr_exons) + "\t" + region[12] + "\t" + region[11] + "\t" + str(region[7]) + "\n"
             )
         if (found_gene and region[9] > 2.5) or (region[9] < 1.5 and region[2] == "chr1"):
             cnv_relevant_clinical.write(
                 method + "\t" + region[1] + "\t" + clinical_gene + "\t" + region[2] + "\t" + region[3] + "\t" +
                 region[4] + "\t" + str(region[9]) + "\t" + str(region[13]) + "\t" + str(region[14]) +
-                "\t" + str(region[8]) + "\t" + str(nr_exons) + "\t" + nr_probes + "\t" + depth + "\t" + str(region[7]) + "\n"
+                "\t" + str(region[8]) + "\t" + str(nr_exons) + "\t" + region[12] + "\t" + region[11] + "\t" + str(region[7]) + "\n"
             )
