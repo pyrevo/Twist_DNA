@@ -101,4 +101,4 @@ rule fastp:
     container:
         config["singularity"].get("fastp", config["singularity"].get("default", ""))
     wrapper:
-        "0.69.0/bio/fastp"
+        "v0.69.0/bio/fastp"
