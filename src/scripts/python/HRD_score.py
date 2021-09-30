@@ -100,10 +100,10 @@ def count_LST_score(filtered_merged_segments):
             else:
                 cn_sequence += "l"
         i = 0
-        max_i = len(cn_sequence) - 1 - 1
+        max_i = len(cn_sequence) - 1 - 2
         while i <= max_i:
             '''Two adjacent large (l) regions with a gap lower than 3M bp that has lower CN'''
-            if cn_sequence[i:i+2] == "ll":
+            if cn_sequence[i] == "l" and cn_sequence[i+2] == "l":
                 gap = filtered_merged_segments[chrom][i+1]["start_pos"] - filtered_merged_segments[chrom][i]["end_pos"]
                 cn1 = filtered_merged_segments[chrom][i]["cn"]
                 cn2 = filtered_merged_segments[chrom][i+1]["cn"]
