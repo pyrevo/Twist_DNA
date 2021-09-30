@@ -114,12 +114,12 @@ for cnv_file_name in GATK_CNV_files:
         if GATK_corrected_CN < 1.2 and abs(GATK_MAF - 0.5) > 0.15 and length > 100000 and (Points_CR > 20 or Points_MAF > 20):
             GATK_regions.append([
                 "GATK_CNV", sample2, lline[0], lline[1], lline[2], GATK_CR, GATK_MAF, purity, length,
-                GATK_corrected_CN, lline[4], lline[5]
+                GATK_corrected_CN, str(Points_CR), str(Points_MAF)
             ])
         elif GATK_corrected_CN > 4.0 and length > 10000:
             GATK_regions.append([
                 "GATK_CNV", sample2, lline[0], lline[1], lline[2], GATK_CR, GATK_MAF, purity, length,
-                GATK_corrected_CN, lline[4], lline[5]
+                GATK_corrected_CN, str(Points_CR), str(Points_MAF)
             ])
     seg.close()
 
