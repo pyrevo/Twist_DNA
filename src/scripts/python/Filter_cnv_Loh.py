@@ -73,8 +73,11 @@ for cnv_file_name in cnvkit_files:
             CNVkit_MAF = 0.0
         else:
             CNVkit_MAF = float(CNVkit_MAF)
-        depth = lline[11]
-        nr_probes = lline[12]
+        depth = "0"
+        nr_probes = "0"
+        if len(lline) >= 12 :
+            depth = lline[11]
+            nr_probes = lline[12]
         length = int(lline[2]) - int(lline[1]) + 1
         purity = sample_purity_dict[sample2][3]
         CN_CNVkit = round(2*pow(2, CNVkit_CR), 2)
