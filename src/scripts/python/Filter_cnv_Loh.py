@@ -80,11 +80,13 @@ for cnv_file_name in cnvkit_files:
         CN_CNVkit = round(2*pow(2, CNVkit_CR), 2)
         if CN_CNVkit < 1.2 and abs(CNVkit_MAF - 0.5) > 0.15 and length > 100000:
             CNVkit_regions.append([
-                "CNVkit", sample2, lline[0], lline[1], lline[2], CNVkit_CR, CNVkit_MAF, purity, length, CN_CNVkit, lline[3], depth, nr_probes
+                "CNVkit", sample2, lline[0], lline[1], lline[2], CNVkit_CR, CNVkit_MAF, purity, length, CN_CNVkit, lline[3],
+                depth, nr_probes
             ])
         elif CN_CNVkit > 4.0 and length > 10000:
             CNVkit_regions.append([
-                "CNVkit", sample2, lline[0], lline[1], lline[2], CNVkit_CR, CNVkit_MAF, purity, length, CN_CNVkit, lline[3], depth, nr_probes
+                "CNVkit", sample2, lline[0], lline[1], lline[2], CNVkit_CR, CNVkit_MAF, purity, length, CN_CNVkit, lline[3],
+                depth, nr_probes
             ])
     seg.close()
 
@@ -181,14 +183,14 @@ for region in Both_regions:
         '''change this'''
         if (region[9] < 1.5 and (region[2] == "chr1" or region[2] == "chr19")):
             clinical_gene = "1p19q?"
-            "CNVkit", sample2, lline[0], lline[1], lline[2], CNVkit_CR, CNVkit_MAF, purity, length, CN_CNVkit, lline[3], depth, nr_probes
             cnv_relevant_clinical.write(
                 method + "\t" + region[1] + "\t" + clinical_gene + "\t" + region[2] + "\t" + region[3] + "\t" +
                 region[4] + "\t" + str(region[9]) + "\t" + str(region[13]) + "\t" + str(region[14]) +
                 "\t" + str(region[8]) + "\t" + str(nr_exons) + "\t" + nr_probes + "\t" + depth + "\t" + str(region[7]) + "\n"
             )
         if (found_gene and region[9] > 2.5) or (region[9] < 1.5 and region[2] == "chr1"):
-            cnv_method + "\t" + region[1] + "\t" + clinical_gene + "\t" + region[2] + "\t" + region[3] + "\t" +
-            region[4] + "\t" + str(region[9]) + "\t" + str(region[13]) + "\t" + str(region[14]) +
-            "\t" + str(region[8]) + "\t" + str(nr_exons) + "\t" + nr_probes + "\t" + depth + "\t" + str(region[7]) + "\n"
+            cnv_relevant_clinical.write(
+                method + "\t" + region[1] + "\t" + clinical_gene + "\t" + region[2] + "\t" + region[3] + "\t" +
+                region[4] + "\t" + str(region[9]) + "\t" + str(region[13]) + "\t" + str(region[14]) +
+                "\t" + str(region[8]) + "\t" + str(nr_exons) + "\t" + nr_probes + "\t" + depth + "\t" + str(region[7]) + "\n"
             )
