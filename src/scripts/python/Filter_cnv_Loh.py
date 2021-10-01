@@ -18,8 +18,8 @@ cnv_relevant_clinical = open(snakemake.output.relevant_cnvs_clinical, "w")
 in_path = snakemake.params.in_path
 out_path = snakemake.params.out_path
 
-cnv_relevant_clinical.write("Method\tsample\tgenes\tchrom\tstart_pos\tend_pos\tCN_CNVkit\tCN_GATK\tBAF\tregion_size")
-cnv_relevant_clinical.write("\tnr_exons\tnr_obs_cov\tnr_obs_baf\tpurity\n")
+cnv_relevant_clinical.write("Method\tsample\tgenes\tchrom\tstart_pos\tend_pos\tCN_CNVkit\tCN_GATK\tGATK_BAF\tregion_size")
+cnv_relevant_clinical.write("\tnr_exons\tnr_obs\tdepth\tpurity\n")
 cnv_relevant.write("Method\tsample\tgenes\tchrom\tstart_pos\tend_pos\tCN\tBAF\tregion_size\tnr_exons\tnr_obs_cov")
 cnv_relevant.write("\tnr_obs_baf\tpurity\n")
 
@@ -73,16 +73,23 @@ for cnv_file_name in cnvkit_files:
             CNVkit_MAF = 0.0
         else:
             CNVkit_MAF = float(CNVkit_MAF)
+        depth = "0"
+        nr_probes = "0"
+        if len(lline) >= 12 :
+            depth = lline[11]
+            nr_probes = lline[12]
         length = int(lline[2]) - int(lline[1]) + 1
         purity = sample_purity_dict[sample2][3]
         CN_CNVkit = round(2*pow(2, CNVkit_CR), 2)
         if CN_CNVkit < 1.2 and abs(CNVkit_MAF - 0.5) > 0.15 and length > 100000:
             CNVkit_regions.append([
-                "CNVkit", sample2, lline[0], lline[1], lline[2], CNVkit_CR, CNVkit_MAF, purity, length, CN_CNVkit, lline[3]
+                "CNVkit", sample2, lline[0], lline[1], lline[2], CNVkit_CR, CNVkit_MAF, purity, length, CN_CNVkit, lline[3],
+                depth, nr_probes
             ])
         elif CN_CNVkit > 4.0 and length > 10000:
             CNVkit_regions.append([
-                "CNVkit", sample2, lline[0], lline[1], lline[2], CNVkit_CR, CNVkit_MAF, purity, length, CN_CNVkit, lline[3]
+                "CNVkit", sample2, lline[0], lline[1], lline[2], CNVkit_CR, CNVkit_MAF, purity, length, CN_CNVkit, lline[3],
+                depth, nr_probes
             ])
     seg.close()
 
@@ -114,12 +121,12 @@ for cnv_file_name in GATK_CNV_files:
         if GATK_corrected_CN < 1.2 and abs(GATK_MAF - 0.5) > 0.15 and length > 100000 and (Points_CR > 20 or Points_MAF > 20):
             GATK_regions.append([
                 "GATK_CNV", sample2, lline[0], lline[1], lline[2], GATK_CR, GATK_MAF, purity, length,
-                GATK_corrected_CN, lline[4], lline[5]
+                GATK_corrected_CN, str(Points_CR), str(Points_MAF)
             ])
         elif GATK_corrected_CN > 4.0 and length > 10000:
             GATK_regions.append([
                 "GATK_CNV", sample2, lline[0], lline[1], lline[2], GATK_CR, GATK_MAF, purity, length,
-                GATK_corrected_CN, lline[4], lline[5]
+                GATK_corrected_CN, str(Points_CR), str(Points_MAF)
             ])
     seg.close()
 
@@ -138,9 +145,9 @@ for region1 in GATK_regions:
                     if len(Both_regions) > 0:
                         if not (region2[1] == Both_regions[-1][1] and region2[2] == Both_regions[-1][2] and
                                 region2[3] == Both_regions[-1][3] and region2[4] == Both_regions[-1][4]):
-                            Both_regions.append(region2 + [region1[9]])
+                            Both_regions.append(region2 + [region1[9]] + [region1[6]])
                     else:
-                        Both_regions.append(region2 + [region1[9]])
+                        Both_regions.append(region2 + [region1[9]] + [region1[6]])
                     found = True
     if found:
         Both_regions.append(region1)
@@ -181,12 +188,12 @@ for region in Both_regions:
             clinical_gene = "1p19q?"
             cnv_relevant_clinical.write(
                 method + "\t" + region[1] + "\t" + clinical_gene + "\t" + region[2] + "\t" + region[3] + "\t" +
-                region[4] + "\t" + str(region[9]) + "\t" + str(region[11]) + "\t" + str(region[6]) + "\t" + str(region[8]) +
-                "\t" + str(nr_exons) + "\t" + nr_obs_cov + "\t" + nr_obs_baf + "\t" + str(region[7]) + "\n"
+                region[4] + "\t" + str(region[9]) + "\t" + str(region[13]) + "\t" + str(region[14]) +
+                "\t" + str(region[8]) + "\t" + str(nr_exons) + "\t" + region[12] + "\t" + region[11] + "\t" + str(region[7]) + "\n"
             )
         if (found_gene and region[9] > 2.5) or (region[9] < 1.5 and region[2] == "chr1"):
             cnv_relevant_clinical.write(
                 method + "\t" + region[1] + "\t" + clinical_gene + "\t" + region[2] + "\t" + region[3] + "\t" +
-                region[4] + "\t" + str(region[9]) + "\t" + str(region[11]) + "\t" + str(region[6]) + "\t" + str(region[8]) +
-                "\t" + str(nr_exons) + "\t" + nr_obs_cov + "\t" + nr_obs_baf + "\t" + str(region[7]) + "\n"
+                region[4] + "\t" + str(region[9]) + "\t" + str(region[13]) + "\t" + str(region[14]) +
+                "\t" + str(region[8]) + "\t" + str(nr_exons) + "\t" + region[12] + "\t" + region[11] + "\t" + str(region[7]) + "\n"
             )
