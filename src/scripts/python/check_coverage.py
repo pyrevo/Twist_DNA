@@ -12,12 +12,14 @@ gvcf = snakemake.input.gvcf
 outfile = open(snakemake.output.coverage, "w")
 outfile2 = open(snakemake.output.coverage2, "w")
 
-header = "#Chr\tStart_hg19\tEnd_hg19\tGene\tCDS_mut_syntax\tAA_mut_syntax\tReport\tcomment\tExon\tAccession_number"
-header += "\tpanel_median\tpanel_sd\trun_median\talt_AF\tSD_from_median"
-header += "\tCoverage\tPosition\tDP\tRef_DP\tAlt_DP\tAF\tAA_change\tCDS_change\n"
+header1 = "#Chr\tStart_hg19\tEnd_hg19\tGene\tCDS_mut_syntax\tAA_mut_syntax\tReport\tcomment\tExon\tAccession_number"
+header1 += "\tCoverage\tPosition"
+header2 = header1
+header2 += "\tpanel_median\tpanel_sd\trun_median\talt_AF\tSD_from_median"
+header2 += "\tDP\tRef_DP\tAlt_DP\tAF\tAA_change\tCDS_change\n"
 
-outfile.write(header)
-outfile2.write(header)
+outfile.write(header1 + "\n")
+outfile2.write(header2)
 
 
 '''Find positions to report and gene regions to analyse'''
