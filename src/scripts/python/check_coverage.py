@@ -59,24 +59,14 @@ for line in bed:
         first_gene = False
         continue
     if prev_gene != gene:
-        gene_regions.append([int(prev_chrom), "chr" + prev_chrom + ":" + gene_start_pos + "-" + gene_end_pos])
+        gene_regions.append("chr" + prev_chrom + ":" + gene_start_pos + "-" + gene_end_pos)
         prev_gene = gene
         prev_chrom = chrom
         gene_start_pos = start_pos
         gene_end_pos = end_pos
     else:
         gene_end_pos = end_pos
-gene_regions.append([int(chrom), "chr" + chrom + ":" + gene_start_pos + "-" + gene_end_pos])
-
-
-'''Remove identical regions'''
-gene_regions.sort()
-gene_regions_temp = []
-for gene_region in gene_regions:
-    gene_region = gene_region[1]
-    if gene_region not in gene_regions_temp:
-        gene_regions_temp.append(gene_region)
-gene_regions = gene_regions_temp
+gene_regions.append("chr" + chrom + ":" + gene_start_pos + "-" + gene_end_pos)
 
 
 '''find all calls in the vcf overlapping hotspots'''
