@@ -3,7 +3,7 @@ rule HRD_score:
     input:
         segment="CNV/cnvkit_calls/{sample}-LoH.cns",
     output:
-        HRD="Results/DNA/{sample}/HRD/HRD_score.txt",
+        HRD="Results/DNA/{sample}/HRD/{sample}.HRD_score.txt",
     log:
         "logs/HRD/HRD_score_{sample}.log",
     container:

@@ -62,11 +62,11 @@ def get_input():
     input_list.append(["Results/DNA/" + s + "/TMB/" + s + ".TMB.txt" for s in sample_list])
 
     '''HRD'''
-    input_list.append(["Results/DNA/" + s + "/HRD/HRD_score.txt" for s in sample_list])
+    input_list.append(["Results/DNA/" + s + "/HRD/" + s + ".HRD_score.txt" for s in sample_list])
 
     '''QC'''
-    input_list.append(["Results/DNA/" + s + "/QC/Low_coverage_positions.txt" for s in sample_list])
-    input_list.append(["Results/DNA/" + s + "/QC/All_coverage_positions.txt" for s in sample_list])
+    input_list.append(["Results/DNA/" + s + "/QC/" + s + ".Low_coverage_positions.txt" for s in sample_list])
+    input_list.append(["Results/DNA/" + s + "/QC/" + s + ".All_coverage_positions.txt" for s in sample_list])
     #input_list.append(["qc/" + s + "/" + s + "_Stat_table.csv" for s in sample_list])
     input_list.append(["qc/" + s + "/" + s + "_R1_fastqc.html" for s in sample_list])
     input_list.append(["qc/" + s + "/" + s + "_R1_fastqc.zip" for s in sample_list])
