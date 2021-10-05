@@ -10,8 +10,8 @@ rule check_DNA_coverage:
         background_run="DATA/background_run.tsv",
         gvcf="mutect2/{sample}.mutect2.gvcf.gz",
     output:
-        coverage="Results/DNA/{sample}/QC/Low_coverage_positions.txt",
-        coverage2="Results/DNA/{sample}/QC/All_coverage_positions.txt",
+        coverage="Results/DNA/{sample}/QC/{sample}.Low_coverage_positions.txt",
+        coverage2="Results/DNA/{sample}/QC/{sample}.All_coverage_positions.txt",
     log:
         "logs/qc/{sample}_check_DNA_coverage.log",
     container:
