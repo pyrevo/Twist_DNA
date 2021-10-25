@@ -77,7 +77,7 @@ geneFuse:
     genes: "DATA/druggable.hg19.csv"
 
 TMB:
-    Artifacts: "DATA/Artifact_positions.txt"
+    Artifacts: "DATA/Vardict_artifact_positions.txt"
 
 mutect2:
     GetPileupSummaries: "DATA/chr17_small_exac_common_3.vcf.gz"
