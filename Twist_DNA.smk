@@ -36,6 +36,10 @@ def get_input():
     input_list.append(["Results/DNA/" + s + "/vcf/" + s + ".ensemble.vep.exon.soft_filter.ffpe.vcf.gz" for s in sample_list])
     input_list.append(["Results/DNA/" + s + "/vcf/" + s + ".ensemble.vep.exon.soft_filter.multibp.vcf" for s in sample_list])
 
+    '''Background'''
+    #input_list.append("DATA/background_panel.tsv")
+    input_list.append("DATA/background_run.tsv")
+
     '''CNV'''
     #input_list.append(["CNV_calls/" + sample_id + "-ready.cnr" for sample_id in sample_list])
     #input_list.append(["CNV_calls/" + sample_id + "-ready.cns" for sample_id in sample_list])
@@ -51,18 +55,18 @@ def get_input():
     input_list.append(["Results/DNA/" + s + "/MSI/" + s for s in sample_list])
 
     '''Fusion/SV'''
+    #input_list.append(["Results/DNA/" + s + "/Fusions/JuLI/" + s + ".filtered.annotated.txt" for s in sample_list])
     input_list.append(["Results/DNA/" + s + "/Fusions/geneFuse/fusions_" + s + ".txt" for s in sample_list])
-    input_list.append(["Results/DNA/" + s + "/Fusions/JuLI/" + s + ".filtered.annotated.txt" for s in sample_list])
 
     '''TMB'''
     input_list.append(["Results/DNA/" + s + "/TMB/" + s + ".TMB.txt" for s in sample_list])
 
     '''HRD'''
-    input_list.append(["Results/DNA/" + s + "/HRD/HRD_score.txt" for s in sample_list])
+    input_list.append(["Results/DNA/" + s + "/HRD/" + s + ".HRD_score.txt" for s in sample_list])
 
     '''QC'''
-    input_list.append(["Results/DNA/" + s + "/QC/Low_coverage_positions.txt" for s in sample_list])
-    input_list.append(["Results/DNA/" + s + "/QC/All_coverage_positions.txt" for s in sample_list])
+    input_list.append(["Results/DNA/" + s + "/QC/" + s + ".Low_coverage_positions.txt" for s in sample_list])
+    input_list.append(["Results/DNA/" + s + "/QC/" + s + ".All_coverage_positions.txt" for s in sample_list])
     #input_list.append(["qc/" + s + "/" + s + "_Stat_table.csv" for s in sample_list])
     input_list.append(["qc/" + s + "/" + s + "_R1_fastqc.html" for s in sample_list])
     input_list.append(["qc/" + s + "/" + s + "_R1_fastqc.zip" for s in sample_list])

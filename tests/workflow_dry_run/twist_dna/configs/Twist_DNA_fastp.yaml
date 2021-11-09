@@ -47,6 +47,8 @@ reference: #change to hg38
        chrX: 155270560
        chrY: 59373566
 
+Background:
+    background_panel: "/projects/wp1/nobackup/ngs/utveckling/Twist_DNA_DATA/Background/background_panel.tsv"
 
 PoN:
     cnvkit: "/Twist_DNA/DATA/cnvkit.Twist_test.PoN.cnn"
@@ -66,6 +68,9 @@ geneFuse:
 
 TMB:
     Artifacts: "/Twist_DNA/DATA/Vardict_artifact_positions.txt"
+
+mutect2:
+    GetPileupSummaries: "/Twist_DNA/DATA/chr17_small_exac_common_3.vcf.gz"
 
 java:
     SOBDetector: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/SOBDetector_v1.0.1.jar"

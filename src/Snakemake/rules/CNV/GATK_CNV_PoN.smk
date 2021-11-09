@@ -41,15 +41,17 @@ rule preprocessIntervals:
     output:
         preprocessIntervals,
     params:
-        binLength=config['gatk4']['binLength'],  #WGS 1000
-        extra=" ".join(config.get("gatk4", {}).get("preprocessIntervals", [])),
+        binLength=config['gatk4']['binLength'],  #WGS 1000 #Exomes/target: 0
+        padding="0" #WGS 0 #Exomes/target: 250
+
+        extra=" ".join(config.get("gatk4", {}).get("preprocessIntervals", "-imr OVERLAPPING_ONLY")),
     log:
         "logs/Normals/GATK/preprocessIntervals.log",
     container:
         config["singularity"]["gatk4"]
     shell:
         "(gatk --java-options '-Xmx4g' PreprocessIntervals -L {input.intervalList} -R {input.ref} "
-        "--bin-length {params.binLength} {params.extra} "
+        "--bin-length {params.binLength} --padding {params.padding} {params.extra} "
         "-O {output}) &> {log}"
 
 
