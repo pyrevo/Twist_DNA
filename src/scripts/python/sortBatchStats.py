@@ -22,6 +22,11 @@ with open(SampleSheetUsed, 'r') as file:
             samples.append(line.split(',')[1])
         if line.startswith("[Data]"):
             startReading = 1
+        if SampleSheetUsed == "samples.tsv":
+            startReading = 2
+        if startReading == 2:
+            samples.append(line.split('\t')[0])
+
 # samples.pop() #Remove any empty are there empty line at end?!
 samples = samples[1:]  # Remove header from SampleSheetUsed
 sampleSheetSamples = [string for string in samples if string != ""]  # Remove empty fields
